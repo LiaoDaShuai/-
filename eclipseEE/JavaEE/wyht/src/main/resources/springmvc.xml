@@ -1,0 +1,131 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.directwebremoting.org/schema/spring-dwr
+		http://www.directwebremoting.org/schema/spring-dwr-3.0.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd 
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+    
+	<!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
+	<context:component-scan base-package="com.sve.*"/>
+<!-- 	<mvc:default-servlet-handler  /> -->
+	<mvc:resources mapping="/js/**" location="/js/" />
+	<mvc:resources mapping="/js-others/**" location="/js-others/" />
+	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/layui/**" location="/layui/" />
+	<mvc:resources mapping="/fonts/**" location="/fonts/" />
+	<mvc:resources mapping="/themes/**" location="/themes/" />
+	<mvc:resources mapping="/xml/**" location="/xml/" />
+	<mvc:resources mapping="/img/**" location="/img/" />
+	<mvc:resources mapping="/ueditor-utf8/**" location="/ueditor-utf8/" />
+<!-- 	<bean id="resourceHttpRequestHandler" class="org.springframework.web.servlet.resource.ResourceHttpRequestHandler"> -->
+<!-- 		<property name="locations" value="classpath:/META-INF/resources/"></property>	 -->
+<!-- 	</bean> -->
+<!-- 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"> -->
+<!-- 		<property name="mappings"> -->
+<!-- 			<props> -->
+<!-- 				<prop key="/resources/**">resourceHttpRequestHandler</prop> -->
+<!-- 			</props> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+	
+   	<!-- 使用mvc的注解驱动可以代替上面两个注解映射器和适配器的配置 mvc:annotation-driven默认加载了很多的参数绑定办法，比如json转换的解析器 
+		实际开发使用注解驱动 ,注册处理器映射器/处理器适配器 ，添加conversion-service属性-->
+	<mvc:annotation-driven validator="validator" conversion-service="conversionService" />
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
+        <!--不设置则默认为classpath下的 ValidationMessages.properties -->
+       	<property name="validationMessageSource" ref="validatemessageSource"/>
+   	 </bean>
+    <!-- 创建convertion-Service ，并注入dateConvert -->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
+    
+    <bean id="validatemessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+        <property name="fileEncodings" value="utf-8"/>  
+        <property name="cacheSeconds" value="120"/>  
+    </bean>
+<!--     <mvc:interceptors> -->
+<!--         <mvc:interceptor> -->
+<!--             <mvc:mapping path="/**"/> -->
+<!--               <mvc:exclude-mapping path="/**/fonts/*"/> -->
+<!--                <mvc:exclude-mapping path="/**/js/*"/> -->
+<!--                 <mvc:exclude-mapping path="/**/css/*"/> -->
+<!--             <bean class="com.sve.util.LoignInterceptor"></bean> -->
+<!--         </mvc:interceptor> -->
+<!--     </mvc:interceptors>  -->
+    <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
+	<bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/html;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="mappingJacksonHttpMessageConverter" /><!-- json转换器 -->
+			</list>
+		</property>
+	</bean>
+	<!-- 引入tiles配置文件 -->
+    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer" >
+        <property name="definitions">
+            <list>
+                <value>/WEB-INF/tiles.xml</value>
+            </list>
+        </property>
+        <property name="preparerFactoryClass"  
+                       value="org.springframework.web.servlet.view.tiles3.SpringBeanPreparerFactory" >
+        </property>
+    </bean>
+
+    <!-- 配置视图解析器 -->
+    <bean id="tilesViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass">
+            <value>org.springframework.web.servlet.view.tiles3.TilesView</value>
+        </property>
+    </bean>
+    
+	<!-- 定义跳转的文件的前后缀 ，视图模式配置-->
+	<bean id="userMvc" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 这里的配置我的理解是自动给后面action的方法return的字符串加上前缀和后缀，变成一个 可用的url地址 -->
+		<property name="prefix" value="/WEB-INF/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<!-- 上传文件配置 -->
+	<bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10240000" />
+        <property name="maxInMemorySize" value="10240000" />
+        <property name="defaultEncoding" value="UTF-8" />
+        <property name="uploadTempDir" value="/img" />
+    </bean>
+    <task:annotation-driven />
+	
+    <!-- dwr的配置 -->
+	<dwr:annotation-config id="dwr" />
+	<dwr:annotation-scan base-package="com.sve"/>
+    <dwr:url-mapping/>
+	<!--dwr控制器-->
+	<dwr:controller id="dwrController" debug="true">
+		<dwr:config-param name="allowScriptTagRemoting" value="true"/>
+		<dwr:config-param name="crossDomainSessionSecurity" value="true"/>
+	</dwr:controller>
+</beans>

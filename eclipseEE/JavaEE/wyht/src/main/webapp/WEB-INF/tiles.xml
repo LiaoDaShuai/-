@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+    <!-- 定义一个后台模板页 -->
+    <definition name="base.definition" template="/WEB-INF/layout/template.jsp">
+        <put-attribute name="title" value="启源物业管理系统"/>
+        <put-attribute name="header" value="/WEB-INF/layout/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/layout/menu.jsp" />
+		<put-attribute name="body" value="" />
+    </definition>
+     <definition name="toll/*" extends="base.definition">
+        <put-attribute name="body" value="/WEB-INF/toll/{1}.jsp" />
+    </definition>
+    <definition name="*.wy" extends="base.definition">
+        <put-attribute name="body" value="/WEB-INF/index/{1}.jsp" />
+    </definition>
+     <definition name="datacenter/*" extends="base.definition">
+        <put-attribute name="body" value="/WEB-INF/datacenter/{1}.jsp" />
+    </definition>
+    <definition name="wservice/*" extends="base.definition">
+        <put-attribute name="body" value="/WEB-INF/wservice/{1}.jsp" />
+    </definition>
+    <definition name="staff/*" extends="base.definition">
+        <put-attribute name="body" value="/WEB-INF/staff/{1}.jsp" />
+    </definition>
+     <definition name="report/*" extends="base.definition">
+        <put-attribute name="body" value="/WEB-INF/report/{1}.jsp" />
+    </definition>
+     <definition name="lifeservice/*" extends="base.definition">
+        <put-attribute name="body" value="/WEB-INF/lifeservice/{1}.jsp" />
+    </definition>
+    <!-- 定义一个前台模板页 -->
+    <definition name="qtTemplate" template="/WEB-INF/layout/qttemplate.jsp">
+        <put-attribute name="title" value="启源物业网站"/>
+        <put-attribute name="header" value="/WEB-INF/layout/qtheader.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="floor" value="/WEB-INF/layout/qtfloor.jsp" />
+    </definition>
+    <definition name="qtpage/*" extends="qtTemplate">
+        <put-attribute name="body" value="/WEB-INF/qtpage/{1}.jsp" />
+    </definition>
+</tiles-definitions>

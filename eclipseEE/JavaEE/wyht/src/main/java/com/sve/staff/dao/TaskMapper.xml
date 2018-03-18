@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sve.staff.dao.TaskMapper">
+  <resultMap id="BaseResultMap" type="com.sve.staff.model.Task">
+    <id column="task_id" jdbcType="INTEGER" property="taskId" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="task_tape_tid" jdbcType="INTEGER" property="taskTapeTid" />
+    <result column="task_frequency" jdbcType="INTEGER" property="taskFrequency" />
+    <result column="task_wcount" jdbcType="INTEGER" property="taskWcount" />
+    <result column="task_completed" jdbcType="INTEGER" property="taskCompleted" />
+    <result column="task_dep_id" jdbcType="INTEGER" property="taskDepId" />
+    <result column="task_emp_id" jdbcType="INTEGER" property="taskEmpId" />
+    <result column="task_ispublic" jdbcType="INTEGER" property="taskIspublic" />
+    <result column="task_status" jdbcType="INTEGER" property="taskStatus" />
+    <result column="task_startdate" jdbcType="TIMESTAMP" property="taskStartdate" />
+    <result column="task_enddate" jdbcType="TIMESTAMP" property="taskEnddate" />
+    <result column="resk_remark" jdbcType="VARCHAR" property="reskRemark" />
+    <association property="taskType" column="task_tape_tid"
+  	 select="com.sve.staff.dao.TasktypeMapper.selectByPrimaryKey"></association>
+  	 <association property="department" column="task_dep_id"
+  	 select="com.sve.staff.dao.DepartmentMapper.selectByPrimaryKey"></association>
+  	 <association property="employee" column="task_emp_id"
+  	 select="com.sve.staff.dao.EmployeeMapper.selectByPrimaryKey"></association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    task_id, task_name, task_tape_tid, task_frequency, task_wcount, task_completed, task_dep_id, 
+    task_emp_id, task_ispublic, task_status, task_startdate, task_enddate, resk_remark
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.sve.staff.model.Task">
+  	select * from task
+  	<trim prefix="WHERE" prefixOverrides="AND|OR">
+ 	    	<if test="taskName!=null and taskName!='' ">
+	 	    	and  (task_name LIKE CONCAT(CONCAT('%',#{taskName}),'%') ) 	 	     
+  			</if>
+  			<if test="taskTapeTid!=null and taskTapeTid!='' ">
+	 	    	and  (task_tape_tid LIKE CONCAT(CONCAT('%',#{taskTapeTid}),'%') ) 	 	     
+  			</if>
+  			<if test="taskDepId!=null and taskDepId!='' ">
+	 	    	and  (task_dep_id LIKE CONCAT(CONCAT('%',#{taskDepId}),'%') ) 	 	     
+  			</if>
+  	 </trim>
+  	  order by task_id desc 
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from task
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from task
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.staff.model.Task">
+    insert into task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="taskName != null">
+        task_name,
+      </if>
+      <if test="taskTapeTid != null">
+        task_tape_tid,
+      </if>
+      <if test="taskFrequency != null">
+        task_frequency,
+      </if>
+      <if test="taskWcount != null">
+        task_wcount,
+      </if>
+      <if test="taskCompleted != null">
+        task_completed,
+      </if>
+      <if test="taskDepId != null">
+        task_dep_id,
+      </if>
+      <if test="taskEmpId != null">
+        task_emp_id,
+      </if>
+      <if test="taskIspublic != null">
+        task_ispublic,
+      </if>
+      <if test="taskStatus != null">
+        task_status,
+      </if>
+      <if test="taskStartdate != null">
+        task_startdate,
+      </if>
+      <if test="taskEnddate != null">
+        task_enddate,
+      </if>
+      <if test="reskRemark != null">
+        resk_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskId != null">
+        #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="taskName != null">
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTapeTid != null">
+        #{taskTapeTid,jdbcType=INTEGER},
+      </if>
+      <if test="taskFrequency != null">
+        #{taskFrequency,jdbcType=INTEGER},
+      </if>
+      <if test="taskWcount != null">
+        #{taskWcount,jdbcType=INTEGER},
+      </if>
+      <if test="taskCompleted != null">
+        #{taskCompleted,jdbcType=INTEGER},
+      </if>
+      <if test="taskDepId != null">
+        #{taskDepId,jdbcType=INTEGER},
+      </if>
+      <if test="taskEmpId != null">
+        #{taskEmpId,jdbcType=INTEGER},
+      </if>
+      <if test="taskIspublic != null">
+        #{taskIspublic,jdbcType=INTEGER},
+      </if>
+      <if test="taskStatus != null">
+        #{taskStatus,jdbcType=INTEGER},
+      </if>
+      <if test="taskStartdate != null">
+        #{taskStartdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskEnddate != null">
+        #{taskEnddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reskRemark != null">
+        #{reskRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

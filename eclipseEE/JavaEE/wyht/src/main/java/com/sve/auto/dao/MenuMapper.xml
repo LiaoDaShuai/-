@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.auto.dao.MenuMapper">
+	<resultMap id="BaseResultMap" type="com.sve.auto.model.Menu">
+		<id column="menu_id" property="menuId" jdbcType="INTEGER" />
+		<result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+		<result column="menu_order" property="menuOrder" jdbcType="INTEGER" />
+		<result column="menu_icon" property="menuIcon" jdbcType="VARCHAR" />
+		<result column="menu_create_at" property="menuCreateAt"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+	<resultMap type="com.sve.auto.model.Menu" id="BaseMenu" extends="BaseResultMap">
+		<collection property="permlist" ofType="com.sve.auto.model.Permission">
+			<id column="perm_id" property="permId" jdbcType="INTEGER" />
+			<result column="perm_name" property="permName" jdbcType="VARCHAR" />
+			<result column="perm_description" property="permDescription" jdbcType="VARCHAR" />
+			<result column="perm_url" property="permUrl" jdbcType="VARCHAR" />
+			<result column="perm_order" property="permOrder" jdbcType="VARCHAR" />
+			<result column="perm_isshow" property="permIsshow" jdbcType="INTEGER" />
+			<result column="perm_code" property="permCode" jdbcType="VARCHAR" />
+			<result column="perm_menu_id" property="permMenuId" jdbcType="INTEGER" />
+		</collection>
+	</resultMap>
+	<sql id="Base_Column_List">
+		menu_id, menu_name, menu_order, menu_icon, menu_create_at
+	</sql>
+	<select id="selectMenuPerm" resultMap="BaseMenu" parameterType="java.lang.String">
+		SELECT m.*,p.* FROM menu m
+		INNER JOIN permission p ON m.menu_id=p.perm_menu_id INNER JOIN user_perm up 
+		 on p.perm_id=up.up_perm_id INNER JOIN USER u ON
+		u.user_id=up.up_user_id WHERE u.user_status=0 AND p.perm_isshow=1 AND
+		u.user_name=#{userName} ORDER BY m.menu_id,p.perm_order
+	</select>
+	<select id="selectAllMenuPerm" resultMap="BaseMenu">
+	     SELECT m.*,p.* FROM menu m INNER JOIN permission p ON m.menu_id=p.perm_menu_id 
+	     GROUP BY m.menu_name,p.perm_name ORDER BY m.menu_id,p.perm_order,p.perm_id 
+	</select>
+	<select id="selectMenuPermUsname" parameterType="java.lang.String" resultMap="BaseMenu">
+	     SELECT m.*,p.* FROM menu m INNER JOIN permission p ON m.menu_id=p.perm_menu_id 
+	     INNER JOIN user_perm up on p.perm_id=up.up_perm_id INNER JOIN USER u ON 
+	     u.user_id=up.up_user_id WHERE u.user_status=0 and u.user_name=#{userName} GROUP BY 
+	     m.menu_name,p.perm_name ORDER BY m.menu_id,p.perm_order,p.perm_id
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from menu
+		where menu_id = #{menuId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from menu
+		where menu_id = #{menuId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.sve.auto.model.Menu">
+		insert into menu
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="menuId != null">
+				menu_id,
+			</if>
+			<if test="menuName != null">
+				menu_name,
+			</if>
+			<if test="menuOrder != null">
+				menu_order,
+			</if>
+			<if test="menuIcon != null">
+				menu_icon,
+			</if>
+			<if test="menuCreateAt != null">
+				menu_create_at,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="menuId != null">
+				#{menuId,jdbcType=INTEGER},
+			</if>
+			<if test="menuName != null">
+				#{menuName,jdbcType=VARCHAR},
+			</if>
+			<if test="menuOrder != null">
+				#{menuOrder,jdbcType=INTEGER},
+			</if>
+			<if test="menuIcon != null">
+				#{menuIcon,jdbcType=VARCHAR},
+			</if>
+			<if test="menuCreateAt != null">
+				#{menuCreateAt,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.sve.auto.model.Menu">
+		update menu
+		<set>
+			<if test="menuName != null">
+				menu_name = #{menuName,jdbcType=VARCHAR},
+			</if>
+			<if test="menuOrder != null">
+				menu_order = #{menuOrder,jdbcType=INTEGER},
+			</if>
+			<if test="menuIcon != null">
+				menu_icon = #{menuIcon,jdbcType=VARCHAR},
+			</if>
+			<if test="menuCreateAt != null">
+				menu_create_at = #{menuCreateAt,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where menu_id = #{menuId,jdbcType=INTEGER}
+	</update>
+</mapper>

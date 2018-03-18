@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.staff.dao.DepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.staff.model.Department" >
+    <id column="dep_id" property="depId" jdbcType="INTEGER" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    <result column="dep_count" property="depCount" jdbcType="INTEGER" />
+    <result column="dep_emp_count" property="depEmpCount" jdbcType="INTEGER" />
+    <association property="post" column="dep_id" 
+    select="com.sve.staff.dao.PostMapper.selectByPrimaryKey"></association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    dep_id, dep_name, dep_count, dep_emp_count
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from department order by dep_id desc
+  </select>
+   <select id="yanzheng" resultType="java.lang.Integer" parameterType="java.lang.String" > 
+  		select count(*) from department where dep_name=#{name}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from department
+    where dep_id = #{depId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from department
+    where dep_id = #{depId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sve.staff.model.Department" >
+    insert into department (dep_id, dep_name, dep_count, 
+      dep_emp_count)
+    values (#{depId,jdbcType=INTEGER}, #{depName,jdbcType=VARCHAR}, #{depCount,jdbcType=INTEGER}, 
+      #{depEmpCount,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sve.staff.model.Department" >
+    insert into department
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="depId != null" >
+        dep_id,
+      </if>
+      <if test="depName != null" >
+        dep_name,
+      </if>
+      <if test="depCount != null" >
+        dep_count,
+      </if>
+      <if test="depEmpCount != null" >
+        dep_emp_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="depId != null" >
+        #{depId,jdbcType=INTEGER},
+      </if>
+      <if test="depName != null" >
+        #{depName,jdbcType=VARCHAR},
+      </if>
+      <if test="depCount != null" >
+        #{depCount,jdbcType=INTEGER},
+      </if>
+      <if test="depEmpCount != null" >
+        #{depEmpCount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.staff.model.Department" >
+    update department
+    <set >
+      <if test="depName != null" >
+        dep_name = #{depName,jdbcType=VARCHAR},
+      </if>
+      <if test="depCount != null" >
+        dep_count = #{depCount,jdbcType=INTEGER},
+      </if>
+      <if test="depEmpCount != null" >
+        dep_emp_count = #{depEmpCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where dep_id = #{depId,jdbcType=INTEGER}
+  </update>
+</mapper>

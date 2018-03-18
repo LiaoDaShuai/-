@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.staff.dao.CmplaintsMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.staff.model.Cmplaints" >
+    <id column="cmp_id" property="cmpId" jdbcType="INTEGER" />
+    <result column="cmp_owners_oid" property="cmpOwnersOid" jdbcType="INTEGER" />
+    <result column="cmptype_id" property="cmptypeId" jdbcType="INTEGER" />
+    <result column="cmp_content" property="cmpContent" jdbcType="VARCHAR" />
+    <result column="cmp_img" property="cmpImg" jdbcType="VARCHAR" />
+    <result column="cmp_data" property="cmpData" jdbcType="TIMESTAMP" />
+    <result column="cmp_status" property="cmpStatus" jdbcType="INTEGER" />
+    <result column="cmp_huifu" property="cmpHuifu" jdbcType="VARCHAR" />
+    <result column="cmp_emp" property="cmpEmp" jdbcType="INTEGER" />
+    <association property="cmptype" column="cmptype_id"		
+    select="com.sve.staff.dao.CmptypeMapper.selectByPrimaryKey"></association>
+    <association property="owners" column="cmp_owners_oid"
+    select="com.sve.datacenter.dao.OwnersMapper.selectByPrimaryKey"></association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cmp_id, cmp_owners_oid, cmptype_id, cmp_content, cmp_img, cmp_data, cmp_status, cmp_huifu, 
+    cmp_emp
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap" resultType="com.sve.staff.model.Cmplaints">
+  	select * from cmplaints 
+  	<trim prefix="WHERE" prefixOverrides="AND|OR">
+ 	    	<if test="cmptypeId!=null and cmptypeId!='' ">
+	 	    	and  (cmptype_id LIKE CONCAT(CONCAT('%',#{cmptypeId}),'%') ) 	 	     
+  			</if>
+  			<if test="cmpContent!=null and cmpContent!='' ">
+	 	    	and  (cmp_content LIKE CONCAT(CONCAT('%',#{cmpContent}),'%') ) 	 	     
+  			</if>
+  	 </trim>
+  	order by cmp_id desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cmplaints
+    where cmp_id = #{cmpId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cmplaints
+    where cmp_id = #{cmpId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sve.staff.model.Cmplaints" >
+    insert into cmplaints (cmp_id, cmp_owners_oid, cmptype_id, 
+      cmp_content, cmp_img, cmp_data, 
+      cmp_status, cmp_huifu, cmp_emp
+      )
+    values (#{cmpId,jdbcType=INTEGER}, #{cmpOwnersOid,jdbcType=INTEGER}, #{cmptypeId,jdbcType=INTEGER}, 
+      #{cmpContent,jdbcType=VARCHAR}, #{cmpImg,jdbcType=VARCHAR}, #{cmpData,jdbcType=TIMESTAMP}, 
+      #{cmpStatus,jdbcType=INTEGER}, #{cmpHuifu,jdbcType=VARCHAR}, #{cmpEmp,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sve.staff.model.Cmplaints" >
+    insert into cmplaints
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cmpId != null" >
+        cmp_id,
+      </if>
+      <if test="cmpOwnersOid != null" >
+        cmp_owners_oid,
+      </if>
+      <if test="cmptypeId != null" >
+        cmptype_id,
+      </if>
+      <if test="cmpContent != null" >
+        cmp_content,
+      </if>
+      <if test="cmpImg != null" >
+        cmp_img,
+      </if>
+      <if test="cmpData != null" >
+        cmp_data,
+      </if>
+      <if test="cmpStatus != null" >
+        cmp_status,
+      </if>
+      <if test="cmpHuifu != null" >
+        cmp_huifu,
+      </if>
+      <if test="cmpEmp != null" >
+        cmp_emp,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cmpId != null" >
+        #{cmpId,jdbcType=INTEGER},
+      </if>
+      <if test="cmpOwnersOid != null" >
+        #{cmpOwnersOid,jdbcType=INTEGER},
+      </if>
+      <if test="cmptypeId != null" >
+        #{cmptypeId,jdbcType=INTEGER},
+      </if>
+      <if test="cmpContent != null" >
+        #{cmpContent,jdbcType=VARCHAR},
+      </if>
+      <if test="cmpImg != null" >
+        #{cmpImg,jdbcType=VARCHAR},
+      </if>
+      <if test="cmpData != null" >
+        #{cmpData,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cmpStatus != null" >
+        #{cmpStatus,jdbcType=INTEGER},
+      </if>
+      <if test="cmpHuifu != null" >
+        #{cmpHuifu,jdbcType=VARCHAR},
+      </if>
+      <if test="cmpEmp != null" >
+        #{cmpEmp,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.staff.model.Cmplaints" >
+    update cmplaints
+    <set >
+      <if test="cmpOwnersOid != null" >
+        cmp_owners_oid = #{cmpOwnersOid,jdbcType=INTEGER},
+      </if>
+      <if test="cmptypeId != null" >
+        cmptype_id = #{cmptypeId,jdbcType=INTEGER},
+      </if>
+      <if test="cmpContent != null" >
+        cmp_content = #{cmpContent,jdbcType=VARCHAR},
+      </if>
+      <if test="cmpImg != null" >
+        cmp_img = #{cmpImg,jdbcType=VARCHAR},
+      </if>
+      <if test="cmpData != null" >
+        cmp_data = #{cmpData,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cmpStatus != null" >
+        cmp_status = #{cmpStatus,jdbcType=INTEGER},
+      </if>
+      <if test="cmpHuifu != null" >
+        cmp_huifu = #{cmpHuifu,jdbcType=VARCHAR},
+      </if>
+      <if test="cmpEmp != null" >
+        cmp_emp = #{cmpEmp,jdbcType=INTEGER},
+      </if>
+    </set>
+    where cmp_id = #{cmpId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sve.staff.model.Cmplaints" >
+    update cmplaints
+    set cmp_owners_oid = #{cmpOwnersOid,jdbcType=INTEGER},
+      cmptype_id = #{cmptypeId,jdbcType=INTEGER},
+      cmp_content = #{cmpContent,jdbcType=VARCHAR},
+      cmp_img = #{cmpImg,jdbcType=VARCHAR},
+      cmp_data = #{cmpData,jdbcType=TIMESTAMP},
+      cmp_status = #{cmpStatus,jdbcType=INTEGER},
+      cmp_huifu = #{cmpHuifu,jdbcType=VARCHAR},
+      cmp_emp = #{cmpEmp,jdbcType=INTEGER}
+    where cmp_id = #{cmpId,jdbcType=INTEGER}
+  </update>
+</mapper>

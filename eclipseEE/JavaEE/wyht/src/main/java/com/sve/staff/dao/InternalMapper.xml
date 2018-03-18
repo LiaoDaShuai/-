@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.staff.dao.InternalMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.staff.model.Internal" >
+    <id column="inter_id" property="interId" jdbcType="INTEGER" />
+    <result column="inter_content" property="interContent" jdbcType="VARCHAR" />
+    <result column="inter_dep_id" property="interDepId" jdbcType="INTEGER" />
+    <result column="inter_emp_id" property="interEmpId" jdbcType="INTEGER" />
+    <result column="inter_ydate" property="interYdate" jdbcType="TIMESTAMP" />
+    <result column="inter_intimg" property="interIntimg" jdbcType="VARCHAR" />
+    <result column="inter_status" property="interStatus" jdbcType="INTEGER" />
+    <result column="inter_enddate" property="interEnddate" jdbcType="TIMESTAMP" />
+    <association property="department" column="inter_dep_id"
+  	 select="com.sve.staff.dao.DepartmentMapper.selectByPrimaryKey"></association>
+  	 <association property="employee" column="inter_emp_id"
+  	 select="com.sve.staff.dao.EmployeeMapper.selectByPrimaryKey"></association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    inter_id, inter_content, inter_dep_id, inter_emp_id, inter_ydate, inter_intimg, inter_status, 
+    inter_enddate
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap" resultType="com.sve.staff.model.Internal">
+  	select * from internal
+  	  	<trim prefix="WHERE" prefixOverrides="AND|OR">
+ 	    	<if test="interContent!=null and interContent!='' ">
+	 	    	and  (inter_content LIKE CONCAT(CONCAT('%',#{interContent}),'%') ) 	 	     
+  			</if>
+  			<if test="interDepId!=null and interDepId!='' ">
+	 	    	and  (inter_dep_id LIKE CONCAT(CONCAT('%',#{interDepId}),'%') ) 	 	     
+  			</if>
+  	 </trim>
+  	 order by inter_id desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from internal
+    where inter_id = #{interId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from internal
+    where inter_id = #{interId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sve.staff.model.Internal" >
+    insert into internal (inter_id, inter_content, inter_dep_id, 
+      inter_emp_id, inter_ydate, inter_intimg, 
+      inter_status, inter_enddate)
+    values (#{interId,jdbcType=INTEGER}, #{interContent,jdbcType=VARCHAR}, #{interDepId,jdbcType=INTEGER}, 
+      #{interEmpId,jdbcType=INTEGER}, #{interYdate,jdbcType=TIMESTAMP}, #{interIntimg,jdbcType=VARCHAR}, 
+      #{interStatus,jdbcType=INTEGER}, #{interEnddate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sve.staff.model.Internal" >
+    insert into internal
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="interId != null" >
+        inter_id,
+      </if>
+      <if test="interContent != null" >
+        inter_content,
+      </if>
+      <if test="interDepId != null" >
+        inter_dep_id,
+      </if>
+      <if test="interEmpId != null" >
+        inter_emp_id,
+      </if>
+      <if test="interYdate != null" >
+        inter_ydate,
+      </if>
+      <if test="interIntimg != null" >
+        inter_intimg,
+      </if>
+      <if test="interStatus != null" >
+        inter_status,
+      </if>
+      <if test="interEnddate != null" >
+        inter_enddate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="interId != null" >
+        #{interId,jdbcType=INTEGER},
+      </if>
+      <if test="interContent != null" >
+        #{interContent,jdbcType=VARCHAR},
+      </if>
+      <if test="interDepId != null" >
+        #{interDepId,jdbcType=INTEGER},
+      </if>
+      <if test="interEmpId != null" >
+        #{interEmpId,jdbcType=INTEGER},
+      </if>
+      <if test="interYdate != null" >
+        #{interYdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="interIntimg != null" >
+        #{interIntimg,jdbcType=VARCHAR},
+      </if>
+      <if test="interStatus != null" >
+        #{interStatus,jdbcType=INTEGER},
+      </if>
+      <if test="interEnddate != null" >
+        #{interEnddate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.staff.model.Internal" >
+    update internal
+    <set >
+      <if test="interContent != null" >
+        inter_content = #{interContent,jdbcType=VARCHAR},
+      </if>
+      <if test="interDepId != null" >
+        inter_dep_id = #{interDepId,jdbcType=INTEGER},
+      </if>
+      <if test="interEmpId != null" >
+        inter_emp_id = #{interEmpId,jdbcType=INTEGER},
+      </if>
+      <if test="interYdate != null" >
+        inter_ydate = #{interYdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="interIntimg != null" >
+        inter_intimg = #{interIntimg,jdbcType=VARCHAR},
+      </if>
+      <if test="interStatus != null" >
+        inter_status = #{interStatus,jdbcType=INTEGER},
+      </if>
+      <if test="interEnddate != null" >
+        inter_enddate = #{interEnddate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where inter_id = #{interId,jdbcType=INTEGER}
+  </update>
+</mapper>

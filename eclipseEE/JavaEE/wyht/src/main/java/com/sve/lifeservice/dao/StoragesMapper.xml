@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.lifeservice.dao.StoragesMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.lifeservice.model.Storages" >
+    <id column="stor_id" property="storId" jdbcType="INTEGER" />
+    <result column="stor_num" property="storNum" jdbcType="INTEGER" />
+    <result column="stor_receiverphone" property="storReceiverphone" jdbcType="VARCHAR" />
+    <result column="stor_receivername" property="storReceivername" jdbcType="VARCHAR" />
+    <result column="stor_cou_id" property="storCouId" jdbcType="INTEGER" />
+    <result column="stor_issize" property="storIssize" jdbcType="INTEGER" />
+    <result column="stor_exp_id" property="storExpId" jdbcType="INTEGER" />
+    <result column="stor_isstatus" property="storIsstatus" jdbcType="INTEGER" />
+    <result column="stor_qjdate" property="storQjdate" jdbcType="TIMESTAMP" />
+    <result column="stor_remark" property="storRemark" jdbcType="VARCHAR" />
+    <association property="cer" resultMap="BaseCer"/>
+    <association property="ex" resultMap="BaseExp"/>
+    <association property="epcy" resultMap="BaseEpcy"/>
+  </resultMap>
+  <resultMap id="BaseCer" type="com.sve.lifeservice.model.Courier">
+  		<id column="cou_id" property="couId" jdbcType="INTEGER" />
+	    <result column="cou_name" property="couName" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="BaseExp" type="com.sve.lifeservice.model.Express">
+  		<id column="exp_id" property="expId" jdbcType="INTEGER" />
+	    <result column="exp_address" property="expAddress" jdbcType="VARCHAR" />
+	    <result column="exp_disid" property="expDisid" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="BaseEpcy" type="com.sve.lifeservice.model.ExpressCompany">
+		<id column="expgs_id" property="expgsId" jdbcType="INTEGER" />
+	    <result column="expgs_name" property="expgsName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    stor_id, stor_num, stor_receiverphone, stor_receivername, stor_cou_id, stor_issize, 
+    stor_exp_id, stor_isstatus, stor_qjdate, stor_remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from storages
+    where stor_id = #{storId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from storages
+    where stor_id = #{storId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.lifeservice.model.Storages" >
+    insert into storages
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="storId != null" >
+        stor_id,
+      </if>
+      <if test="storNum != null" >
+        stor_num,
+      </if>
+      <if test="storReceiverphone != null" >
+        stor_receiverphone,
+      </if>
+      <if test="storReceivername != null" >
+        stor_receivername,
+      </if>
+      <if test="storCouId != null" >
+        stor_cou_id,
+      </if>
+      <if test="storIssize != null" >
+        stor_issize,
+      </if>
+      <if test="storExpId != null" >
+        stor_exp_id,
+      </if>
+      <if test="storIsstatus != null" >
+        stor_isstatus,
+      </if>
+      <if test="storQjdate != null" >
+        stor_qjdate,
+      </if>
+      <if test="storRemark != null">
+      	stor_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="storId != null" >
+        #{storId,jdbcType=INTEGER},
+      </if>
+      <if test="storNum != null" >
+        #{storNum,jdbcType=INTEGER},
+      </if>
+      <if test="storReceiverphone != null" >
+        #{storReceiverphone,jdbcType=VARCHAR},
+      </if>
+      <if test="storReceivername != null" >
+        #{storReceivername,jdbcType=VARCHAR},
+      </if>
+      <if test="storCouId != null" >
+        #{storCouId,jdbcType=INTEGER},
+      </if>
+      <if test="storIssize != null" >
+        #{storIssize,jdbcType=INTEGER},
+      </if>
+      <if test="storExpId != null" >
+        #{storExpId,jdbcType=INTEGER},
+      </if>
+      <if test="storIsstatus != null" >
+        #{storIsstatus,jdbcType=INTEGER},
+      </if>
+      <if test="storQjdate != null" >
+        #{storQjdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="storRemark != null">
+      	#{storRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.lifeservice.model.Storages" >
+    update storages
+    <set >
+      <if test="storNum != null" >
+        stor_num = #{storNum,jdbcType=INTEGER},
+      </if>
+      <if test="storReceiverphone != null" >
+        stor_receiverphone = #{storReceiverphone,jdbcType=VARCHAR},
+      </if>
+      <if test="storReceivername != null" >
+        stor_receivername = #{storReceivername,jdbcType=VARCHAR},
+      </if>
+      <if test="storCouId != null" >
+        stor_cou_id = #{storCouId,jdbcType=INTEGER},
+      </if>
+      <if test="storIssize != null" >
+        stor_issize = #{storIssize,jdbcType=INTEGER},
+      </if>
+      <if test="storExpId != null" >
+        stor_exp_id = #{storExpId,jdbcType=INTEGER},
+      </if>
+      <if test="storIsstatus != null" >
+        stor_isstatus = #{storIsstatus,jdbcType=INTEGER},
+      </if>
+      <if test="storQjdate != null" >
+        stor_qjdate = #{storQjdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="storRemark != null">
+      	stor_remark = #{storRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where stor_id = #{storId,jdbcType=INTEGER}
+  </update>
+  <!-- 查询全部 -->
+  <select id="selectA" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select sto.*,c.cou_name,ex.exp_address,ex.exp_disid,ec.expgs_id,ec.expgs_name from storages sto inner join courier c on sto.stor_cou_id=c.cou_id 
+  	inner join express ex on sto.stor_exp_id=ex.exp_id
+  	inner join expresscompany ec on c.cou_expgs_id=ec.expgs_id 
+  	where sto.stor_exp_id=#{storExpId}
+  	order by sto.stor_id desc
+  </select>
+  <!-- 模糊查询全部 -->
+  <select id="selectAll" parameterType="com.sve.lifeservice.model.Storages" resultMap="BaseResultMap">
+  	select sto.*,c.cou_name,ex.exp_address,ex.exp_disid,ec.expgs_id,ec.expgs_name from storages sto inner join courier c on sto.stor_cou_id=c.cou_id 
+  	inner join express ex on sto.stor_exp_id=ex.exp_id
+  	inner join expresscompany ec on c.cou_expgs_id=ec.expgs_id
+  	<trim prefix="WHERE" prefixOverrides="AND|OR">
+  		<if test="storExpId != null">
+  		and sto.stor_exp_id=#{storExpId}
+  		</if>
+  		<if test="company != 0 and company != null">
+  		and ec.expgs_id=#{company}
+  		</if>
+  		<if test="storIsstatus != null">
+  		and sto.stor_isstatus=#{storIsstatus}
+  		</if>
+  		<if test="storReceiverphone != null and storReceiverphone != ''">
+  		and sto.stor_receiverphone=#{storReceiverphone}
+  		</if>
+  		<if test="keywords != null and keywords != ''">
+  		and (sto.stor_receivername like concat('%',#{keywords},'%') or
+  			sto.stor_num like concat('%',#{keywords},'%'))
+  		</if>
+  	</trim>
+  	order by sto.stor_id desc
+  </select>
+  <!-- 根据快递编号查询入库表是否有数据 -->
+  <select id="delete_selectStorage" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	select count(*) from storages where stor_exp_id=#{storExpId} and stor_isstatus=0
+  </select>
+  <!-- 根据快递编号删除入库表 -->
+  <delete id="delete_Storage" parameterType="java.lang.Integer">
+  	delete from storages where stor_exp_id=#{storExpId} and stor_isstatus=1
+  </delete>
+  <!-- 根据快递员编号查询入库表是否有数据 -->
+  <select id="delete_selectStorage2" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	select count(*) from storages where stor_cou_id=#{storCouId} and stor_isstatus=0
+  </select>
+  <!-- 根据快递员编号删除入库表 -->
+  <delete id="delete_Storage2" parameterType="java.lang.Integer">
+  	delete from storages where stor_cou_id=#{storCouId} and stor_isstatus=1
+  </delete>
+  <!-- 根据手机号后4位查询入库的快递信息 -->
+  <select id="selectByPhone4" parameterType="com.sve.lifeservice.model.Storages" resultMap="BaseResultMap">
+  	select * from storages where SUBSTRING(stor_receiverphone,-4)=#{number} and stor_isstatus=0 and stor_exp_id=#{storExpId}
+  </select>
+  <!-- 修改快递状态 -->
+  <update id="updateStorage" parameterType="java.lang.Integer">
+  	update storages set stor_isstatus=1,stor_qjdate=CURRENT_TIMESTAMP where stor_id=#{storId}
+  </update>
+  <!-- 查询快递单号是否已存在 -->
+  <select id="selectStorNum" parameterType="java.lang.String" resultType="java.lang.Integer">
+  select count(*) FROM storages where stor_num=#{storNum}
+  </select>
+  <!-- 查询已取的快递总数 -->
+  <select id="storagesCount" resultType="java.lang.Integer">
+  SELECT COUNT(*) FROM storages WHERE stor_isstatus=1
+  </select>
+</mapper>

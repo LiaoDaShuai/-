@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.toll.dao.PredepositMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.toll.model.Predeposit" >
+    <id column="pred_id" property="predId" jdbcType="INTEGER" />
+    <result column="pred_dis_id" property="predDisId" jdbcType="INTEGER" />
+    <result column="pred_oid" property="predOid" jdbcType="INTEGER" />
+    <result column="pred_money" property="predMoney" jdbcType="DECIMAL" />
+    <result column="pred_type" property="predType" jdbcType="INTEGER" />
+    <result column="pred_date" property="predDate" jdbcType="TIMESTAMP" />
+    <result column="pred_remark" property="predRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="BaseTollDis" type="com.sve.datacenter.model.District">
+		<id column="disid" property="disid" jdbcType="INTEGER" />
+		<result column="dname" property="dname" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="BaseAllMap" type="com.sve.toll.model.Predeposit" extends="BaseResultMap">
+	    <association property="owners" javaType="com.sve.datacenter.model.Owners">
+	    <id column="oid" property="oid" jdbcType="INTEGER" />
+		<result column="owername" property="owername" jdbcType="VARCHAR" />
+		<result column="ownerphone" property="ownerphone" jdbcType="VARCHAR" />
+		</association>
+		<association property="district" resultMap="BaseTollDis"></association>
+	</resultMap>
+	
+  <sql id="Base_Column_List" >
+    pred_id, pred_dis_id, pred_oid, pred_money, pred_type, pred_date, pred_remark
+  </sql>
+  <select id="selectAll" resultMap="BaseAllMap">
+     SELECT p.pred_oid,p.pred_id, p.pred_dis_id, SUM(p.pred_money) as pred_money, p.pred_type,
+      p.pred_date, p.pred_remark,d.disid,d.dname,o.oid,o.owername,o.ownerphone
+        FROM predeposit p INNER JOIN district d ON d.disid=p.pred_dis_id INNER JOIN 
+        owners o ON o.oid=p.pred_oid GROUP BY p.pred_oid order by p.pred_oid desc
+  </select>
+  <select id="selectDetails" resultMap="BaseAllMap">
+      select p.pred_id, p.pred_dis_id, p.pred_oid, p.pred_money, p.pred_type,
+      p.pred_date, p.pred_remark,d.disid,d.dname,o.oid,o.owername,o.ownerphone
+        FROM predeposit p INNER JOIN district d ON d.disid=p.pred_dis_id INNER JOIN 
+        owners o ON o.oid=p.pred_oid order by p.pred_oid desc
+  </select>
+  <select id="selectDetailOid" resultMap="BaseAllMap" parameterType="java.lang.Integer">
+       select p.pred_id, p.pred_dis_id, p.pred_oid, p.pred_money, p.pred_type,
+      p.pred_date, p.pred_remark,d.disid,d.dname,o.oid,o.owername,o.ownerphone
+        FROM predeposit p INNER JOIN district d ON d.disid=p.pred_dis_id INNER JOIN 
+        owners o ON o.oid=p.pred_oid where p.pred_oid=#{oid} order by p.pred_oid desc 
+  </select>
+  <select id="selectgtMoney" resultType="java.lang.Integer" >
+     SELECT SUM(p.pred_money) FROM predeposit p where p.pred_dis_id=#{0} and p.pred_oid=#{1} 
+        GROUP BY p.pred_oid order by p.pred_oid desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from predeposit
+    where pred_id = #{predId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from predeposit
+    where pred_id = #{predId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.toll.model.Predeposit" >
+    insert into predeposit    
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="predId != null" >                         
+        pred_id,
+      </if>
+      <if test="predDisId != null" >
+        pred_dis_id,
+      </if>
+      <if test="predOid != null" >
+        pred_oid,
+      </if>
+      <if test="predMoney != null" >
+        pred_money,
+      </if>
+      <if test="predType != null" >
+        pred_type,
+      </if>
+      <if test="predDate != null" >
+        pred_date,
+      </if>
+      <if test="predRemark != null" >
+        pred_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="predId != null" >
+        #{predId,jdbcType=INTEGER},
+      </if>
+      <if test="predDisId != null" >
+        #{predDisId,jdbcType=INTEGER},
+      </if>
+      <if test="predOid != null" >
+        #{predOid,jdbcType=INTEGER},
+      </if>
+      <if test="predMoney != null" >
+        #{predMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="predType != null" >
+        #{predType,jdbcType=INTEGER},
+      </if>
+      <if test="predDate != null" >
+        #{predDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="predRemark != null" >
+        #{predRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.toll.model.Predeposit" >
+    update predeposit
+    <set >
+      <if test="predDisId != null" >
+        pred_dis_id = #{predDisId,jdbcType=INTEGER},
+      </if>
+      <if test="predOid != null" >
+        pred_oid = #{predOid,jdbcType=INTEGER},
+      </if>
+      <if test="predMoney != null" >
+        pred_money = #{predMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="predType != null" >
+        pred_type = #{predType,jdbcType=INTEGER},
+      </if>
+      <if test="predDate != null" >
+        pred_date = #{predDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="predRemark != null" >
+        pred_remark = #{predRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pred_id = #{predId,jdbcType=INTEGER}
+  </update>
+</mapper>

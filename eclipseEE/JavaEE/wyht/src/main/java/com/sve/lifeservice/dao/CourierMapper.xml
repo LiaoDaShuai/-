@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.lifeservice.dao.CourierMapper" >
+  <resultMap id="BaseResultMap"  type="com.sve.lifeservice.model.Courier" >
+    <id column="cou_id" property="couId" jdbcType="INTEGER" />
+    <result column="cou_name" property="couName" jdbcType="VARCHAR" />
+    <result column="cou_phone" property="couPhone" jdbcType="VARCHAR" />
+    <result column="cou_expgs_id" property="couExpgsId" jdbcType="INTEGER" />
+    <result column="cou_balance" property="couBalance" jdbcType="DECIMAL" />
+    <result column="cou_costsmall" property="couCostsmall" jdbcType="DECIMAL" />
+    <result column="cou_costbig" property="couCostbig" jdbcType="DECIMAL" />
+    <result column="cou_remark" property="couRemark" jdbcType="VARCHAR" />
+    <association property="epcy" javaType="com.sve.lifeservice.model.ExpressCompany">
+    	<id column="expgs_id" property="expgsId" jdbcType="INTEGER" />
+	    <result column="expgs_name" property="expgsName" jdbcType="VARCHAR" />
+	    <result column="expgs_tjiaperson" property="expgsTjiaperson" jdbcType="VARCHAR" />
+	    <result column="expgs_tjiadate"  property="expgsTjiadate" jdbcType="TIMESTAMP" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cou_id, cou_name, cou_phone, cou_expgs_id, cou_balance, cou_costsmall, cou_costbig, 
+    cou_remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from courier
+    where cou_id = #{couId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from courier
+    where cou_id = #{couId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.lifeservice.model.Courier" >
+    insert into courier
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="couId != null" >
+        cou_id,
+      </if>
+      <if test="couName != null" >
+        cou_name,
+      </if>
+      <if test="couPhone != null" >
+        cou_phone,
+      </if>
+      <if test="couExpgsId != null" >
+        cou_expgs_id,
+      </if>
+      <if test="couBalance != null" >
+        cou_balance,
+      </if>
+      <if test="couCostsmall != null" >
+        cou_costsmall,
+      </if>
+      <if test="couCostbig != null" >
+        cou_costbig,
+      </if>
+      <if test="couRemark != null" >
+        cou_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="couId != null" >
+        #{couId,jdbcType=INTEGER},
+      </if>
+      <if test="couName != null" >
+        #{couName,jdbcType=VARCHAR},
+      </if>
+      <if test="couPhone != null" >
+        #{couPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="couExpgsId != null" >
+        #{couExpgsId,jdbcType=INTEGER},
+      </if>
+      <if test="couBalance != null" >
+        #{couBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="couCostsmall != null" >
+        #{couCostsmall,jdbcType=DECIMAL},
+      </if>
+      <if test="couCostbig != null" >
+        #{couCostbig,jdbcType=DECIMAL},
+      </if>
+      <if test="couRemark != null" >
+        #{couRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.lifeservice.model.Courier" >
+    update courier
+    <set >
+      <if test="couName != null" >
+        cou_name = #{couName,jdbcType=VARCHAR},
+      </if>
+      <if test="couPhone != null" >
+        cou_phone = #{couPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="couExpgsId != null" >
+        cou_expgs_id = #{couExpgsId,jdbcType=INTEGER},
+      </if>
+      <if test="couBalance != null" >
+        cou_balance = #{couBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="couCostsmall != null" >
+        cou_costsmall = #{couCostsmall,jdbcType=DECIMAL},
+      </if>
+      <if test="couCostbig != null" >
+        cou_costbig = #{couCostbig,jdbcType=DECIMAL},
+      </if>
+      <if test="couRemark != null" >
+        cou_remark = #{couRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cou_id = #{couId,jdbcType=INTEGER}
+  </update>
+  <!-- 查询全部 -->
+  <select id="selectA" resultMap="BaseResultMap">
+	select c.*,ec.* from courier c inner join expresscompany ec on c.cou_expgs_id=ec.expgs_id order by c.cou_id desc
+  </select>
+  <!-- 模糊查询全部 -->
+  <select id="selectAll" parameterType="com.sve.lifeservice.model.Courier" resultMap="BaseResultMap">
+	select c.*,ec.* from courier c inner join expresscompany ec on c.cou_expgs_id=ec.expgs_id
+	<if test="couExpgsId != null and couExpgsId != ''">
+	and c.cou_expgs_id=#{couExpgsId}
+	</if> 
+	<if test="keywords != null and keywords != ''">
+	and (c.cou_name like concat('%',#{keywords},'%') or 
+		c.cou_phone like concat('%',#{keywords},'%'))
+	</if>
+	order by c.cou_id desc  
+  </select>
+  <!-- 查询快递员名称是否已存在 -->
+  <select id="selectCourierName" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	select count(*) from courier where cou_name=#{couName}
+  </select>
+  <!-- 查询快递员手机号是否已存在 -->
+  <select id="selectCourierPhone" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	select count(*) from courier where cou_phone=#{couPhone}
+  </select>
+  <!-- 充值 -->
+  <update id="updateBalance" parameterType="com.sve.lifeservice.model.Courier">
+  	update courier set cou_balance=cou_balance+#{couBalance} where cou_id=#{couId}
+  </update>
+  <!-- 花费 -->
+  <update id="updateBalance2" parameterType="com.sve.lifeservice.model.Courier">
+  	update courier set cou_balance=cou_balance-#{couBalance} where cou_id=#{couId}
+  </update>
+</mapper>

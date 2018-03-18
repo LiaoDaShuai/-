@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.toll.dao.PriceprojectMapper">
+	<resultMap id="BaseResultMap" type="com.sve.toll.model.Priceproject">
+		<id column="priceid" property="priceid" jdbcType="INTEGER" />
+		<result column="pricename" property="pricename" jdbcType="VARCHAR" />
+		<result column="pricetype" property="pricetype" jdbcType="INTEGER" />
+		<result column="latetian" property="latetian" jdbcType="INTEGER" />
+		<result column="latefee" property="latefee" jdbcType="DECIMAL" />
+		<result column="noweek" property="noweek" jdbcType="INTEGER" />
+		<result column="sunhao" property="sunhao" jdbcType="INTEGER" />
+		<result column="funs" property="funs" jdbcType="INTEGER" />
+		<result column="funcount" property="funcount" jdbcType="DECIMAL" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="Price_ChargsMap" type="com.sve.toll.model.Priceproject"
+		extends="BaseResultMap">
+		<collection property="chargslist" ofType="com.sve.toll.model.Chargs">
+			<id column="chargid" property="chargid" jdbcType="INTEGER" />
+			<result column="priceid" property="priceid" jdbcType="INTEGER" />
+			<result column="chargname" property="chargname" jdbcType="VARCHAR" />
+			<result column="shouid" property="shouid" jdbcType="INTEGER" />
+			<result column="formulaid" property="formulaid" jdbcType="INTEGER" />
+			<result column="pricing" property="pricing" jdbcType="DECIMAL" />
+			<result column="priceunit" property="priceunit" jdbcType="VARCHAR" />
+			<result column="priceweek" property="priceweek" jdbcType="VARCHAR" />
+			<result column="remark" property="remark" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		priceid, pricename, pricetype, latetian, latefee, noweek, sunhao, funs,
+		funcount,
+		remark, status
+	</sql>
+	<select id="selectPriceZhouAll" resultMap="BaseResultMap">
+	    select <include refid="Base_Column_List"/> from priceproject where priceid=1
+	</select>
+	<select id="selectPriceAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from priceproject order by priceid desc
+	</select>
+	<select id="selectPriceGaoAll" parameterType="com.sve.toll.model.Priceproject"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from priceproject
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="pricetype!=null and pricetype!=''">
+				pricetype=#{pricetype}
+			</if>
+			<if test="pricename!=null and pricename!=''">
+				pricename LIKE CONCAT('%',CONCAT(#{pricename},'%'))
+			</if>
+		</trim>
+		order by priceid desc
+	</select>
+	<select id="selectPriceTypeAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from priceproject where pricetype=3
+	</select>
+	<select id="selectPrname" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select count(*) from priceproject where pricename=#{pricename}
+	</select>
+	<!-- 编辑时排除本身查询是否存在该收费名 -->
+	<select id="selectProname" parameterType="com.sve.toll.model.Priceproject" resultType="java.lang.Integer">
+		select count(*) from priceproject where pricename=#{pricename} and <![CDATA[priceid<>#{priceid}]]>
+	</select>
+	<select id="selectPrice_ChargAll" resultMap="Price_ChargsMap">
+		select * from priceproject p inner join chargs c on
+		p.priceid=c.priceid
+	</select>
+	<select id="selectPrice_ChargId" resultMap="Price_ChargsMap"
+		parameterType="java.lang.Integer">
+		select * from priceproject p inner join chargs c on p.priceid=c.priceid
+		where p.priceid=#{id}
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from priceproject
+		where priceid = #{priceid,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from priceproject
+		where priceid = #{priceid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.sve.toll.model.Priceproject">
+		insert into priceproject
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="priceid != null">
+				priceid,
+			</if>
+			<if test="pricename != null">
+				pricename,
+			</if>
+			<if test="pricetype != null">
+				pricetype,
+			</if>
+			<if test="latetian != null">
+				latetian,
+			</if>
+			<if test="latefee != null">
+				latefee,
+			</if>
+			<if test="noweek != null">
+				noweek,
+			</if>
+			<if test="sunhao != null">
+				sunhao,
+			</if>
+			<if test="funs != null">
+				funs,
+			</if>
+			<if test="funcount != null">
+				funcount,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="priceid != null">
+				#{priceid,jdbcType=INTEGER},
+			</if>
+			<if test="pricename != null">
+				#{pricename,jdbcType=VARCHAR},
+			</if>
+			<if test="pricetype != null">
+				#{pricetype,jdbcType=INTEGER},
+			</if>
+			<if test="latetian != null">
+				#{latetian,jdbcType=INTEGER},
+			</if>
+			<if test="latefee != null">
+				#{latefee,jdbcType=DECIMAL},
+			</if>
+			<if test="noweek != null">
+				#{noweek,jdbcType=INTEGER},
+			</if>
+			<if test="sunhao != null">
+				#{sunhao,jdbcType=INTEGER},
+			</if>
+			<if test="funs != null">
+				#{funs,jdbcType=INTEGER},
+			</if>
+			<if test="funcount != null">
+				#{funcount,jdbcType=DECIMAL},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.sve.toll.model.Priceproject">
+		update priceproject
+		<set>
+			<if test="pricename != null">
+				pricename = #{pricename,jdbcType=VARCHAR},
+			</if>
+			<if test="pricetype != null">
+				pricetype = #{pricetype,jdbcType=INTEGER},
+			</if>
+			<if test="latetian != null">
+				latetian = #{latetian,jdbcType=INTEGER},
+			</if>
+			<if test="latefee != null">
+				latefee = #{latefee,jdbcType=DECIMAL},
+			</if>
+			<if test="noweek != null">
+				noweek = #{noweek,jdbcType=INTEGER},
+			</if>
+			<if test="sunhao != null">
+				sunhao = #{sunhao,jdbcType=INTEGER},
+			</if>
+			<if test="funs != null">
+				funs = #{funs,jdbcType=INTEGER},
+			</if>
+			<if test="funcount != null">
+				funcount = #{funcount,jdbcType=DECIMAL},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+		</set>
+		where priceid = #{priceid,jdbcType=INTEGER}
+	</update>
+</mapper>

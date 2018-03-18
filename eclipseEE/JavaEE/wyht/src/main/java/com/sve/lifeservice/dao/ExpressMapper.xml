@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.lifeservice.dao.ExpressMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.lifeservice.model.Express" >
+    <id column="exp_id" property="expId" jdbcType="INTEGER" />
+    <result column="exp_address" property="expAddress" jdbcType="VARCHAR" />
+    <result column="exp_disid" property="expDisid" jdbcType="INTEGER" />
+    <result column="exp_servicephone" property="expServicephone" jdbcType="VARCHAR" />
+    <result column="exp_isvalis" property="expIsvalis" jdbcType="INTEGER" />
+    <result column="exp_sdate" property="expSdate" jdbcType="TIME" />
+    <result column="exp_edate" property="expEdate" jdbcType="TIME" />
+    <result column="exp_issms" property="expIssms" jdbcType="INTEGER" />
+    <result column="exp_isweixin" property="expIsweixin" jdbcType="INTEGER" />
+    <association property="dis" column="exp_disid" select="com.sve.datacenter.dao.HouseLouMapper.getDis">
+		<id column="disid" property="disid" jdbcType="INTEGER"/>
+		<result column="dname" property="dname" jdbcType="VARCHAR"/>
+	</association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    exp_id, exp_address, exp_disid, exp_servicephone, exp_isvalis, exp_sdate, exp_edate, 
+    exp_issms, exp_isweixin
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from express
+    where exp_id = #{expId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from express 
+    where exp_id=#{expId}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.lifeservice.model.Express" >
+    insert into express
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="expId != null" >
+        exp_id,
+      </if>
+      <if test="expAddress != null" >
+        exp_address,
+      </if>
+      <if test="expDisid != null" >
+        exp_disid,
+      </if>
+      <if test="expServicephone != null" >
+        exp_servicephone,
+      </if>
+      <if test="expIsvalis != null" >
+        exp_isvalis,
+      </if>
+      <if test="expSdate != null" >
+        exp_sdate,
+      </if>
+      <if test="expEdate != null" >
+        exp_edate,
+      </if>
+      <if test="expIssms != null" >
+        exp_issms,
+      </if>
+      <if test="expIsweixin != null" >
+        exp_isweixin,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="expId != null" >
+        #{expId,jdbcType=INTEGER},
+      </if>
+      <if test="expAddress != null" >
+        #{expAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="expDisid != null" >
+        #{expDisid,jdbcType=INTEGER},
+      </if>
+      <if test="expServicephone != null" >
+        #{expServicephone,jdbcType=VARCHAR},
+      </if>
+      <if test="expIsvalis != null" >
+        #{expIsvalis,jdbcType=INTEGER},
+      </if>
+      <if test="expSdate != null" >
+        #{expSdate,jdbcType=TIME},
+      </if>
+      <if test="expEdate != null" >
+        #{expEdate,jdbcType=TIME},
+      </if>
+      <if test="expIssms != null" >
+        #{expIssms,jdbcType=INTEGER},
+      </if>
+      <if test="expIsweixin != null" >
+        #{expIsweixin,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.lifeservice.model.Express" >
+    update express
+    <set >
+      <if test="expAddress != null" >
+        exp_address = #{expAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="expDisid != null" >
+        exp_disid = #{expDisid,jdbcType=INTEGER},
+      </if>
+      <if test="expServicephone != null" >
+        exp_servicephone = #{expServicephone,jdbcType=VARCHAR},
+      </if>
+      <if test="expIsvalis != null" >
+        exp_isvalis = #{expIsvalis,jdbcType=INTEGER},
+      </if>
+      <if test="expSdate != null" >
+        exp_sdate = #{expSdate,jdbcType=TIME},
+      </if>
+      <if test="expEdate != null" >
+        exp_edate = #{expEdate,jdbcType=TIME},
+      </if>
+      <if test="expIssms != null" >
+        exp_issms = #{expIssms,jdbcType=INTEGER},
+      </if>
+      <if test="expIsweixin != null" >
+        exp_isweixin = #{expIsweixin,jdbcType=INTEGER},
+      </if>
+    </set>
+    where exp_id = #{expId,jdbcType=INTEGER}
+  </update>
+  <!-- 查询全部 -->
+  <select id="selectA" resultMap="BaseResultMap">
+	select * from express order by exp_id desc
+  </select>
+  <!-- 模糊查询全部 -->
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.sve.lifeservice.model.Express">
+	select * from express
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="expDisid != null and expDisid!=''">
+		and exp_disid=#{expDisid}
+		</if>
+		<if test="keywords != null and keywords != ''">
+		and (exp_address like concat('%',#{keywords},'%') or
+			exp_servicephone like concat('%',#{keywords},'%'))
+		</if>
+	</trim>
+	order by exp_id desc  
+  </select>
+  <!-- 查询取件点地址是否已存在 -->
+  <select id="selectExpAddress" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	select count(*) from express where exp_address=#{expAddress}
+  </select>
+  <!-- 查询服务电话是否存在 -->
+  <select id="selectExpServicePhone" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	select count(*) from express where exp_servicephone=#{expServicePhone}
+  </select>
+</mapper>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.datacenter.dao.UnitMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.datacenter.model.Unit" >
+    <id column="unitid" property="unitid" jdbcType="INTEGER" />
+    <result column="unitname" property="unitname" jdbcType="VARCHAR" />
+    <result column="floorcount" property="floorcount" jdbcType="INTEGER" />
+    <result column="disid" property="disid" jdbcType="INTEGER" />
+    <result column="hlid" property="hlid" jdbcType="INTEGER" />
+    <association property="dis" column="disid" select="com.sve.datacenter.dao.HouseLouMapper.getDis">
+		<id column="disid" property="disid" jdbcType="INTEGER"/>
+		<result column="dname" property="dname" jdbcType="VARCHAR"/>
+		<result column="prov" property="prov" jdbcType="VARCHAR"/>
+		<result column="city" property="city" jdbcType="VARCHAR"/>
+		<result column="dist" property="dist" jdbcType="VARCHAR"/>
+		<result column="address" property="address" jdbcType="VARCHAR"/>
+		<result column="customerp" property="customerp" jdbcType="VARCHAR"/>
+		<result column="fperson" property="fperson" jdbcType="VARCHAR"/>
+		<result column="fphone" property="fphone" jdbcType="VARCHAR"/>
+		<result column="logo" property="logo" jdbcType="VARCHAR"/>
+		<result column="description" property="description" jdbcType="VARCHAR"/>
+		<result column="zarea" property="zarea" jdbcType="DECIMAL"/>
+		<result column="jarea" property="jarea" jdbcType="DECIMAL"/>
+		<result column="garea" property="garea" jdbcType="DECIMAL"/>
+		<result column="larea" property="larea" jdbcType="DECIMAL"/>
+		<result column="carea" property="carea" jdbcType="DECIMAL"/>
+		<result column="housecount" property="housecount" jdbcType="INTEGER"/>
+		<result column="carcount" property="carcount" jdbcType="INTEGER"/>
+		<result column="status" property="status" jdbcType="INTEGER"/>
+		<result column="remark" property="remark" jdbcType="VARCHAR"/>
+	</association>
+    <association property="hl" column="hlid" select="getHl">
+    	<id column="hlid" property="hlid" jdbcType="INTEGER"/>
+		<result column="disid" property="disid" jdbcType="INTEGER"/>
+		<result column="floorname" property="floorname" jdbcType="VARCHAR"/>
+		<result column="units" property="units" jdbcType="INTEGER"/>
+		<result column="cengcount" property="cengcount" jdbcType="INTEGER"/>
+		<result column="floortype" property="floortype" jdbcType="VARCHAR"/>
+		<result column="structure" property="structure" jdbcType="VARCHAR"/>
+		<result column="orientation" property="orientation" jdbcType="VARCHAR"/>
+		<result column="remark" property="remark" jdbcType="VARCHAR"/>
+		<result column="status" property="status" jdbcType="INTEGER"/>
+    </association>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    unitid, unitname, floorcount, disid, hlid
+  </sql>
+  <select id="selecthlid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+      select <include refid="Base_Column_List" /> from unit where hlid=#{hlid}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from unit
+    where unitid = #{unitid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from unit
+    where unitid = #{unitid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.datacenter.model.Unit" >
+    insert into unit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="unitid != null" >
+        unitid,
+      </if>
+      <if test="unitname != null" >
+        unitname,
+      </if>
+      <if test="floorcount != null" >
+        floorcount,
+      </if>
+      <if test="disid != null" >
+        disid,
+      </if>
+      <if test="hlid != null" >
+        hlid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="unitid != null" >
+        #{unitid,jdbcType=INTEGER},
+      </if>
+      <if test="unitname != null" >
+        #{unitname,jdbcType=VARCHAR},
+      </if>
+      <if test="floorcount != null" >
+        #{floorcount,jdbcType=INTEGER},
+      </if>
+      <if test="disid != null" >
+        #{disid,jdbcType=INTEGER},
+      </if>
+      <if test="hlid != null" >
+        #{hlid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.datacenter.model.Unit" >
+    update unit
+    <set >
+      <if test="unitname != null" >
+        unitname = #{unitname,jdbcType=VARCHAR},
+      </if>
+      <if test="floorcount != null" >
+        floorcount = #{floorcount,jdbcType=INTEGER},
+      </if>
+      <if test="disid != null" >
+        disid = #{disid,jdbcType=INTEGER},
+      </if>
+      <if test="hlid != null" >
+        hlid = #{hlid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where unitid = #{unitid,jdbcType=INTEGER}
+  </update>
+
+  <!-- 根据楼宇id查询楼宇表 -->
+  <select id="getHl" parameterType="com.sve.datacenter.model.HouseLou" resultType="com.sve.datacenter.model.HouseLou">
+  	select * from houselou where hlid=#{hlid}
+  </select>
+  <!-- 根据小区id和楼宇id和单元名称查询单元表 (模糊查询)-->
+  <select id="selectUnit" parameterType="com.sve.datacenter.model.Unit" resultMap="BaseResultMap">
+  	select * from unit where hlid=#{hlid} and disid=#{disid}
+  	<if test="unitname != null">
+  		and unitname like '%${unitname}%'
+  	</if>
+  	order by unitid desc
+  </select>
+  <update id="addfcount" parameterType="com.sve.datacenter.model.Unit">
+      update unit set floorcount=floorcount+1 where unitid=#{unitid} 
+  </update>
+  <!-- 若添加单元成功,则楼宇表单元数量增1 -->
+  <update id="addunits" parameterType="com.sve.datacenter.model.Unit">
+  	update houselou set units=units+1 where hlid=#{hlid} and disid=#{disid}
+  </update>
+  <!-- 若删除单元成功,则楼宇表单元数量减1 -->
+  <update id="subunits" parameterType="com.sve.datacenter.model.Unit">
+  	update houselou set units=units-1 where hlid=#{hlid} and disid=#{disid}
+  </update>  
+</mapper>

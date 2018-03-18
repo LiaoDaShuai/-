@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.staff.dao.WartypeMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.staff.model.Wartype" >
+    <id column="wartype_id" property="wartypeId" jdbcType="INTEGER" />
+    <result column="wartype_name" property="wartypeName" jdbcType="VARCHAR" />
+    <result column="wartype_remark" property="wartypeRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    wartype_id, wartype_name, wartype_remark
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from wartype
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from wartype
+    where wartype_id = #{wartypeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from wartype
+    where wartype_id = #{wartypeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sve.staff.model.Wartype" >
+    insert into wartype (wartype_id, wartype_name, wartype_remark
+      )
+    values (#{wartypeId,jdbcType=INTEGER}, #{wartypeName,jdbcType=VARCHAR}, #{wartypeRemark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sve.staff.model.Wartype" >
+    insert into wartype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="wartypeId != null" >
+        wartype_id,
+      </if>
+      <if test="wartypeName != null" >
+        wartype_name,
+      </if>
+      <if test="wartypeRemark != null" >
+        wartype_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="wartypeId != null" >
+        #{wartypeId,jdbcType=INTEGER},
+      </if>
+      <if test="wartypeName != null" >
+        #{wartypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="wartypeRemark != null" >
+        #{wartypeRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.staff.model.Wartype" >
+    update wartype
+    <set >
+      <if test="wartypeName != null" >
+        wartype_name = #{wartypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="wartypeRemark != null" >
+        wartype_remark = #{wartypeRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where wartype_id = #{wartypeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sve.staff.model.Wartype" >
+    update wartype
+    set wartype_name = #{wartypeName,jdbcType=VARCHAR},
+      wartype_remark = #{wartypeRemark,jdbcType=VARCHAR}
+    where wartype_id = #{wartypeId,jdbcType=INTEGER}
+  </update>
+</mapper>

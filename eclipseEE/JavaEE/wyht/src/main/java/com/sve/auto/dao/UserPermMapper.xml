@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.auto.dao.UserPermMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.auto.model.UserPerm" >
+    <id column="up_id" property="upId" jdbcType="INTEGER" />
+    <result column="up_user_id" property="upUserId" jdbcType="INTEGER" />
+    <result column="up_perm_id" property="upPermId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    up_id, up_user_id, up_perm_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_perm
+    where up_id = #{upId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteUserId" parameterType="java.lang.Integer">
+      delete from user_perm where up_user_id=#{userId}
+  </delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_perm
+    where up_id = #{upId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteUserPerm" parameterType="com.sve.auto.model.UserPerm" >
+       delete from user_perm
+    where up_user_id = #{upUserId,jdbcType=INTEGER} and up_perm_id=#{upPermId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.auto.model.UserPerm" >
+    insert into user_perm
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="upId != null" >
+        up_id,
+      </if>
+      <if test="upUserId != null" >
+        up_user_id,
+      </if>
+      <if test="upPermId != null" >
+        up_perm_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="upId != null" >
+        #{upId,jdbcType=INTEGER},
+      </if>
+      <if test="upUserId != null" >
+        #{upUserId,jdbcType=INTEGER},
+      </if>
+      <if test="upPermId != null" >
+        #{upPermId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.auto.model.UserPerm" >
+    update user_perm
+    <set >
+      <if test="upUserId != null" >
+        up_user_id = #{upUserId,jdbcType=INTEGER},
+      </if>
+      <if test="upPermId != null" >
+        up_perm_id = #{upPermId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where up_id = #{upId,jdbcType=INTEGER}
+  </update>
+</mapper>

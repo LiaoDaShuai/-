@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.staff.dao.NewsMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.staff.model.News" >
+    <id column="news_id" property="newsId" jdbcType="INTEGER" />
+    <result column="news_img" property="newsImg" jdbcType="VARCHAR" />
+    <result column="news_title" property="newsTitle" jdbcType="VARCHAR" />
+    <result column="news_content" property="newsContent" jdbcType="LONGVARCHAR" />
+    <result column="news_type_id" property="newsTypeId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="news_liulan" property="newsLiulan" jdbcType="INTEGER" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    news_id, news_img, news_title,news_content, news_type_id, user_id, news_liulan, created_at, updated_at
+  </sql>
+  <select id="selectNewAll" resultMap="BaseResultMap">
+      select <include refid="Base_Column_List"/> from news
+  </select>
+  <select id="selectNewMohu" resultMap="BaseResultMap" parameterType="java.lang.String">
+      select <include refid="Base_Column_List"/> from news where 
+      news_title like CONCAT(CONCAT('%',#{keyword}),'%')
+  </select>
+  <select id="selectNewTypeId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+      select <include refid="Base_Column_List" /> from news where news_type_id=#{newsTypeId}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select <include refid="Base_Column_List" /> from news
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from news
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.staff.model.News" >
+    insert into news
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="newsId != null" >
+        news_id,
+      </if>
+      <if test="newsImg != null" >
+        news_img,
+      </if>
+      <if test="newsTitle != null" >
+        news_title,
+      </if>
+      <if test="newsTypeId != null" >
+        news_type_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="newsLiulan != null" >
+        news_liulan,
+      </if>
+      <if test="createdAt != null" >
+        created_at,
+      </if>
+      <if test="updatedAt != null" >
+        updated_at,
+      </if>
+      <if test="newsContent != null" >
+        news_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="newsId != null" >
+        #{newsId,jdbcType=INTEGER},
+      </if>
+      <if test="newsImg != null" >
+        #{newsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="newsTitle != null" >
+        #{newsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="newsTypeId != null" >
+        #{newsTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="newsLiulan != null" >
+        #{newsLiulan,jdbcType=INTEGER},
+      </if>
+      <if test="createdAt != null" >
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="newsContent != null" >
+        #{newsContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.staff.model.News" >
+    update news
+    <set >
+      <if test="newsImg != null" >
+        news_img = #{newsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="newsTitle != null" >
+        news_title = #{newsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="newsTypeId != null" >
+        news_type_id = #{newsTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="newsLiulan != null" >
+        news_liulan = #{newsLiulan,jdbcType=INTEGER},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="newsContent != null" >
+        news_content = #{newsContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.auto.dao.PermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.auto.model.Permission" >
+    <id column="perm_id" property="permId" jdbcType="INTEGER" />
+    <result column="perm_name" property="permName" jdbcType="VARCHAR" />
+    <result column="perm_description" property="permDescription" jdbcType="VARCHAR" />
+    <result column="perm_url" property="permUrl" jdbcType="VARCHAR" />
+    <result column="perm_order" property="permOrder" jdbcType="VARCHAR"/>
+    <result column="perm_isshow" property="permIsshow" jdbcType="INTEGER" />
+    <result column="perm_code" property="permCode" jdbcType="VARCHAR" />
+    <result column="perm_menu_id" property="permMenuId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    perm_id, perm_name, perm_description, perm_url,perm_order,perm_isshow,perm_code,perm_menu_id
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap">
+      select <include refid="Base_Column_List"/> from permission
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from permission
+    where perm_id = #{permId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from permission
+    where perm_id = #{permId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.auto.model.Permission" >
+    insert into permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="permId != null" >
+        perm_id,
+      </if>
+      <if test="permName != null" >
+        perm_name,
+      </if>
+      <if test="permDescription != null" >
+        perm_description,
+      </if>
+      <if test="permUrl != null" >
+        perm_url,
+      </if>
+       <if test="permOrder != null" >
+        perm_order,
+      </if>
+      <if test="permIsshow != null" >
+        perm_isshow,
+      </if>
+      <if test="permCode != null" >
+        perm_code,
+      </if>
+      <if test="permMenuId != null" >
+        perm_menu_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="permId != null" >
+        #{permId,jdbcType=INTEGER},
+      </if>
+      <if test="permName != null" >
+        #{permName,jdbcType=VARCHAR},
+      </if>
+      <if test="permDescription != null" >
+        #{permDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="permUrl != null" >
+        #{permUrl,jdbcType=VARCHAR},
+      </if>
+       <if test="permOrder != null" >
+        #{permOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="permIsshow != null" >
+        #{permIsshow,jdbcType=INTEGER},
+      </if>
+      <if test="permCode != null" >
+        #{permCode,jdbcType=VARCHAR},
+      </if>
+      <if test="permMenuId != null" >
+        #{permMenuId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.auto.model.Permission" >
+    update permission
+    <set >
+      <if test="permName != null" >
+        perm_name = #{permName,jdbcType=VARCHAR},
+      </if>
+      <if test="permDescription != null" >
+        perm_description = #{permDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="permUrl != null" >
+        perm_url = #{permUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="permOrder != null" >
+        perm_order = #{permOrder,jdbcType=VARCHAR},
+      </if>
+       <if test="permIsshow != null" >
+        perm_menu_id = #{permIsshow,jdbcType=INTEGER},
+      </if>
+      <if test="permCode != null" >
+        perm_icon = #{permCode,jdbcType=VARCHAR},
+      </if>
+      <if test="permMenuId != null" >
+        perm_menu_id = #{permMenuId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where perm_id = #{permId,jdbcType=INTEGER}
+  </update>
+</mapper>

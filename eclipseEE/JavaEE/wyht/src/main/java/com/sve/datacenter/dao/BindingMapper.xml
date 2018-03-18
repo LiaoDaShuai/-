@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.datacenter.dao.BindingMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.datacenter.model.Binding" >
+    <result column="owner_id" property="ownerId" jdbcType="INTEGER" />
+    <result column="ownercard" property="ownercard" jdbcType="INTEGER" />
+    <result column="house_id" property="houseId" jdbcType="INTEGER" />
+    <result column="park_id" property="parkId" jdbcType="INTEGER" />
+    <result column="vehicle_id" property="vehicleId" jdbcType="INTEGER" />
+    <result column="internal_id" property="internalId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap type="com.sve.datacenter.model.HouseFan" id="BaseHousefan">
+		<id column="fanid" property="fanid" jdbcType="INTEGER" />
+		<result column="disid" property="disid" jdbcType="INTEGER" />
+		<result column="hlid" property="hlid" jdbcType="INTEGER" />
+		<result column="unitid" property="unitid" jdbcType="INTEGER" />
+		<result column="louceng" property="louceng" jdbcType="INTEGER" />
+		<result column="hnum" property="hnum" jdbcType="VARCHAR" />
+		<result column="zarea" property="zarea" jdbcType="DECIMAL" />
+		<result column="tarea" property="tarea" jdbcType="DECIMAL" />
+		<result column="garea" property="garea" jdbcType="DECIMAL" />
+		<result column="utype" property="utype" jdbcType="INTEGER" />
+		<result column="hchaoxiang" property="hchaoxiang" jdbcType="VARCHAR" />
+		<result column="startdate" property="startdate" jdbcType="TIMESTAMP" />
+		<result column="cyear" property="cyear" jdbcType="INTEGER" />
+		<result column="fujian" property="fujian" jdbcType="VARCHAR" />
+		<result column="isRuzhu" property="isruzhu" jdbcType="INTEGER" />
+		<result column="tollcount" property="tollcount" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="BaseOwner" type="com.sve.datacenter.model.Owners">
+	    <id column="oid" property="oid" jdbcType="INTEGER" />
+		<result column="disid" property="disid" jdbcType="INTEGER" />
+		<result column="hlid" property="hlid" jdbcType="INTEGER" />
+		<result column="unitid" property="unitid" jdbcType="INTEGER" />
+		<result column="cardid" property="cardid" jdbcType="INTEGER" />
+		<result column="ownerphone" property="ownerphone" jdbcType="VARCHAR" />
+		<result column="owername" property="owername" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="INTEGER" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="homephone" property="homephone" jdbcType="VARCHAR" />
+		<result column="onum" property="onum" jdbcType="VARCHAR" />
+		<result column="mdate" property="mdate" jdbcType="DATE" />
+		<result column="ophoto" property="ophoto" jdbcType="VARCHAR" />
+		<result column="qqnum" property="qqnum" jdbcType="VARCHAR" />
+		<result column="weixin" property="weixin" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="emergency" property="emergency" jdbcType="VARCHAR" />
+		<result column="emergphone" property="emergphone" jdbcType="VARCHAR" />
+		<result column="nation" property="nation" jdbcType="VARCHAR" />
+		<result column="political" property="political" jdbcType="VARCHAR" />
+		<result column="ishunyin" property="ishunyin" jdbcType="VARCHAR" />
+		<result column="idcard" property="idcard" jdbcType="VARCHAR" />
+		<result column="cardphoto" property="cardphoto" jdbcType="VARCHAR" />
+		<result column="hujiaddress" property="hujiaddress" jdbcType="VARCHAR" />
+		<result column="temporarynum" property="temporarynum" jdbcType="VARCHAR" />
+		<result column="livetype" property="livetype" jdbcType="VARCHAR" />
+		<result column="petxinxi" property="petxinxi" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="logincount" property="logincount" jdbcType="INTEGER" />
+		<result column="opass" property="opass" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap type="com.sve.datacenter.model.ParkingSpace" id="BasePark">
+		<id column="parkid" jdbcType="INTEGER" property="parkid" />
+		<result column="pnum" jdbcType="VARCHAR" property="pnum" />
+		<result column="disid" jdbcType="INTEGER" property="disid" />
+		<result column="carea" jdbcType="DECIMAL" property="carea" />
+		<result column="STATUS" jdbcType="INTEGER" property="status" />
+		<result column="tollcount" jdbcType="INTEGER" property="tollcount" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+	<resultMap id="BaseVehicle" type="com.sve.datacenter.model.Vehicle">
+		<id column="vehicid" property="vehicid" jdbcType="INTEGER" />
+		<result column="disid" property="disid" jdbcType="INTEGER" />
+		<result column="pnum" property="pnum" jdbcType="VARCHAR" />
+		<result column="kanum" property="kanum" jdbcType="VARCHAR" />
+		<result column="cname" property="cname" jdbcType="VARCHAR" />
+		<result column="cphone" property="cphone" jdbcType="VARCHAR" />
+		<result column="carnum" property="carnum" jdbcType="VARCHAR" />
+		<result column="carpai" property="carpai" jdbcType="DECIMAL" />
+		<result column="tollcount" property="tollcount" jdbcType="INTEGER" />
+		<result column="carxing" property="carxing" jdbcType="VARCHAR" />
+		<result column="carcolor" property="carcolor" jdbcType="VARCHAR" />
+		<result column="carqq" property="carqq" jdbcType="VARCHAR" />
+		<result column="carweixin" property="carweixin" jdbcType="VARCHAR" />
+		<result column="caremail" property="caremail" jdbcType="VARCHAR" />
+		<result column="homephone" property="homephone" jdbcType="VARCHAR" />
+		<result column="carphoto" property="carphoto" jdbcType="VARCHAR" />
+		<result column="jiazhao" property="jiazhao" jdbcType="VARCHAR" />
+		<result column="drivingphoto" property="drivingphoto" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+  	<resultMap id="BaseOwerFanid" type="com.sve.datacenter.model.Binding" extends="BaseResultMap">
+      	<association property="owner" resultMap="BaseOwner"/>
+      	<association property="dis" javaType="com.sve.datacenter.model.District"> 
+				<id column="disid" property="disid" jdbcType="INTEGER"/>
+				<result column="dname" property="dname" jdbcType="VARCHAR"/>
+		</association>   
+      	<association property="house" resultMap="BaseHousefan"/>
+	</resultMap>
+	<resultMap id="BaseOwerParkid" type="com.sve.datacenter.model.Binding" extends="BaseResultMap">
+      	<association property="owner" resultMap="BaseOwner"/>
+      	<association property="dis" javaType="com.sve.datacenter.model.District"> 
+				<id column="disid" property="disid" jdbcType="INTEGER"/>
+				<result column="dname" property="dname" jdbcType="VARCHAR"/>
+		</association>   
+      	<association property="park" resultMap="BasePark"/>
+	</resultMap>
+	<resultMap id="BaseOwerVehicid" type="com.sve.datacenter.model.Binding" extends="BaseResultMap">
+      	<association property="owner" resultMap="BaseOwner"/>
+      	<association property="dis" javaType="com.sve.datacenter.model.District"> 
+				<id column="disid" property="disid" jdbcType="INTEGER"/>
+				<result column="dname" property="dname" jdbcType="VARCHAR"/>
+		</association>   
+      	<association property="vehic" resultMap="BaseVehicle"/>
+	</resultMap>
+	<select id="selectDisid" parameterType="java.lang.Integer" resultType="com.sve.datacenter.model.District">
+	    select disid,dname from district where disid=#{disid}
+	</select>
+	<select id="selecfanownid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	    select * from ban_owner where owner_id=#{oid} and house_id!=''
+	</select>
+  <select id="selectOwnerid" parameterType="com.sve.datacenter.model.Binding" resultMap="BaseResultMap">
+		SELECT * FROM ban_owner WHERE 
+		<if test="houseId!=null and houseId!=''">
+			house_id=#{houseId}
+		</if><if test="parkId!=null and parkId!=''">
+			park_id=#{parkId}
+		</if><if test="vehicleId!=null and vehicleId!=''">
+			vehicle_id=#{vehicleId}
+		</if>
+  </select>
+  <select id="selectOwnerFanAllid" parameterType="java.lang.Integer" resultMap="BaseOwerFanid">
+		SELECT bo.*,o.*,f.*,d.disid,d.dname FROM ban_owner bo LEFT JOIN owners o ON 
+		bo.owner_id=o.oid LEFT JOIN housefan f ON f.fanid=bo.house_id
+		 LEFT JOIN district d on d.disid=o.disid WHERE bo.owner_id=#{id} and bo.house_id!=''
+  </select>
+   <select id="selectOwnerParkAllid" parameterType="java.lang.Integer" resultMap="BaseOwerParkid">
+		SELECT bo.*,o.*,p.*,d.disid,d.dname FROM ban_owner bo LEFT JOIN owners o ON 
+		bo.owner_id=o.oid LEFT JOIN parkingspace p ON bo.park_id=p.parkid 
+		LEFT JOIN district d on d.disid=o.disid
+		WHERE bo.owner_id=#{id} and bo.park_id!=''
+  </select>
+   <select id="selectOwnerVehicAllid" parameterType="java.lang.Integer" resultMap="BaseOwerVehicid">
+		SELECT bo.*,o.*,v.*,d.disid,d.dname FROM ban_owner bo LEFT JOIN owners o ON 
+		bo.owner_id=o.oid LEFT JOIN vehicle v ON bo.vehicle_id=v.vehicid 
+		LEFT JOIN district d on d.disid=o.disid
+		WHERE bo.owner_id=#{id} and bo.vehicle_id!=''
+  </select>
+  <select id="selectOwerFPV" parameterType="com.sve.datacenter.model.Binding" resultType="java.lang.Integer">
+      select count(*) from ban_owner where owner_id=#{ownerId} and ownercard=#{ownercard} and
+      <if test="houseId!=null and houseId!=''">
+			house_id=#{houseId}
+		</if><if test="parkId!=null and parkId!=''">
+			park_id=#{parkId}
+		</if><if test="vehicleId!=null and vehicleId!=''">
+			vehicle_id=#{vehicleId}
+		</if> 
+  </select>
+  <insert id="insertSelective" parameterType="com.sve.datacenter.model.Binding" >
+    insert into ban_owner
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ownerId != null" >
+        owner_id,
+      </if>
+      <if test="ownercard != null" >
+        ownercard,
+      </if>
+      <if test="houseId != null" >
+        house_id,
+      </if>
+      <if test="parkId != null" >
+        park_id,
+      </if>
+      <if test="vehicleId != null" >
+        vehicle_id,
+      </if>
+      <if test="internalId != null" >
+        internal_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ownerId != null" >
+        #{ownerId,jdbcType=INTEGER},
+      </if>
+      <if test="ownercard != null" >
+        #{ownercard,jdbcType=INTEGER},
+      </if>
+      <if test="houseId != null" >
+        #{houseId,jdbcType=INTEGER},
+      </if>
+      <if test="parkId != null" >
+        #{parkId,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleId != null" >
+        #{vehicleId,jdbcType=INTEGER},
+      </if>
+      <if test="internalId != null" >
+        #{internalId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

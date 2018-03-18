@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.toll.dao.ChargsMapper">
+	<resultMap id="BaseResultMap" type="com.sve.toll.model.Chargs">
+		<id column="chargid" property="chargid" jdbcType="INTEGER" />
+		<result column="price_id" property="price_id" jdbcType="INTEGER" />
+		<result column="chargname" property="chargname" jdbcType="VARCHAR" />
+		<result column="shouid" property="shouid" jdbcType="INTEGER" />
+		<result column="formula_id" property="formula_id" jdbcType="INTEGER" />
+		<result column="pricing" property="pricing" jdbcType="DECIMAL" />
+		<result column="fixedprice" property="fixedprice" jdbcType="DECIMAL" />
+		<result column="priceunit" property="priceunit" jdbcType="INTEGER" />
+		<result column="priceweek" property="priceweek" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="DuoduiyiChargPrice" type="com.sve.toll.model.Chargs" extends="BaseResultMap">
+		<association property="priceproject" select="selectPidduiCharg" column="price_id"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		chargid, price_id, chargname, shouid, formula_id,
+		pricing,fixedprice, priceunit,
+		priceweek, remark
+	</sql>
+	<select id="selectPidduiCharg" parameterType="int" resultMap="BaseResultMap">
+	    select <include refid="Base_Column_List"/> from chargs where price_id=#{price_id}
+	</select>
+	<sql id="Base_Column_Shui">
+	    chargid, price_id, chargname, shouid, formula_id,
+		pricing,fixedprice, priceunit,priceweek
+	</sql>
+		<select id="selectchargprice" resultMap="DuoduiyiChargPrice" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List"/> from chargs where chargid=#{chargid}
+	</select>
+	<select id="selectProjectid" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from chargs where price_id=#{id}
+	</select>
+	<!-- 针对定时房屋收费的 -->
+	<select id="selectTaskfanid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	 	SELECT c.* FROM chargs c LEFT JOIN formula f ON 
+	    c.formula_id=f.formulaid WHERE c.price_id=#{priceid} and
+	     (c.priceunit!=4 OR c.priceunit IS NULL)
+	     AND (f.formulanum!=1 AND f.formulanum!=2 AND f.formulanum!=3 AND f.formulanum!=7 OR f.formulanum IS NULL)
+	</select>
+	<!-- 针对车位 -->
+	<select id="selectTaskparkid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	 	SELECT c.* FROM chargs c WHERE c.price_id=#{priceid} and c.formula_id IS NULL AND
+	      c.shouid!=0 
+	</select>
+	<!-- 针对车辆 -->
+	<select id="selectTaskvehicid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	 	 SELECT c.* FROM chargs c LEFT JOIN formula f ON 
+	    c.formula_id=f.formulaid WHERE c.price_id=#{priceid} and
+	      c.shouid!=0 AND (f.formulanum=4 or f.formulanum IS NULL)
+	</select>
+	<!-- 针对抄表录入 -->
+	<select id="selectProForid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	    SELECT c.* FROM chargs c LEFT JOIN formula f ON 
+	     c.formula_id=f.formulaid WHERE c.price_id=#{priceid} AND
+	     (c.priceunit=4 OR (c.shouid=3 AND (f.formulanum=1 OR f.formulanum=2 OR f.formulanum=7)))
+	</select>
+	<select id="selectFormulaid" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		select count(*) from chargs where formula_id=#{formula_id}
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from chargs
+		where chargid = #{chargid,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from chargs
+		where chargid = #{chargid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.sve.toll.model.Chargs">
+		insert into chargs
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="price_id != null">
+				price_id,
+			</if>
+			<if test="chargname != null">
+				chargname,
+			</if>
+			<if test="shouid != null">
+				shouid,
+			</if>
+			<if test="formula_id !=0">
+				formula_id,
+			</if>
+			<if test="pricing != null">
+				pricing,
+			</if>
+			<if test="fixedprice != null">
+				fixedprice,
+			</if>
+			<if test="priceunit != null">
+				priceunit,
+			</if>
+			<if test="priceweek != null">
+				priceweek,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="price_id != null">
+				#{price_id,jdbcType=INTEGER},
+			</if>
+			<if test="chargname != null">
+				#{chargname,jdbcType=VARCHAR},
+			</if>
+			<if test="shouid != null">
+				#{shouid,jdbcType=INTEGER},
+			</if>
+			<if test="formula_id != 0">
+				#{formula_id,jdbcType=INTEGER},
+			</if>
+			<if test="pricing != null">
+				#{pricing,jdbcType=DECIMAL},
+			</if>
+			<if test="fixedprice != null">
+				#{fixedprice,jdbcType=DECIMAL},
+			</if>
+			<if test="priceunit != null">
+				#{priceunit,jdbcType=INTEGER},
+			</if>
+			<if test="priceweek != null">
+				#{priceweek,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.sve.toll.model.Chargs">
+		update chargs
+		<set>
+			<if test="price_id != null">
+				priceid = #{price_id,jdbcType=INTEGER},
+			</if>
+			<if test="chargname != null">
+				chargname = #{chargname,jdbcType=VARCHAR},
+			</if>
+			<if test="shouid != null">
+				shouid = #{shouid,jdbcType=INTEGER},
+			</if>
+			<if test="formula_id != 0">
+				formula_id = #{formula_id,jdbcType=INTEGER},
+			</if>
+			<if test="pricing != null">
+				pricing = #{pricing,jdbcType=DECIMAL},
+			</if>
+			<if test="fixedprice != 0">
+				fixedprice = #{fixedprice,jdbcType=DECIMAL},
+			</if>
+			<if test="priceunit != 0">
+				priceunit = #{priceunit,jdbcType=INTEGER},
+			</if>
+			<if test="priceweek != null">
+				priceweek = #{priceweek,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where chargid = #{chargid,jdbcType=INTEGER}
+	</update>
+</mapper>

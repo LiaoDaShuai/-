@@ -1,0 +1,88 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans    
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd    
+                        http://www.springframework.org/schema/context    
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd    
+                        http://www.springframework.org/schema/mvc    
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+	<!-- 缓存管理器 使用Ehcache实现 -->
+	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:ehcache.xml" />
+	</bean>
+	<!-- 凭证匹配器 -->
+	<bean id="credentialsMatcher" class="com.sve.shiro.util.RetryLimitHashedCredentialsMatcher">
+		<constructor-arg ref="cacheManager" />
+		<property name="hashAlgorithmName" value="md5" />
+		<property name="hashIterations" value="3" />
+		<property name="storedCredentialsHexEncoded" value="true" />
+	</bean>
+	<!-- Realm实现 -->
+	<bean id="userRealm" class="com.sve.shiro.util.UserRealm">
+		<property name="credentialsMatcher" ref="credentialsMatcher" />
+	</bean>
+	<!-- 安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- 数据库认证的实现 org.springrain.frame.shiro.ShiroDbRealm -->
+		<property name="realm" ref="userRealm" />
+	</bean>
+
+	<!-- session管理器 -->
+	<bean id="sessionManager"
+		class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<!-- 超时时间 -->
+		<property name="globalSessionTimeout" value="1800000" />
+		<!-- session存储的实现 -->
+		<property name="sessionDAO" ref="shiroSessionDao" />
+		<!-- sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID -->
+		<property name="sessionIdCookie" ref="sharesession" />
+		<!-- 定时检查失效的session -->
+		<property name="sessionValidationSchedulerEnabled" value="true" />
+	</bean>
+	<!-- sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID -->
+	<bean id="sharesession" class="org.apache.shiro.web.servlet.SimpleCookie">
+		<!-- cookie的name,对应的默认是 JSESSIONID -->
+		<constructor-arg name="name" value="SHAREJSESSIONID" />
+	</bean>
+	<!-- session存储的实现 -->
+	<bean id="shiroSessionDao" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO" />
+	<bean id="userService" class="com.sve.auto.service.impl.UserServiceImpl" />
+	<bean id="permissionService" class="com.sve.auto.service.impl.PermissionServiceImpl" />
+	<bean id="systemLogoutFilter" class="com.sve.shiro.util.SystemLogoutFilter"/>
+	<!-- Shiro的Web过滤器 -->
+	<bean id="shiroFilter" class="com.sve.shiro.util.ShiroPermissionFactory">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/auth/login" />
+		<property name="unauthorizedUrl" value="/auth/noauth" />
+		<property name="filters">
+            <map>
+                <!--退出过滤器-->
+                <entry key="logout" value-ref="systemLogoutFilter" />
+            </map>
+        </property>
+		<property name="filterChainDefinitions">
+			<value>
+				/js/** = anon
+				/fonts/** = anon
+				/css/** = anon
+				/img/** = anon
+				/layui/** = anon
+				/themes/** = anon
+				/xml/** = anon
+				/ueditor-utf8/** = anon
+				/dwr/**=anon
+				/qt/**=anon
+				/auth/login = anon
+				/auth/register = anon
+				/auth/logins = anon
+				/auth/getYzm=anon
+				/auth/logout = logout
+				/index/index=authc
+			</value>
+		</property>
+	</bean>
+	<!-- 起效权限注解,这个很少在web项目中用到,一般是控制url的访问,不是在controller中声明权限注解 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+</beans>

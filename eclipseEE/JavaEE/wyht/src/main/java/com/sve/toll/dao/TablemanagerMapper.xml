@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.toll.dao.TablemanagerMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.toll.model.Tablemanager" >
+    <id column="tab_id" property="tabId" jdbcType="INTEGER" />
+    <result column="tab_dis_id" property="tabDisId" jdbcType="INTEGER" />
+    <result column="tab_fan_id" property="tabFanId" jdbcType="INTEGER" />
+    <result column="tab_price_id" property="tabPriceId" jdbcType="INTEGER" />
+    <result column="tab_charg_id" property="tabChargId" jdbcType="INTEGER" />
+    <result column="tab_months" property="tabMonths" jdbcType="DATE" />
+    <result column="tab_startnum" property="tabStartnum" jdbcType="INTEGER" />
+    <result column="tab_endnum" property="tabEndnum" jdbcType="INTEGER" />
+    <result column="tab_beilv" property="tabBeilv" jdbcType="INTEGER" />
+    <result column="tab_gongtan" property="tabGongtan" jdbcType="DECIMAL" />
+    <result column="tab_status" property="tabStatus" jdbcType="INTEGER" />
+    <result column="tab_equ_id" property="tabEquId" jdbcType="INTEGER" />
+    <result column="tab_remark" property="tabRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="BaseResultCharg" type="com.sve.toll.model.Chargs">
+		<id column="chargid" property="chargid" jdbcType="INTEGER" />
+		<result column="chargname" property="chargname" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap type="com.sve.datacenter.model.HouseFan" id="BaseResultHou">
+	    <id column="fanid" property="fanid" jdbcType="INTEGER" />
+		<result column="hnum" property="hnum" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap type="com.sve.datacenter.model.District" id="BaseResultDis">
+	    <id column="disid" property="disid" jdbcType="INTEGER" />
+		<result column="dname" property="dname" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap type="com.sve.toll.model.Priceproject" id="BaseResultPrice">
+	    <id column="priceid" property="priceid" jdbcType="INTEGER" />
+    	<result column="pricename" property="pricename" jdbcType="VARCHAR" />
+	</resultMap>
+  <resultMap id="SelectTabHou"  type="com.sve.toll.model.Tablemanager" extends="BaseResultMap">
+	    <association property="chargs" resultMap="BaseResultCharg"/>
+	    <association property="priceproject" resultMap="BaseResultPrice"/>
+	    <association property="housefan" resultMap="BaseResultHou"/>
+	    <association property="district" resultMap="BaseResultDis"/>
+	</resultMap>
+	<resultMap type="com.sve.toll.model.Tablemanager" extends="BaseResultMap" id="SelectTabEnd">
+	    <association property="chargs" resultMap="BaseResultCharg"/>
+	    <association property="housefan" resultMap="BaseResultHou"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		tab_id, tab_dis_id, tab_fan_id, tab_price_id, tab_charg_id, tab_months, tab_startnum, 
+    tab_endnum, tab_beilv, tab_gongtan, tab_status, tab_equ_id, tab_remark
+	</sql>
+	<select id="selectTabHouCharg" resultMap="SelectTabHou" >
+	    select t.*,h.fanid,h.hnum,c.chargid,c.chargname,p.priceid,p.pricename,d.disid,d.dname 
+	     from tablemanager t inner join housefan h on t.tab_fan_id=h.fanid inner join chargs c on
+	     t.tab_charg_id=c.chargid inner join priceproject p on t.tab_price_id=p.priceid 
+	      inner join district d on t.tab_dis_id=d.disid order by t.tab_id desc
+	</select>
+	<select id="selectTabHouChargGaoji" parameterType="com.sve.toll.model.Tablemanager" resultMap="SelectTabHou" >
+	     SELECT t.*,h.fanid,h.hnum,c.chargid,c.chargname,p.priceid,p.pricename,d.disid,d.dname 
+	     FROM tablemanager t INNER JOIN housefan h ON t.tab_fan_id=h.fanid INNER JOIN chargs c ON
+ 	     t.tab_charg_id=c.chargid INNER JOIN priceproject p ON t.tab_price_id=p.priceid 
+ 	      INNER JOIN district d ON t.tab_dis_id=d.disid 
+ 	    <trim prefix="WHERE" prefixOverrides="AND|OR">
+ 	        <if test="tabDisId!=null and tabDisId!=''">
+ 	      	t.tab_dis_id=#{tabDisId} 
+ 	      </if><if test="tabPriceId!=null and tabPriceId!=''">
+ 	          AND t.tab_price_id=#{tabPriceId}
+ 	       </if><if test="tabChargId!=null and tabChargId!=''">
+ 	         AND t.tab_charg_id=#{tabChargId}
+ 	       </if><if test="tabMonths!=null and tabMonths!=''">
+ 	       	AND t.tab_months=#{tabMonths}
+ 	       </if>
+ 	       <if test="keywords!=null and keywords!=''">
+ 	       	AND (d.dname LIKE CONCAT(CONCAT('%',#{keywords}),'%') OR c.chargname 
+ 	       	LIKE CONCAT(CONCAT('%',#{keywords}),'%') OR p.pricename LIKE 
+ 	       	CONCAT(CONCAT('%',#{keywords}),'%'))   
+			</if>
+		</trim>
+		ORDER BY t.tab_id DESC
+	</select>
+	<select id="selectChargidEndnum" resultMap="BaseResultMap" parameterType="com.sve.toll.model.Tablemanager">
+	    select t.* from tablemanager t inner join houseFan h on t.tab_fan_id=h.fanid inner join 
+	    chargs c on t.tab_charg_id=c.chargid where c.chargid=#{tabChargId} and
+	     h.fanid=#{tabFanId}  order by t.tab_id desc 
+	</select>
+	<select id="selectTongMonths" resultType="java.lang.Integer" parameterType="com.sve.toll.model.Tablemanager">
+	   select count(*) from tablemanager where tab_fan_id=#{tabFanId} and tab_months=DATE_FORMAT(#{tabMonths},'%Y-%m-%d') 
+	   and tab_price_id=#{tabPriceId} and tab_charg_id=#{tabChargId}
+	</select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tablemanager
+    where tab_id = #{tabId,jdbcType=INTEGER}
+  </select>
+  <update id="updateTabStatus" parameterType="java.lang.Integer">
+      update tablemanager set tab_status=1 where tab_id=#{tabid}
+  </update>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tablemanager
+    where tab_id = #{tabId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.toll.model.Tablemanager" useGeneratedKeys="true" keyProperty="tabId" >
+    insert into tablemanager
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tabId != null" >
+        tab_id,
+      </if>
+      <if test="tabDisId != null" >
+        tab_dis_id,
+      </if>
+      <if test="tabFanId != null" >
+        tab_fan_id,
+      </if>
+      <if test="tabPriceId != null" >
+        tab_price_id,
+      </if>
+      <if test="tabChargId != null" >
+        tab_charg_id,
+      </if>
+      <if test="tabMonths != null" >
+        tab_months,
+      </if>
+      <if test="tabStartnum != null" >
+        tab_startnum,
+      </if>
+      <if test="tabEndnum != null" >
+        tab_endnum,
+      </if>
+      <if test="tabBeilv != null" >
+        tab_beilv,
+      </if>
+      <if test="tabGongtan != null" >
+        tab_gongtan,
+      </if>
+      <if test="tabStatus != null" >
+        tab_status,
+      </if>
+      <if test="tabEquId != null" >
+        tab_equ_id,
+      </if>
+      <if test="tabRemark != null" >
+        tab_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tabId != null" >
+        #{tabId,jdbcType=INTEGER},
+      </if>
+      <if test="tabDisId != null" >
+        #{tabDisId,jdbcType=INTEGER},
+      </if>
+      <if test="tabFanId != null" >
+        #{tabFanId,jdbcType=INTEGER},
+      </if>
+      <if test="tabPriceId != null" >
+        #{tabPriceId,jdbcType=INTEGER},
+      </if>
+      <if test="tabChargId != null" >
+        #{tabChargId,jdbcType=INTEGER},
+      </if>
+      <if test="tabMonths != null" >
+        #{tabMonths,jdbcType=DATE},
+      </if>
+      <if test="tabStartnum != null" >
+        #{tabStartnum,jdbcType=INTEGER},
+      </if>
+      <if test="tabEndnum != null" >
+        #{tabEndnum,jdbcType=INTEGER},
+      </if>
+      <if test="tabBeilv != null" >
+        #{tabBeilv,jdbcType=INTEGER},
+      </if>
+      <if test="tabGongtan != null" >
+        #{tabGongtan,jdbcType=DECIMAL},
+      </if>
+      <if test="tabStatus != null" >
+        #{tabStatus,jdbcType=INTEGER},
+      </if>
+      <if test="tabEquId != null" >
+        #{tabEquId,jdbcType=INTEGER},
+      </if>
+      <if test="tabRemark != null" >
+        #{tabRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.toll.model.Tablemanager" >
+    update tablemanager
+    <set >
+      <if test="tabDisId != null" >
+        tab_dis_id = #{tabDisId,jdbcType=INTEGER},
+      </if>
+      <if test="tabFanId != null" >
+        tab_fan_id = #{tabFanId,jdbcType=INTEGER},
+      </if>
+      <if test="tabPriceId != null" >
+        tab_price_id = #{tabPriceId,jdbcType=INTEGER},
+      </if>
+      <if test="tabChargId != null" >
+        tab_charg_id = #{tabChargId,jdbcType=INTEGER},
+      </if>
+      <if test="tabMonths != null" >
+        tab_months = #{tabMonths,jdbcType=DATE},
+      </if>
+      <if test="tabStartnum != null" >
+        tab_startnum = #{tabStartnum,jdbcType=INTEGER},
+      </if>
+      <if test="tabEndnum != null" >
+        tab_endnum = #{tabEndnum,jdbcType=INTEGER},
+      </if>
+      <if test="tabBeilv != null" >
+        tab_beilv = #{tabBeilv,jdbcType=INTEGER},
+      </if>
+      <if test="tabGongtan != null" >
+        tab_gongtan = #{tabGongtan,jdbcType=DECIMAL},
+      </if>
+      <if test="tabStatus != null" >
+        tab_status = #{tabStatus,jdbcType=INTEGER},
+      </if>
+      <if test="tabEquId != null" >
+        tab_equ_id = #{tabEquId,jdbcType=INTEGER},
+      </if>
+      <if test="tabRemark != null" >
+        tab_remark = #{tabRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where tab_id = #{tabId,jdbcType=INTEGER}
+  </update>
+</mapper>

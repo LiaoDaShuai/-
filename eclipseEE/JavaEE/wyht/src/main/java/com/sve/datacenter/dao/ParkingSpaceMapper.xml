@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sve.datacenter.dao.ParkingSpaceMapper">
+	<resultMap id="BaseResultMap" type="com.sve.datacenter.model.ParkingSpace">
+		<id column="parkid" jdbcType="INTEGER" property="parkid" />
+		<result column="pnum" jdbcType="VARCHAR" property="pnum" />
+		<result column="disid" jdbcType="INTEGER" property="disid" />
+		<result column="carea" jdbcType="DECIMAL" property="carea" />
+		<result column="STATUS" jdbcType="INTEGER" property="status" />
+		<result column="tollcount" jdbcType="INTEGER" property="tollcount" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<association property="dis" column="disid"
+			select="com.sve.datacenter.dao.HouseLouMapper.getDis">
+			<id column="disid" property="disid" jdbcType="INTEGER" />
+			<result column="dname" property="dname" jdbcType="VARCHAR" />
+			<result column="prov" property="prov" jdbcType="VARCHAR" />
+			<result column="city" property="city" jdbcType="VARCHAR" />
+			<result column="dist" property="dist" jdbcType="VARCHAR" />
+			<result column="address" property="address" jdbcType="VARCHAR" />
+			<result column="customerp" property="customerp" jdbcType="VARCHAR" />
+			<result column="fperson" property="fperson" jdbcType="VARCHAR" />
+			<result column="fphone" property="fphone" jdbcType="VARCHAR" />
+			<result column="logo" property="logo" jdbcType="VARCHAR" />
+			<result column="description" property="description" jdbcType="VARCHAR" />
+			<result column="zarea" property="zarea" jdbcType="DECIMAL" />
+			<result column="jarea" property="jarea" jdbcType="DECIMAL" />
+			<result column="garea" property="garea" jdbcType="DECIMAL" />
+			<result column="larea" property="larea" jdbcType="DECIMAL" />
+			<result column="carea" property="carea" jdbcType="DECIMAL" />
+			<result column="housecount" property="housecount" jdbcType="INTEGER" />
+			<result column="carcount" property="carcount" jdbcType="INTEGER" />
+			<result column="status" property="status" jdbcType="INTEGER" />
+			<result column="remark" property="remark" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<resultMap id="parkreport" type="com.sve.datacenter.model.ParkingSpace">
+		<id column="parkid" jdbcType="INTEGER" property="parkid" />
+		<result column="STATUS" jdbcType="INTEGER" property="status" />
+		<result column="tollcount" jdbcType="INTEGER" property="tollcount" />
+		<association property="dis" javaType="com.sve.datacenter.model.District">
+			<id column="disid" property="disid" jdbcType="INTEGER" />
+			<result column="dname" property="dname" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		parkid, pnum, disid, carea, STATUS, tollcount, remark
+	</sql>
+	<!-- 统计各小区里对应的车位 -->
+	<select id="parkReportAll" resultMap="parkreport">
+		SELECT COUNT(*) AS
+		tollcount,p.parkid,p.status,d.disid,d.dname FROM
+		parkingspace p LEFT
+		JOIN district d ON
+		p.disid=d.disid GROUP BY p.disid
+	</select>
+	<!-- 统计各小区里对应的车位的状况 -->
+	<select id="parkReportStatus" resultMap="parkreport"
+		parameterType="java.lang.Integer">
+		SELECT COUNT(*) AS
+		tollcount,p.parkid,p.status,d.disid,d.dname FROM
+		parkingspace p LEFT
+		JOIN district d ON
+		p.disid=d.disid where p.disid=#{disid} GROUP BY
+		p.status
+	</select>
+	<!-- 查询所有空闲的车位 -->
+	<select id="selectParkingSpace" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select * from parkingspace where disid=#{disid} and STATUS=3
+	</select>
+	<select id="selectparknum" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from parkingspace where pnum=#{pnum}
+	</select>
+	<select id="selectdisid" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from parkingspace where disid=#{disid}
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from parkingspace
+		where parkid = #{parkid,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		parkingspace
+		where parkid = #{parkid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.sve.datacenter.model.ParkingSpace">
+		insert into parkingspace
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="parkid != null">
+				parkid,
+			</if>
+			<if test="pnum != null">
+				pnum,
+			</if>
+			<if test="disid != null">
+				disid,
+			</if>
+			<if test="carea != null">
+				carea,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="tollcount != null">
+				tollcount,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="parkid != null">
+				#{parkid,jdbcType=INTEGER},
+			</if>
+			<if test="pnum != null">
+				#{pnum,jdbcType=VARCHAR},
+			</if>
+			<if test="disid != null">
+				#{disid,jdbcType=INTEGER},
+			</if>
+			<if test="carea != null">
+				#{carea,jdbcType=DECIMAL},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="tollcount != null">
+				#{tollcount,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.sve.datacenter.model.ParkingSpace">
+		update parkingspace
+		<set>
+			<if test="pnum != null">
+				pnum = #{pnum,jdbcType=VARCHAR},
+			</if>
+			<if test="disid != null">
+				disid = #{disid,jdbcType=INTEGER},
+			</if>
+			<if test="carea != null">
+				carea = #{carea,jdbcType=DECIMAL},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="tollcount != null">
+				tollcount = #{tollcount,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where parkid = #{parkid,jdbcType=INTEGER}
+	</update>
+	<!-- 查询全部 -->
+	<select id="selectA" resultMap="BaseResultMap">
+		select * from parkingspace order
+		by parkid desc
+	</select>
+	<update id="updateParkChargnum" parameterType="java.lang.Integer">
+		update
+		parkingspace set tollcount=tollcount+1 where parkid=#{parkid}
+	</update>
+	<update id="updateParkChargJnum" parameterType="java.lang.Integer">
+		update
+		parkingspace set tollcount=tollcount-1 where parkid=#{parkid}
+	</update>
+	<!-- 模糊查询 -->
+	<select id="selectAll" parameterType="com.sve.datacenter.model.ParkingSpace"
+		resultMap="BaseResultMap">
+		select * from parkingspace 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="disid != 0 and disid != null">
+				and disid=#{disid}
+			</if>
+			<if test="status != 0 and status != null">
+				and status=#{status}
+			</if>
+			<if test="pnum != null and pnum != ''">
+				and pnum like '%${pnum}%'
+			</if>
+			<if test="parkid != null and parkid != ''">
+				and parkid like '%${parkid}%'
+			</if>
+		</trim>
+		order by parkid desc
+	</select>
+	<!-- 批量导入车位 -->
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into parkingspace(pnum, disid, carea, STATUS, remark) values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.pnum}, #{item.disid}, #{item.carea},
+			#{item.status}, #{item.remark})
+		</foreach>
+	</insert>
+	<!-- 查询车位总数 -->
+	<select id="parkCount" resultType="java.lang.Integer">
+	SELECT COUNT(*) FROM parkingspace
+	</select>
+</mapper>

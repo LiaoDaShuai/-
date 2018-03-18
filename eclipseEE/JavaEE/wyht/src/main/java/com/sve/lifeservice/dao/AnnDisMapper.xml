@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.lifeservice.dao.AnnDisMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.lifeservice.model.AnnDis" >
+    <result column="ads_annid" property="adsAnnid" jdbcType="INTEGER" />
+    <result column="ads_did" property="adsDid" jdbcType="INTEGER" />
+  </resultMap>
+  <!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/> -->
+  <insert id="insert" parameterType="com.sve.lifeservice.model.AnnDis" >
+    insert into ann_dis (ads_annid, ads_did)
+    values (#{adsAnnid,jdbcType=INTEGER}, #{adsDid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sve.lifeservice.model.AnnDis" >
+    insert into ann_dis
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="adsAnnid != null" >
+        ads_annid,
+      </if>
+      <if test="adsDid != null" >
+        ads_did,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="adsAnnid != null" >
+        #{adsAnnid,jdbcType=INTEGER},
+      </if>
+      <if test="adsDid != null" >
+        #{adsDid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deldis" parameterType="com.sve.lifeservice.model.AnnDis">
+      delete from ann_dis where ads_annid=#{adsAnnid} and ads_did=#{adsDid}
+  </delete>
+</mapper>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.lifeservice.dao.AnnounceMapper">
+	<resultMap id="BaseResultMap" type="com.sve.lifeservice.model.Announce">
+		<id column="ann_id" property="annId" jdbcType="INTEGER" />
+		<result column="ann_announcer" property="annAnnouncer" jdbcType="VARCHAR" />
+		<result column="ann_name" property="annName" jdbcType="VARCHAR" />
+		<result column="ann_context" property="annContext" jdbcType="VARCHAR" />
+		<result column="ann_zhiding" property="annZhiding" jdbcType="INTEGER" />
+		<result column="ann_zhidingend" property="annZhidingend" jdbcType="TIMESTAMP" />
+		<result column="ann_count" property="annCount" jdbcType="INTEGER" />
+		<result column="ann_date" property="annDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<resultMap id="AnnounceList" type="com.sve.lifeservice.model.Announce" extends="BaseResultMap">
+		<collection property="district" ofType="com.sve.datacenter.model.District">
+			<id property="disid" column="disid" />
+			<result property="dname" column="dname" />
+		</collection>
+	</resultMap>
+	<resultMap id="BaseDis" type="com.sve.datacenter.model.District">
+	    <id property="disid" column="disid" />
+		<result property="dname" column="dname" />
+	</resultMap>
+	<sql id="Announce_list">
+		ann_id, ann_announcer, ann_name, ann_context, ann_zhiding, ann_zhidingend,
+		ann_count,ann_date
+	</sql>
+	<!-- 小区公告数 -->
+	<select id="announceCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM announce
+	</select>
+	<select id="selectADyk" resultMap="BaseResultMap">
+	    SELECT * FROM announce ORDER BY ann_zhiding DESC,ann_id desc LIMIT 0,5
+	</select>
+	<select id="selectADorder" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+	    select * from announce an inner join ann_dis ad on an.ann_id=ad.ads_annid
+	     where ad.ads_did=#{disid}
+	</select>
+	<select id="selectAD" resultMap="AnnounceList">
+		SELECT a.*,d.disid,d.dname
+		FROM announce a LEFT JOIN ann_dis ad ON a.ann_id=ad.ads_annid
+		LEFT JOIN district d ON ad.ads_did=d.disid order by a.ann_id desc
+	</select>
+	<select id="selectAnnounce" resultMap="AnnounceList">
+		select <include refid="Announce_list" />
+		from announce order by ann_zhiding DESC,ann_id DESC
+		<!-- case when zhiding=0 then '是' else '否' end 对页面不起作用 -->
+	</select>
+	<select id="selectAnnounceById" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Announce_list" />
+		from announce where ann_id=#{id}
+	</select>
+	<select id="selectGuanDis" parameterType="java.lang.Integer" resultMap="BaseDis">
+	    select d.disid,d.dname from ann_dis ad inner join district d 
+	    on ad.ads_did=d.disid where ad.ads_annid=#{id} 
+	</select>
+	<select id="selectAnnounceByKey" resultMap="AnnounceList"
+		parameterType="java.lang.String">
+		select <include refid="Announce_list" />
+		from announce where ann_name like CONCAT('%',CONCAT(#{key},'%')) order by
+		ann_zhiding desc
+	</select>
+	<update id="updateCount" parameterType="java.lang.Integer">
+	    update announce set ann_count=ann_count+1 where ann_id=#{annId}
+	</update>
+	<insert id="insertSelective" parameterType="com.sve.lifeservice.model.Announce">
+		insert into announce
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="annAnnouncer != null">
+				ann_announcer,
+			</if>
+			<if test="annName != null">
+				ann_name,
+			</if>
+			<if test="annContext != null">
+				ann_context,
+			</if>
+			<if test="annZhiding != null">
+				ann_zhiding,
+			</if>
+			<if test="annZhidingend != null">
+				ann_zhidingend,
+			</if>
+			<if test="annCount != null">
+				ann_count,
+			</if>
+			<if test="annDate != null">
+				ann_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="annAnnouncer != null">
+				#{annAnnouncer,jdbcType=VARCHAR},
+			</if>
+			<if test="annName != null">
+				#{annName,jdbcType=VARCHAR},
+			</if>
+			<if test="annContext != null">
+				#{annContext,jdbcType=VARCHAR},
+			</if>
+			<if test="annZhiding != null">
+				#{annZhiding,jdbcType=INTEGER},
+			</if>
+			<if test="annZhidingend != null">
+				#{annZhidingend,jdbcType=TIMESTAMP},
+			</if>
+			<if test="annCount != null">
+				#{annCount,jdbcType=INTEGER},
+			</if>
+			<if test="annDate != null">
+				#{annDate,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.sve.lifeservice.model.Announce">
+		update announce
+		<set>
+			<if test="annAnnouncer != null">
+				ann_announcer = #{annAnnouncer,jdbcType=VARCHAR},
+			</if>
+			<if test="annName != null">
+				ann_name = #{annName,jdbcType=VARCHAR},
+			</if>
+			<if test="annContext != null">
+				ann_context = #{annContext,jdbcType=VARCHAR},
+			</if>
+			<if test="annZhiding != null">
+				ann_zhiding = #{annZhiding,jdbcType=INTEGER},
+			</if>
+			<if test="annZhidingend != null">
+				ann_zhidingend = #{annZhidingend,jdbcType=TIMESTAMP},
+			</if>
+			<if test="annCount != null">
+				ann_count = #{annCount,jdbcType=INTEGER},
+			</if>
+			<if test="annDate != null">
+				ann_date = #{annDate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where ann_id = #{annId,jdbcType=INTEGER}
+	</update>
+	<delete id="deleteAnnounce" parameterType="java.lang.Integer">
+		delete from announce
+		where ann_id=#{id}
+	</delete>
+</mapper>

@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.datacenter.dao.HouseFanMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.datacenter.model.HouseFan">
+    <id column="fanid" property="fanid" jdbcType="INTEGER" />
+    <result column="disid" property="disid" jdbcType="INTEGER" />
+    <result column="hlid" property="hlid" jdbcType="INTEGER" />
+    <result column="unitid" property="unitid" jdbcType="INTEGER" />
+    <result column="louceng" property="louceng" jdbcType="INTEGER" />
+    <result column="hnum" property="hnum" jdbcType="VARCHAR" />
+    <result column="zarea" property="zarea" jdbcType="DECIMAL" />
+    <result column="tarea" property="tarea" jdbcType="DECIMAL" />
+    <result column="garea" property="garea" jdbcType="DECIMAL" />
+    <result column="utype" property="utype" jdbcType="INTEGER" />
+    <result column="hchaoxiang" property="hchaoxiang" jdbcType="VARCHAR" />
+    <result column="startdate" property="startdate" jdbcType="TIMESTAMP" />
+    <result column="cyear" property="cyear" jdbcType="INTEGER" />
+    <result column="fujian" property="fujian" jdbcType="VARCHAR" />
+    <result column="isRuzhu" property="isruzhu" jdbcType="INTEGER" />
+    <result column="tollcount" property="tollcount" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+	<association property="dis" column="disid" select="com.sve.datacenter.dao.HouseLouMapper.getDis">
+		<id column="disid" property="disid" jdbcType="INTEGER"/>
+		<result column="dname" property="dname" jdbcType="VARCHAR"/>
+		<result column="prov" property="prov" jdbcType="VARCHAR"/>
+		<result column="city" property="city" jdbcType="VARCHAR"/>
+		<result column="dist" property="dist" jdbcType="VARCHAR"/>
+		<result column="address" property="address" jdbcType="VARCHAR"/>
+		<result column="customerp" property="customerp" jdbcType="VARCHAR"/>
+		<result column="fperson" property="fperson" jdbcType="VARCHAR"/>
+		<result column="fphone" property="fphone" jdbcType="VARCHAR"/>
+		<result column="logo" property="logo" jdbcType="VARCHAR"/>
+		<result column="description" property="description" jdbcType="VARCHAR"/>
+		<result column="zarea" property="zarea" jdbcType="DECIMAL"/>
+		<result column="jarea" property="jarea" jdbcType="DECIMAL"/>
+		<result column="garea" property="garea" jdbcType="DECIMAL"/>
+		<result column="larea" property="larea" jdbcType="DECIMAL"/>
+		<result column="carea" property="carea" jdbcType="DECIMAL"/>
+		<result column="housecount" property="housecount" jdbcType="INTEGER"/>
+		<result column="carcount" property="carcount" jdbcType="INTEGER"/>
+		<result column="status" property="status" jdbcType="INTEGER"/>
+		<result column="remark" property="remark" jdbcType="VARCHAR"/>
+	</association>
+	<association property="hl" column="hlid" select="com.sve.datacenter.dao.UnitMapper.getHl">
+    	<id column="hlid" property="hlid" jdbcType="INTEGER"/>
+		<result column="disid" property="disid" jdbcType="INTEGER"/>
+		<result column="floorname" property="floorname" jdbcType="VARCHAR"/>
+		<result column="units" property="units" jdbcType="INTEGER"/>
+		<result column="cengcount" property="cengcount" jdbcType="INTEGER"/>
+		<result column="floortype" property="floortype" jdbcType="VARCHAR"/>
+		<result column="structure" property="structure" jdbcType="VARCHAR"/>
+		<result column="orientation" property="orientation" jdbcType="VARCHAR"/>
+		<result column="remark" property="remark" jdbcType="VARCHAR"/>
+		<result column="status" property="status" jdbcType="INTEGER"/>
+    </association>
+    <association property="ut" column="unitid" select="getUt">
+    	<id column="unitid" property="unitid" jdbcType="INTEGER" />
+    	<result column="unitname" property="unitname" jdbcType="VARCHAR" />
+    	<result column="floorcount" property="floorcount" jdbcType="INTEGER" />
+    	<result column="disid" property="disid" jdbcType="INTEGER"/>
+    	<result column="hlid" property="hlid" jdbcType="INTEGER" />
+    </association>
+  </resultMap>
+  <resultMap id="JoinHouDis" type="com.sve.datacenter.model.HouseFan"
+		extends="BaseResultMap">
+		<association property="district" javaType="com.sve.datacenter.model.District">
+			<id column="disid" property="disid" jdbcType="INTEGER" />
+			<result column="dname" property="dname" jdbcType="VARCHAR" />
+			<result column="address" property="address" jdbcType="VARCHAR" />
+			<result column="customerp" property="customerp" jdbcType="VARCHAR" />
+			<result column="fperson" property="fperson" jdbcType="VARCHAR" />
+			<result column="fphone" property="fphone" jdbcType="VARCHAR" />
+			<result column="logo" property="logo" jdbcType="VARCHAR" />
+			<result column="description" property="description" jdbcType="VARCHAR" />
+			<result column="zarea" property="zarea" jdbcType="DECIMAL" />
+			<result column="jarea" property="jarea" jdbcType="DECIMAL" />
+			<result column="garea" property="garea" jdbcType="DECIMAL" />
+			<result column="larea" property="larea" jdbcType="DECIMAL" />
+			<result column="carea" property="carea" jdbcType="DECIMAL" />
+			<result column="housecount" property="housecount" jdbcType="INTEGER" />
+			<result column="carcount" property="carcount" jdbcType="INTEGER" />
+			<result column="STATUS" property="status" jdbcType="INTEGER" />
+			<result column="remark" property="remark" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<resultMap type="com.sve.datacenter.model.HouseFan" id="bufenvalue">
+	    <id column="fanid" property="fanid" jdbcType="INTEGER" />
+		<result column="disid" property="disid" jdbcType="INTEGER" />
+		<result column="hlid" property="hlid" jdbcType="INTEGER" />
+		<result column="unitid" property="unitid" jdbcType="INTEGER" />
+		<result column="louceng" property="louceng" jdbcType="INTEGER" />
+		<result column="hnum" property="hnum" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap type="com.sve.datacenter.model.HouseFan" id="fancount">
+	    <id column="fanid" property="fanid" jdbcType="INTEGER" />
+	    <result column="louceng" property="louceng" jdbcType="INTEGER" />
+	    <result column="utype" property="utype" jdbcType="INTEGER"/>
+		<association property="dis" javaType="com.sve.datacenter.model.District">
+			<id column="disid" property="disid" jdbcType="INTEGER" />
+			<result column="dname" property="dname" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<sql id="Base_Column_List">
+    fanid, disid, hlid, unitid, louceng, hnum, zarea, tarea, garea, utype, hchaoxiang, 
+    startdate, cyear, fujian, isRuzhu, tollcount, remark
+  </sql>
+  <!-- 查询全部小区下面有多少房屋数 -->
+  <select id="selectDisfancount" resultMap="fancount">
+      SELECT f.fanid,count(*) as louceng,d.disid,d.dname FROM housefan f LEFT JOIN district d ON 
+      f.disid=d.disid GROUP BY f.disid
+  </select>
+  <select id="selectDisidfancount" resultMap="fancount" parameterType="java.lang.Integer">
+      SELECT f.fanid,count(*) as louceng,d.disid,d.dname FROM housefan f LEFT JOIN district d ON 
+      f.disid=d.disid where f.disid=#{disid} GROUP BY f.disid
+  </select>
+  <select id="selectUtypecount" resultMap="fancount" parameterType="java.lang.Integer">
+      SELECT f.fanid,COUNT(*) as louceng,f.utype,d.disid,d.dname FROM housefan f LEFT JOIN district d ON 
+      f.disid=d.disid WHERE f.disid=#{disid} GROUP BY utype
+  </select>
+	<select id="selectFandid" resultMap="bufenvalue" parameterType="java.lang.Integer">
+	    select fanid, disid, hlid, unitid, louceng, hnum from housefan where fanid=#{fanid}
+	</select>
+	<select id="selectDisHiscount" resultMap="bufenvalue" parameterType="java.lang.Integer">
+	    select fanid, disid, hlid, unitid, louceng, hnum from housefan where fanid=#{fanid}
+	</select>
+	<select id="selectfanDis" resultMap="JoinHouDis" parameterType="java.lang.Integer">
+	    select h.*,d.* 
+	     from housefan h inner join district d on h.disid=d.disid where h.fanid=#{fanid}
+	</select>
+	<select id="selectfannum" resultMap="BaseResultMap" parameterType="java.lang.String">
+	    select <include refid="Base_Column_List"/> from housefan where hnum=#{hnum}
+	</select>
+	<select id="selectfanflid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	    select <include refid="Base_Column_List"/> from housefan where hlid=#{hlid}
+	</select>
+	<select id="selectDisid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select <include refid="Base_Column_List" /> from housefan where disid=#{disid}
+	</select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from housefan
+    where fanid = #{fanid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from housefan
+    where fanid = #{fanid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.datacenter.model.HouseFan" >
+    insert into housefan
+	<trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fanid != null" >
+        fanid,
+      </if>
+      <if test="disid != 0" >
+        disid,
+      </if>
+      <if test="hlid != 0" >
+        hlid,
+      </if>
+      <if test="unitid != 0" >
+        unitid,
+      </if>
+      <if test="louceng != null" >
+        louceng,
+      </if>
+      <if test="hnum != null" >
+        hnum,
+      </if>
+      <if test="zarea != null" >
+        zarea,
+      </if>
+      <if test="tarea != null" >
+        tarea,
+      </if>
+      <if test="garea != null" >
+        garea,
+      </if>
+      <if test="utype != null" >
+        utype,
+      </if>
+      <if test="hchaoxiang != null" >
+        hchaoxiang,
+      </if>
+      <if test="startdate != null" >
+        startdate,
+      </if>
+      <if test="cyear != null" >
+        cyear,
+      </if>
+      <if test="fujian != null" >
+        fujian,
+      </if>
+      <if test="isruzhu != null" >
+        isRuzhu,
+      </if>
+      <if test="tollcount != null" >
+        tollcount,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fanid != null" >
+        #{fanid,jdbcType=INTEGER},
+      </if>
+      <if test="disid != 0" >
+        #{disid,jdbcType=INTEGER},
+      </if>
+      <if test="hlid != 0" >
+        #{hlid,jdbcType=INTEGER},
+      </if>
+      <if test="unitid != 0" >
+        #{unitid,jdbcType=INTEGER},
+      </if>
+      <if test="louceng != null" >
+        #{louceng,jdbcType=INTEGER},
+      </if>
+      <if test="hnum != null" >
+        #{hnum,jdbcType=VARCHAR},
+      </if>
+      <if test="zarea != null" >
+        #{zarea,jdbcType=DECIMAL},
+      </if>
+      <if test="tarea != null" >
+        #{tarea,jdbcType=DECIMAL},
+      </if>
+      <if test="garea != null" >
+        #{garea,jdbcType=DECIMAL},
+      </if>
+      <if test="utype != null" >
+        #{utype,jdbcType=INTEGER},
+      </if>
+      <if test="hchaoxiang != null" >
+        #{hchaoxiang,jdbcType=VARCHAR},
+      </if>
+      <if test="startdate != null" >
+        #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cyear != null" >
+        #{cyear,jdbcType=INTEGER},
+      </if>
+      <if test="fujian != null" >
+        #{fujian,jdbcType=VARCHAR},
+      </if>
+      <if test="isruzhu != null" >
+        #{isruzhu,jdbcType=INTEGER},
+      </if>
+      <if test="tollcount != null" >
+        #{tollcount,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertHF" parameterType="map" >
+    insert into housefan
+	<trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fanid != null" >
+        fanid,
+      </if>
+      <if test="disid != 0" >
+        disid,
+      </if>
+      <if test="hlid != 0" >
+        hlid,
+      </if>
+      <if test="unitid != 0" >
+        unitid,
+      </if>
+      <if test="louceng != null" >
+        louceng,
+      </if>
+      <if test="hnum != null" >
+        hnum,
+      </if>
+      <if test="zarea != null" >
+        zarea,
+      </if>
+      <if test="tarea != null" >
+        tarea,
+      </if>
+      <if test="garea != null" >
+        garea,
+      </if>
+      <if test="utype != null" >
+        utype,
+      </if>
+      <if test="hchaoxiang != null" >
+        hchaoxiang,
+      </if>
+      <if test="startdate != null" >
+        startdate,
+      </if>
+      <if test="cyear != null" >
+        cyear,
+      </if>
+      <if test="fujian != null" >
+        fujian,
+      </if>
+      <if test="isruzhu != null" >
+        isRuzhu,
+      </if>
+      <if test="tollcount != null" >
+        tollcount,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fanid != null" >
+        #{fanid,jdbcType=INTEGER},
+      </if>
+      <if test="disid != 0" >
+        #{disid,jdbcType=INTEGER},
+      </if>
+      <if test="hlid != 0" >
+        #{hlid,jdbcType=INTEGER},
+      </if>
+      <if test="unitid != 0" >
+        #{unitid,jdbcType=INTEGER},
+      </if>
+      <if test="louceng != null" >
+        #{louceng,jdbcType=INTEGER},
+      </if>
+      <if test="hnum != null" >
+        #{hnum,jdbcType=VARCHAR},
+      </if>
+      <if test="zarea != null" >
+        #{zarea,jdbcType=DECIMAL},
+      </if>
+      <if test="tarea != null" >
+        #{tarea,jdbcType=DECIMAL},
+      </if>
+      <if test="garea != null" >
+        #{garea,jdbcType=DECIMAL},
+      </if>
+      <if test="utype != null" >
+        #{utype,jdbcType=INTEGER},
+      </if>
+      <if test="hchaoxiang != null" >
+        #{hchaoxiang,jdbcType=VARCHAR},
+      </if>
+      <if test="startdate != null" >
+        #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cyear != null" >
+        #{cyear,jdbcType=INTEGER},
+      </if>
+      <if test="fujian != null" >
+        #{fujian,jdbcType=VARCHAR},
+      </if>
+      <if test="isruzhu != null" >
+        #{isruzhu,jdbcType=INTEGER},
+      </if>
+      <if test="tollcount != null" >
+        #{tollcount,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.datacenter.model.HouseFan" >
+    update housefan
+    <set >
+      <if test="disid != null" >
+        disid = #{disid,jdbcType=INTEGER},
+      </if>
+      <if test="hlid != null" >
+        hlid = #{hlid,jdbcType=INTEGER},
+      </if>
+      <if test="unitid != null" >
+        unitid = #{unitid,jdbcType=INTEGER},
+      </if>
+      <if test="louceng != null" >
+        louceng = #{louceng,jdbcType=INTEGER},
+      </if>
+      <if test="hnum != null" >
+        hnum = #{hnum,jdbcType=VARCHAR},
+      </if>
+      <if test="zarea != null" >
+        zarea = #{zarea,jdbcType=DECIMAL},
+      </if>
+      <if test="tarea != null" >
+        tarea = #{tarea,jdbcType=DECIMAL},
+      </if>
+      <if test="garea != null" >
+        garea = #{garea,jdbcType=DECIMAL},
+      </if>
+      <if test="utype != null" >
+        utype = #{utype,jdbcType=INTEGER},
+      </if>
+      <if test="hchaoxiang != null" >
+        hchaoxiang = #{hchaoxiang,jdbcType=VARCHAR},
+      </if>
+      <if test="startdate != null" >
+        startdate = #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cyear != null" >
+        cyear = #{cyear,jdbcType=INTEGER},
+      </if>
+      <if test="fujian != null" >
+        fujian = #{fujian,jdbcType=VARCHAR},
+      </if>
+      <if test="isruzhu != null" >
+        isRuzhu = #{isruzhu,jdbcType=INTEGER},
+      </if>
+      <if test="tollcount != null" >
+        tollcount = #{tollcount,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where fanid = #{fanid,jdbcType=INTEGER}
+  </update>
+  <update id="updateFanChargnum" parameterType="java.lang.Integer" >
+      update housefan set tollcount=tollcount+1 where fanid=#{fanid}
+  </update>
+   <update id="updateFanChargJnum" parameterType="java.lang.Integer" >
+      update housefan set tollcount=tollcount-1 where fanid=#{fanid}
+  </update>
+  <select id="getUt" parameterType="com.sve.datacenter.model.Unit" resultType="com.sve.datacenter.model.Unit">
+  	select * from unit 
+  	where unitid=#{unitid}
+  </select>
+
+  <select id="selectA" resultMap="BaseResultMap">
+  	select * from housefan order by fanid desc
+  </select>
+  
+  <select id="selectAll" parameterType="com.sve.datacenter.model.HouseFan" resultMap="BaseResultMap">
+  	select * from housefan
+  	<trim prefix="WHERE" prefixOverrides="AND|OR ">
+		<if test="disid != 0 and disid != null">
+			and disid=#{disid}
+		</if>
+		<if test="hlid != 0 and hlid != null">
+			and hlid=#{hlid}
+		</if>
+		<if test="unitid != 0 and unitid != null">
+			and unitid=#{unitid}
+		</if>
+		<if test="utype != 0 and utype != null">
+			and utype=#{utype}
+		</if>
+		<if test="fanid != null and fanid != ''">
+			and fanid like '%${fanid}%'
+		</if>
+		<if test="louceng != null and louceng != ''">
+			and louceng like '%${louceng}%'
+		</if>
+		<if test="keywords != null and keywords != ''">
+			and (hnum like concat('%',#{keywords},'%') or 
+				remark like concat('%',#{keywords},'%'))
+		</if>
+	</trim>
+	order by fanid desc
+  </select>
+  <!-- 批量添加房屋 -->
+  <insert id="insertBatch" parameterType="java.util.List">
+	insert into housefan(disid, hlid, unitid, louceng, hnum, zarea, tarea, garea, utype, hchaoxiang, startdate, cyear, remark) values
+	<foreach collection="list" item="item" index="index" separator=",">
+	(#{item.disid},#{item.hlid},#{item.unitid},#{item.louceng},#{item.hnum},#{item.zarea},#{item.tarea},#{item.garea},#{item.utype},#{item.hchaoxiang},#{item.startdate},#{item.cyear},#{item.remark})
+    </foreach>
+  </insert>
+  <!-- 房屋总数 -->
+  <select id="houseCount" resultType="java.lang.Integer">
+  SELECT COUNT(*) FROM housefan
+  </select>
+  <!-- 快速搜索 -->
+  <select id="quickFind" parameterType="java.lang.String" resultMap="BaseResultMap">
+  SELECT <include refid="Base_Column_List" /> FROM housefan WHERE hnum like '%'#{_parameter}'%'
+  </select>
+</mapper>

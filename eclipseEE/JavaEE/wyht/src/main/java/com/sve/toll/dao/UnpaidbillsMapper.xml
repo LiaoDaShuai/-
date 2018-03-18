@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.toll.dao.UnpaidbillsMapper">
+	<resultMap id="BaseResultMap" type="com.sve.toll.model.Unpaidbills">
+		<id column="unpaid" property="unpaid" jdbcType="INTEGER" />
+		<result column="total_money" property="totalMoney" jdbcType="DECIMAL" />
+		<result column="total_znj" property="totalZnj" jdbcType="DECIMAL" />
+		<result column="total_yc" property="totalYc" jdbcType="DECIMAL" />
+		<result column="total_yh" property="totalYh" jdbcType="DECIMAL" />
+		<result column="total_yjmoney" property="totalYjmoney"
+			jdbcType="DECIMAL" />
+		<result column="disid" property="disid" jdbcType="INTEGER" />
+		<result column="oid" property="oid" jdbcType="INTEGER" />
+		<result column="onames" property="onames" jdbcType="VARCHAR" />
+		<result column="ophone" property="ophone" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="means" property="means" jdbcType="INTEGER" />
+		<result column="isdrop" property="isdrop" jdbcType="INTEGER" />
+		<result column="undate" property="undate" jdbcType="TIMESTAMP" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap type="com.sve.toll.model.Unpaidbills" id="unpaiowner"
+		extends="BaseResultMap">
+		<association property="owners" javaType="com.sve.datacenter.model.Owners">
+			<id column="oid" property="oid" jdbcType="INTEGER" />
+			<result column="disid" property="disid" jdbcType="INTEGER" />
+			<result column="hlid" property="hlid" jdbcType="INTEGER" />
+			<result column="unitid" property="unitid" jdbcType="INTEGER" />
+			<result column="fanid" property="fanid" jdbcType="INTEGER" />
+			<result column="owername" property="owername" jdbcType="VARCHAR" />
+			<result column="sex" property="sex" jdbcType="VARCHAR" />
+			<result column="ownerphone" property="ownerphone" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<resultMap type="com.sve.toll.model.Toll" id="selecttoll">
+		<id column="tollid" property="tollid" jdbcType="INTEGER" />
+		<result column="ztype" property="ztype" jdbcType="INTEGER" />
+		<result column="disid" property="disid" jdbcType="INTEGER" />
+		<result column="oid" property="oid" jdbcType="INTEGER" />
+		<result column="fan_id" property="fanId" jdbcType="INTEGER" />
+		<result column="park_id" property="parkId" jdbcType="INTEGER" />
+		<result column="vehicle_id" property="vehicleId" jdbcType="INTEGER" />
+		<result column="priceid" property="priceid" jdbcType="INTEGER" />
+		<result column="chargid" property="chargid" jdbcType="INTEGER" />
+		<result column="priceing" property="priceing" jdbcType="DECIMAL" />
+		<result column="count" property="count" jdbcType="INTEGER" />
+		<result column="subtotal" property="subtotal" jdbcType="DECIMAL" />
+		<result column="youfei" property="youfei" jdbcType="DECIMAL" />
+		<result column="zhina" property="zhina" jdbcType="DECIMAL" />
+		<result column="yuck" property="yuck" jdbcType="DECIMAL" />
+		<result column="sdate" property="sdate" jdbcType="DATE" />
+		<result column="edate" property="edate" jdbcType="DATE" />
+		<result column="bc_id" property="bcId" jdbcType="INTEGER" />
+		<result column="tab_id" property="tabId" jdbcType="INTEGER" />
+		<result column="tem_id" property="temId" jdbcType="INTEGER" />
+		<result column="istongzhi" property="istongzhi" jdbcType="INTEGER" />
+		<result column="uanpaid" property="uanpaid" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<association property="priceproject" javaType="com.sve.toll.model.Priceproject">
+			<id column="priceid" property="priceid" jdbcType="INTEGER" />
+			<result column="pricename" property="pricename" jdbcType="VARCHAR" />
+			<result column="pricetype" property="pricetype" jdbcType="INTEGER" />
+		</association>
+	</resultMap>
+	<resultMap type="com.sve.toll.model.Unpaidbills" id="Baseunpaid"
+		extends="BaseResultMap">
+		<association property="district" javaType="com.sve.datacenter.model.District">
+			<id column="disid" property="disid" jdbcType="INTEGER" />
+			<result column="dname" property="dname" jdbcType="VARCHAR" />
+		</association>
+		<collection property="tolllist" resultMap="selecttoll" />
+	</resultMap>
+	<resultMap type="com.sve.toll.model.Unpaidbills" id="BaseDayinunpaid"
+		extends="unpaiowner">
+		<association property="district" javaType="com.sve.datacenter.model.District">
+			<id column="disid" property="disid" jdbcType="INTEGER" />
+			<result column="dname" property="dname" jdbcType="VARCHAR" />
+		</association>
+		<collection property="tolllist" resultMap="selecttoll" />
+	</resultMap>
+	<resultMap type="com.sve.toll.model.Unpaidbills" id="BaseUnpaidReport">
+	    <id column="unpaid" property="unpaid"  jdbcType="INTEGER" />
+	    <result column="total_yjmoney" property="totalYjmoney" jdbcType="DECIMAL" />
+	    <result column="undate" property="undate" jdbcType="TIMESTAMP" />
+		<association property="district" javaType="com.sve.datacenter.model.District">
+			<id column="disid" property="disid" jdbcType="INTEGER" />
+			<result column="dname" property="dname" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<sql id="Base_Column_List">
+		unpaid, total_money, total_znj, total_yc, total_yh,
+		total_yjmoney, disid,oid, onames,ophone, status, means, isdrop,
+		undate, remark
+	</sql>
+	
+	<select id="selectTuiQt" resultMap="BaseDayinunpaid" parameterType="java.lang.Integer">
+		SELECT u.*,t.*,d.disid,d.dname,t.*,o.oid,o.disid,o.hlid,o.unitid,
+		o.fanid,o.owername,o.sex,o.ownerphone
+		FROM unpaidbills u LEFT JOIN district d ON u.disid=d.disid
+		LEFT JOIN Toll t ON t.uanpaid=u.unpaid LEFT JOIN owners o on o.oid=u.oid
+		LEFT JOIN priceproject p on p.priceid=t.priceid where u.oid=#{oid}
+		and (t.status=1 or t.status=2) order by u.unpaid desc,u.status desc
+	</select>
+	
+	<select id="selectUnpaidReport" parameterType="com.sve.toll.model.Toll"
+	     resultMap="BaseUnpaidReport">
+		SELECT u.unpaid,SUM(u.total_yjmoney)total_yjmoney,d.disid,d.dname FROM unpaidbills u
+		INNER JOIN district d ON d.disid=u.disid WHERE u.status=0 AND u.undate BETWEEN 
+		<choose>
+		<when test="sdate!=null and sdate!=''">
+		    #{sdate}
+		</when><otherwise>
+			u.undate
+		</otherwise>
+		</choose> AND 
+		<choose>
+		<when test="edate!=null and edate!=''">
+		    #{edate}
+		</when><otherwise>
+			u.undate
+		</otherwise>
+		</choose> GROUP BY d.disid
+	</select>
+	<select id="selectUnpaidDisReport" parameterType="com.sve.toll.model.Toll"
+	     resultMap="BaseUnpaidReport">
+	 SELECT u.unpaid,SUM(u.total_yjmoney) AS total_yjmoney,u.undate,d.disid,d.dname FROM unpaidbills u 
+ left JOIN district d ON d.disid=u.disid WHERE u.status=0 
+ AND u.undate BETWEEN 
+		<choose>
+		<when test="sdate!=null and sdate!=''">
+		    #{sdate}
+		</when><otherwise>
+			u.undate
+		</otherwise>
+		</choose> AND <choose>
+		<when test="edate!=null and edate!=''">
+		    #{edate}
+		</when><otherwise>
+			u.undate
+		</otherwise></choose>  AND u.disid=#{disid} GROUP BY u.undate
+	</select>
+	<update id="Upunpidstatus" parameterType="java.lang.Integer">
+		update unpaidbills set
+		status=2 where unpaid=#{unpaid}
+	</update>
+	<select id="selectUnpidTollAll" parameterType="com.sve.toll.model.Toll"
+		resultMap="Baseunpaid">
+		SELECT u.*,t.*,d.disid,d.dname,p.priceid,p.pricename,p.pricetype FROM
+		unpaidbills u LEFT JOIN toll t ON (u.unpaid=t.uanpaid or
+		u.unpaid=t.uanpaid2) left join district d on d.disid=u.disid LEFT join
+		priceproject p on p.priceid=t.priceid LEFT JOIN owners o ON
+		o.oid=t.oid LEFT JOIN housefan
+		f ON f.fanid=t.fan_id LEFT JOIN vehicle v ON v.vehicid=t.vehicle_id
+		LEFT JOIN parkingspace pk ON pk.parkid=t.park_id WHERE 1=1
+		<if test="ztype!=null and ztype!=''">
+			and t.ztype=#{ztype}
+		</if>
+		<if test="disid!=null and disid!=''">
+			and t.disid=#{disid}
+		</if>
+		<if test="priceid!=null and priceid!=''">
+			and t.priceid=#{priceid}
+		</if>
+		<if test="sdate!=null and sdate!=''">
+			and t.sdate=#{sdate}
+		</if>
+		<if test="edate!=null and edate!=''">
+			and t.edate=#{edate}
+		</if>
+		<if test="keyword!=null and keyword!=''">
+			and (o.owername like CONCAT(CONCAT('%',#{keyword}),'%')
+			or f.hnum like CONCAT(CONCAT('%',#{keyword}),'%')
+			or pk.pnum like
+			CONCAT(CONCAT('%',#{keyword}),'%')
+			or v.carnum like
+			CONCAT(CONCAT('%',#{keyword}),'%'))
+		</if>
+		and isdrop=0 order by u.unpaid desc
+	</select>
+	<select id="selectDelAll" parameterType="com.sve.toll.model.Toll"
+		resultMap="unpaiowner">
+		SELECT u.*,o.oid,o.disid,o.hlid,o.unitid,o.fanid,
+		o.owername,o.sex,o.ownerphone FROM unpaidbills u LEFT JOIN owners o ON
+		u.oid=o.oid WHERE 1=1
+		<if test="disid!=null and disid!=''">
+			and t.disid=#{disid}
+		</if>
+		<if test="status!=null and status!=''">
+			and u.status=#{status}
+		</if>
+		<if test="unpaidtype!=null and unpaidtype!=''">
+			and u.means=#{unpaidtype}
+		</if>
+		<if test="sdate!=null and sdate!=''">
+			and t.sdate=#{sdate}
+		</if>
+		<if test="edate!=null and edate!=''">
+			and t.edate=#{edate}
+		</if>
+		<if test="keyword!=null and keyword!=''">
+			and (o.owername like CONCAT(CONCAT('%',#{keyword}),'%')
+			or o.ownerphone like CONCAT(CONCAT('%',#{keyword}),'%'))
+		</if>
+		and isdrop=1 order by u.unpaid desc
+	</select>
+	<select id="selectAll" resultMap="unpaiowner">
+		SELECT
+		u.*,o.oid,o.disid,o.hlid,o.unitid,o.fanid,
+		o.owername,o.sex,o.ownerphone FROM unpaidbills u LEFT JOIN owners o ON
+		u.oid=o.oid WHERE u.isdrop=0 order by u.unpaid desc
+	</select>
+	<select id="selectGaojiAll" parameterType="com.sve.toll.model.Toll"
+		resultMap="unpaiowner">
+		SELECT u.*,o.oid,o.disid,o.hlid,o.unitid,o.fanid,
+		o.owername,o.sex,o.ownerphone FROM unpaidbills u LEFT JOIN owners o ON
+		u.oid=o.oid where 1=1
+		<if test="disid!=null and disid!=''">
+			and u.disid=#{disid}
+		</if>
+		<if test="status!=null and status!=''">
+			and u.status=#{status}
+		</if>
+		<if test="unpaidtype!=null and unpaidtype!=''">
+			and u.means=#{unpaidtype}
+		</if>
+		<if test="sdate!=null and sdate!=''">
+			and t.sdate=#{sdate}
+		</if>
+		<if test="edate!=null and edate!=''">
+			and t.edate=#{edate}
+		</if>
+		<if test="keyword!=null and keyword!=''">
+			and (o.owername like CONCAT(CONCAT('%',#{keyword}),'%')
+			or
+			o.ownerphone like CONCAT(CONCAT('%',#{keyword}),'%'))
+		</if>
+		and u.isdrop=0 ORDER BY u.unpaid desc
+	</select>
+	<select id="selectUnpaids" resultMap="Baseunpaid" parameterType="java.lang.Integer">
+		SELECT u.*,d.disid,d.dname,t.*,p.priceid,p.pricename,p.pricetype FROM
+		unpaidbills u LEFT JOIN district d ON
+		u.disid=d.disid LEFT JOIN Toll t
+		ON t.uanpaid=u.unpaid LEFT JOIN
+		priceproject p on p.priceid=t.priceid
+		where u.unpaid=#{unpaid}
+	</select>
+	<select id="selectYiTuiUnpaids" resultMap="Baseunpaid"
+		parameterType="java.lang.Integer">
+		SELECT
+		u.*,d.disid,d.dname,t.*,p.priceid,p.pricename,p.pricetype FROM
+		unpaidbills u LEFT JOIN district d ON
+		u.disid=d.disid LEFT JOIN Toll t
+		ON t.uanpaid2=u.unpaid LEFT JOIN
+		priceproject p on p.priceid=t.priceid
+		where u.unpaid=#{unpaid} and u.status=1
+	</select>
+	<select id="selectTuiUnpaids" resultMap="Baseunpaid"
+		parameterType="java.lang.Integer">
+		SELECT
+		u.*,d.disid,d.dname,t.*,p.priceid,p.pricename,p.pricetype FROM
+		unpaidbills u LEFT JOIN district d ON
+		u.disid=d.disid LEFT JOIN Toll t
+		ON t.uanpaid=u.unpaid LEFT JOIN
+		priceproject p on p.priceid=t.priceid
+		where u.unpaid=#{unpaid}
+		and t.status=1 order by u.unpaid desc
+	</select>
+	<select id="selectDayinunpaid" resultMap="BaseDayinunpaid"
+		parameterType="java.lang.Integer">
+		SELECT u.*,d.disid,d.dname,t.*,p.priceid,p.pricename,p.pricetype,
+		o.oid,o.disid,o.hlid,o.unitid,o.fanid,o.owername,o.sex,o.ownerphone
+		FROM unpaidbills u LEFT JOIN district d ON u.disid=d.disid
+		LEFT JOIN Toll t ON t.uanpaid=u.unpaid LEFT JOIN owners o on o.oid=u.oid
+		LEFT JOIN priceproject p on p.priceid=t.priceid where u.unpaid=#{unpaid}
+		and (t.status=1 or t.status=2) order by u.unpaid desc
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from unpaidbills
+		where unpaid = #{unpaid,jdbcType=INTEGER}
+	</select>
+	<update id="NoupdateUnpaid" parameterType="java.lang.Integer">
+		update unpaidbills set
+		isdrop=0 where unpaid=#{unpaid}
+	</update>
+	<update id="dropUnpaid" parameterType="java.lang.Integer">
+		update unpaidbills set
+		isdrop=1 where unpaid=#{unpaid}
+	</update>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		update unpaidbills
+		set isdrop=1
+		where unpaid = #{unpaid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.sve.toll.model.Unpaidbills"
+		useGeneratedKeys="true" keyProperty="unpaid">
+		insert into unpaidbills
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="unpaid != null">
+				unpaid,
+			</if>
+			<if test="totalMoney != null">
+				total_money,
+			</if>
+			<if test="totalZnj != null">
+				total_znj,
+			</if>
+			<if test="totalYc != null">
+				total_yc,
+			</if>
+			<if test="totalYh != null">
+				total_yh,
+			</if>
+			<if test="totalYjmoney != null">
+				total_yjmoney,
+			</if>
+			<if test="disid != null">
+				disid,
+			</if>
+			<if test="oid != null">
+				oid,
+			</if>
+			<if test="onames != null">
+				onames,
+			</if>
+			<if test="ophone != null">
+				ophone,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="means != null">
+				means,
+			</if>
+			<if test="isdrop != null">
+				isdrop,
+			</if>
+			<if test="undate != null">
+				undate,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="unpaid != null">
+				#{unpaid,jdbcType=INTEGER},
+			</if>
+			<if test="totalMoney != null">
+				#{totalMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="totalZnj != null">
+				#{totalZnj,jdbcType=DECIMAL},
+			</if>
+			<if test="totalYc != null">
+				#{totalYc,jdbcType=DECIMAL},
+			</if>
+			<if test="totalYh != null">
+				#{totalYh,jdbcType=DECIMAL},
+			</if>
+			<if test="totalYjmoney != null">
+				#{totalYjmoney,jdbcType=DECIMAL},
+			</if>
+			<if test="disid != null">
+				#{disid,jdbcType=INTEGER},
+			</if>
+			<if test="oid != null">
+				#{oid,jdbcType=INTEGER},
+			</if>
+			<if test="onames != null">
+				#{onames,jdbcType=VARCHAR},
+			</if>
+			<if test="ophone != null">
+				#{ophone,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="means != null">
+				#{means,jdbcType=INTEGER},
+			</if>
+			<if test="isdrop != null">
+				#{isdrop,jdbcType=INTEGER},
+			</if>
+			<if test="undate != null">
+				#{undate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.sve.toll.model.Unpaidbills">
+		update unpaidbills
+		<set>
+			<if test="totalMoney != null">
+				total_money = #{totalMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="totalZnj != null">
+				total_znj = #{totalZnj,jdbcType=DECIMAL},
+			</if>
+			<if test="totalYc != null">
+				total_yc = #{totalYc,jdbcType=DECIMAL},
+			</if>
+			<if test="totalYh != null">
+				total_yh = #{totalYh,jdbcType=DECIMAL},
+			</if>
+			<if test="totalYjmoney != null">
+				total_yjmoney = #{totalYjmoney,jdbcType=DECIMAL},
+			</if>
+			<if test="disid != null">
+				disid = #{disid,jdbcType=INTEGER},
+			</if>
+			<if test="oid != null">
+				oid = #{oid,jdbcType=INTEGER},
+			</if>
+			<if test="onames != null">
+				onames = #{onames,jdbcType=VARCHAR},
+			</if>
+			<if test="ophone != null">
+				ophone = #{ophone,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="means != null">
+				means = #{means,jdbcType=INTEGER},
+			</if>
+			<if test="isdrop != null">
+				isdrop = #{isdrop,jdbcType=INTEGER},
+			</if>
+			<if test="undate != null">
+				undate = #{undate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where unpaid = #{unpaid,jdbcType=INTEGER}
+	</update>
+</mapper>

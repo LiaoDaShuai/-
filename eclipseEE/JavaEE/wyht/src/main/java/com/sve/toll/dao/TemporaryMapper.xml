@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.toll.dao.TemporaryMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.toll.model.Temporary" >
+    <id column="temid" property="temid" jdbcType="INTEGER" />
+    <result column="fan_id" property="fanId" jdbcType="INTEGER" />
+    <result column="park_id" property="parkId" jdbcType="INTEGER" />
+    <result column="vehicle_id" property="vehicleId" jdbcType="INTEGER" />
+    <result column="ower_id" property="owerId" jdbcType="INTEGER" />
+    <result column="chargname" property="chargname" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap type="com.sve.toll.model.Temporary" id="BaseTollTem"
+		extends="BaseResultMap">
+		<association javaType="com.sve.datacenter.model.HouseFan" property="housefan">
+			<id column="fanid" property="fanid" jdbcType="INTEGER" />
+			<result column="hnum" property="hnum" jdbcType="VARCHAR" />
+		</association>
+		<association javaType="com.sve.datacenter.model.ParkingSpace" property="parkingspace">
+			<id column="parkid" property="parkid" jdbcType="INTEGER" />
+			<result column="pnum" property="pnum" jdbcType="VARCHAR" />
+		</association>
+		<association property="vehiclemanager" javaType="com.sve.datacenter.model.Vehicle">
+			<id column="vehicid" property="vehicid" jdbcType="INTEGER" />
+		</association>
+		<association property="owners" javaType="com.sve.datacenter.model.Owners">
+			<id column="oid" property="oid" jdbcType="INTEGER" />
+			<result column="owername" property="owername" jdbcType="VARCHAR" />
+			<result column="ownerphone" property="ownerphone" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	
+  <sql id="Base_Column_List" >
+    temid, fan_id, park_id, vehicle_id, ower_id, chargname
+  </sql>
+  <select id="selectByTem" resultMap="BaseTollTem" parameterType="java.lang.Integer">
+		SELECT tem.*,h.fanid,h.hnum,p.parkid,p.pnum,v.vehicid,o.oid,o.owername,o.ownerphone 
+		FROM TEMPORARY tem LEFT JOIN housefan h ON tem.fan_id=h.fanid LEFT JOIN 
+		parkingspace p ON tem.park_id=p.parkid LEFT JOIN vehiclemanager v ON 
+		tem.vehicle_id=v.vehicid LEFT JOIN owners o ON tem.ower_id=o.oid WHERE tem.temid=#{temid}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from temporary
+    where temid = #{temid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from temporary
+    where temid = #{temid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sve.toll.model.Temporary" >
+    insert into temporary (temid, fan_id, park_id, 
+      vehicle_id, ower_id, chargname
+      )
+    values (#{temid,jdbcType=INTEGER}, #{fanId,jdbcType=INTEGER}, #{parkId,jdbcType=INTEGER}, 
+      #{vehicleId,jdbcType=INTEGER}, #{owerId,jdbcType=INTEGER}, #{chargname,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sve.toll.model.Temporary" useGeneratedKeys="true" keyProperty="temid"  >
+    insert into temporary
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="temid != null" >
+        temid,
+      </if>
+      <if test="fanId != 0 " >
+        fan_id,
+      </if>
+      <if test="parkId != null" >
+        park_id,
+      </if>
+      <if test="vehicleId != null" >
+        vehicle_id,
+      </if>
+      <if test="owerId != null" >
+        ower_id,
+      </if>
+      <if test="chargname != null and chargname!=''" >
+        chargname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="temid != null" >
+        #{temid,jdbcType=INTEGER},
+      </if>
+      <if test="fanId != 0" >
+        #{fanId,jdbcType=INTEGER},
+      </if>
+      <if test="parkId != null" >
+        #{parkId,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleId != null" >
+        #{vehicleId,jdbcType=INTEGER},
+      </if>
+      <if test="owerId != null" >
+        #{owerId,jdbcType=INTEGER},
+      </if>
+      <if test="chargname != null and chargname!=''" >
+        #{chargname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.toll.model.Temporary" >
+    update temporary
+    <set >
+      <if test="fanId != null" >
+        fan_id = #{fanId,jdbcType=INTEGER},
+      </if>
+      <if test="parkId != null" >
+        park_id = #{parkId,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleId != null" >
+        vehicle_id = #{vehicleId,jdbcType=INTEGER},
+      </if>
+      <if test="owerId != null" >
+        ower_id = #{owerId,jdbcType=INTEGER},
+      </if>
+      <if test="chargname != null" >
+        chargname = #{chargname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where temid = #{temid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sve.toll.model.Temporary" >
+    update temporary
+    set fan_id = #{fanId,jdbcType=INTEGER},
+      park_id = #{parkId,jdbcType=INTEGER},
+      vehicle_id = #{vehicleId,jdbcType=INTEGER},
+      ower_id = #{owerId,jdbcType=INTEGER},
+      chargname = #{chargname,jdbcType=VARCHAR}
+    where temid = #{temid,jdbcType=INTEGER}
+  </update>
+</mapper>

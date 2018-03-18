@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.staff.dao.NewtypeMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.staff.model.Newtype" >
+    <id column="new_type_id" property="newTypeId" jdbcType="INTEGER" />
+    <result column="new_type_name" property="newTypeName" jdbcType="VARCHAR" />
+    <result column="new_type_remark" property="newTypeRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    new_type_id, new_type_name, new_type_remark
+  </sql>
+  <select id="selectNtAll" resultMap="BaseResultMap">
+      select <include refid="Base_Column_List"/> from newtype
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from newtype
+    where new_type_id = #{newTypeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from newtype
+    where new_type_id = #{newTypeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.staff.model.Newtype" >
+    insert into newtype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="newTypeId != null" >
+        new_type_id,
+      </if>
+      <if test="newTypeName != null" >
+        new_type_name,
+      </if>
+      <if test="newTypeRemark != null" >
+        new_type_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="newTypeId != null" >
+        #{newTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="newTypeName != null" >
+        #{newTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="newTypeRemark != null" >
+        #{newTypeRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.staff.model.Newtype" >
+    update newtype
+    <set >
+      <if test="newTypeName != null" >
+        new_type_name = #{newTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="newTypeRemark != null" >
+        new_type_remark = #{newTypeRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where new_type_id = #{newTypeId,jdbcType=INTEGER}
+  </update>
+</mapper>

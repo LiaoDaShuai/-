@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.lifeservice.dao.FundingDetailsMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.lifeservice.model.FundingDetails" >
+    <id column="funding_id" property="fundingId" jdbcType="INTEGER" />
+    <result column="funding_cou_id" property="fundingCouId" jdbcType="INTEGER" />
+    <result column="funding_price" property="fundingPrice" jdbcType="DECIMAL" />
+    <result column="funding_remark" property="fundingRemark" jdbcType="VARCHAR" />
+    <association property="cer" javaType="com.sve.lifeservice.model.Courier">
+    	<id column="cou_id" property="couId" jdbcType="INTEGER" />
+	    <result column="cou_name" property="couName" jdbcType="VARCHAR" />
+	    <result column="cou_phone" property="couPhone" jdbcType="VARCHAR" />
+	    <result column="cou_expgs_id" property="couExpgsId" jdbcType="INTEGER" />
+	    <result column="cou_balance" property="couBalance" jdbcType="DECIMAL" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    funding_id, funding_cou_id, funding_price, funding_remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List"/>
+    from fundingdetails
+    where funding_id = #{fundingId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from fundingdetails
+    where funding_id = #{fundingId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.lifeservice.model.FundingDetails" >
+    insert into fundingdetails
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fundingId != null" >
+        funding_id,
+      </if>
+      <if test="fundingCouId != null" >
+        funding_cou_id,
+      </if>
+      <if test="fundingPrice != null" >
+        funding_price,
+      </if>
+      <if test="fundingRemark != null" >
+        funding_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fundingId != null" >
+        #{fundingId,jdbcType=INTEGER},
+      </if>
+      <if test="fundingCouId != null" >
+        #{fundingCouId,jdbcType=INTEGER},
+      </if>
+      <if test="fundingPrice != null" >
+        #{fundingPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="fundingRemark != null" >
+        #{fundingRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.lifeservice.model.FundingDetails" >
+    update fundingdetails
+    <set >
+      <if test="fundingCouId != null" >
+        funding_cou_id = #{fundingCouId,jdbcType=INTEGER},
+      </if>
+      <if test="fundingPrice != null" >
+        funding_price = #{fundingPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="fundingRemark != null" >
+        funding_remark = #{fundingRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where funding_id = #{fundingId,jdbcType=INTEGER}
+  </update>
+  <!-- 根据快递员编号查询快递员表和资金明细表 -->
+  <select id="selectA" parameterType="com.sve.lifeservice.model.FundingDetails" resultMap="BaseResultMap">
+	select fd.*,c.* from fundingdetails fd inner join courier c on c.cou_id=fd.funding_cou_id 
+  	<trim prefix="WHERE" prefixOverrides="AND|OR">
+  	fd.funding_cou_id=#{fundingCouId}
+  		<if test="keywords == 1">
+  			and fd.funding_remark='管理员充值'
+  		</if>
+  		<if test="keywords == 2">
+  			and fd.funding_remark='花费'
+  		</if>
+  	</trim>
+  </select>
+  <!-- 根据快递员编号删除资金明细表 -->
+  <delete id="deleteFd" parameterType="java.lang.Integer">
+    delete from fundingdetails where funding_cou_id=#{couId}
+  </delete>
+  
+</mapper>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.staff.dao.EmployeeMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.staff.model.Employee" >
+    <id column="emp_id" property="empId" jdbcType="INTEGER" />
+    <result column="emp_dep_id" property="empDepId" jdbcType="INTEGER" />
+    <result column="emp_post_id" property="empPostId" jdbcType="INTEGER" />
+    <result column="emp_name" property="empName" jdbcType="VARCHAR" />
+    <result column="emp_phone" property="empPhone" jdbcType="VARCHAR" />
+    <result column="emp_email" property="empEmail" jdbcType="VARCHAR" />
+    <result column="emp_photo" property="empPhoto" jdbcType="VARCHAR" />
+    <result column="emp_counts" property="empCounts" jdbcType="INTEGER" />
+    <result column="emp_date" property="empDate" jdbcType="TIMESTAMP" />
+    <result column="emp_remark" property="empRemark" jdbcType="VARCHAR" />
+    <result column="emp_status" property="empStatus" jdbcType="INTEGER" />
+    <result column="emp_pass" property="empPass" jdbcType="VARCHAR" />
+    <!-- 用collection标签 ,也是实体类属性要对应数据库字段-->
+  	<association property="deparement" column="emp_dep_id"
+  	 select="com.sve.staff.dao.DepartmentMapper.selectByPrimaryKey"></association>
+  	 <association property="post" column="emp_post_id"
+  	 select="com.sve.staff.dao.PostMapper.selectByPrimaryKey"></association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    emp_id, emp_dep_id, emp_post_id, emp_name, emp_phone,emp_email,emp_photo, emp_counts, emp_date, emp_remark, 
+    emp_status, emp_pass
+  </sql>
+   <!-- 员工总数 -->
+  <select id="employeeCount" resultType="java.lang.Integer">
+  SELECT COUNT(*) FROM employee
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap"> 
+  		select * from employee order by emp_id desc 
+  </select>
+  <select id="selectDemployeecount" resultType="java.lang.Integer"   parameterType="java.lang.Integer">
+  	select count(*) from employee where  emp_dep_id = #{depId,jdbcType=INTEGER}
+  </select>
+  <select id="selectPostcount" resultType="java.lang.Integer"   parameterType="java.lang.Integer">
+  	select count(*) from employee where  emp_post_id = #{postId,jdbcType=INTEGER}
+  </select>
+   <select id="selectEmployee" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+   		select * from employee where  emp_post_id = #{postId,jdbcType=INTEGER}
+   </select>
+   <select id="selectEmployeeDep" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+   		select * from employee where  emp_dep_id = #{postId,jdbcType=INTEGER}
+   </select>
+  <select id="mohu" resultMap="BaseResultMap" parameterType="com.sve.staff.model.Employee">
+  	select * from employee 
+ 	    <trim prefix="WHERE" prefixOverrides="AND|OR">
+ 	    	<if test="mohu!=null and mohu!=''">
+	 	    and  (emp_name LIKE CONCAT(CONCAT('%', #{mohu}), '%') or emp_phone like 
+	  		CONCAT(CONCAT('%', #{mohu}), '%')) 
+  			</if>
+  			<if test="depmohu!=null and depmohu!=''">
+  			and  (emp_dep_id LIKE CONCAT(CONCAT('%',#{depmohu}),'%') ) 
+  			</if>
+  		</trim>
+  	order by emp_id desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from employee
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from employee
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.staff.model.Employee" >
+    insert into employee
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="empId != null" >
+        emp_id,
+      </if>
+      <if test="empDepId != null" >
+        emp_dep_id,
+      </if>
+      <if test="empPostId != null" >
+        emp_post_id,
+      </if>
+      <if test="empName != null" >
+        emp_name,
+      </if>
+      <if test="empPhone != null" >
+        emp_phone,
+      </if>
+      <if test="empEmail != null" >
+        emp_email,
+      </if>
+      <if test="empPhoto != null" >
+        emp_photo,
+      </if>
+      <if test="empCounts != null" >
+        emp_counts,
+      </if>
+      <if test="empDate != null" >
+        emp_date,
+      </if>
+      <if test="empRemark != null" >
+        emp_remark,
+      </if>
+      <if test="empStatus != null" >
+        emp_status,
+      </if>
+      <if test="empPass != null" >
+        emp_pass,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="empId != null" >
+        #{empId,jdbcType=INTEGER},
+      </if>
+      <if test="empDepId != null" >
+        #{empDepId,jdbcType=INTEGER},
+      </if>
+      <if test="empPostId != null" >
+        #{empPostId,jdbcType=INTEGER},
+      </if>
+      <if test="empName != null" >
+        #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="empPhone != null" >
+        #{empPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="empEmail != null" >
+        #{empEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="empPhoto != null" >
+        #{empPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="empCounts != null" >
+        #{empCounts,jdbcType=INTEGER},
+      </if>
+      <if test="empDate != null" >
+        #{empDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="empRemark != null" >
+        #{empRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="empStatus != null" >
+        #{empStatus,jdbcType=INTEGER},
+      </if>
+      <if test="empPass != null" >
+        #{empPass,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.staff.model.Employee" >
+    update employee
+    <set >
+      <if test="empDepId != null" >
+        emp_dep_id = #{empDepId,jdbcType=INTEGER},
+      </if>
+      <if test="empPostId != null" >
+        emp_post_id = #{empPostId,jdbcType=INTEGER},
+      </if>
+      <if test="empName != null" >
+        emp_name = #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="empPhone != null" >
+        emp_phone = #{empPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="empEmail != null" >
+        emp_email = #{empEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="empPhoto != null" >
+        emp_photo = #{empPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="empCounts != null" >
+        emp_counts = #{empCounts,jdbcType=INTEGER},
+      </if>
+      <if test="empDate != null" >
+        emp_date = #{empDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="empRemark != null" >
+        emp_remark = #{empRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="empStatus != null" >
+        emp_status = #{empStatus,jdbcType=INTEGER},
+      </if>
+      <if test="empPass != null" >
+        emp_pass = #{empPass,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where emp_id = #{empId,jdbcType=INTEGER}
+  </update>
+</mapper>

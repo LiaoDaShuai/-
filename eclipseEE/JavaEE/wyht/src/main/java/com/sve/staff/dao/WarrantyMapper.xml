@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.staff.dao.WarrantyMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.staff.model.Warranty" >
+    <id column="war_id" property="warId" jdbcType="INTEGER" />
+    <result column="cmp_owners_oid" property="cmpOwnersOid" jdbcType="INTEGER" />
+    <result column="war_house_id" property="warHouseId" jdbcType="INTEGER" />
+    <result column="wartype_id" property="wartypeId" jdbcType="INTEGER" />
+    <result column="warservice_id" property="warserviceId" jdbcType="INTEGER" />
+    <result column="war_content" property="warContent" jdbcType="VARCHAR" />
+    <result column="war_date" property="warDate" jdbcType="TIMESTAMP" />
+    <result column="war_status" property="warStatus" jdbcType="INTEGER" />
+    <result column="war_chulidate" property="warChulidate" jdbcType="TIMESTAMP" />
+    <result column="war_material" property="warMaterial" jdbcType="DOUBLE" />
+    <result column="war_upkeep" property="warUpkeep" jdbcType="DOUBLE" />
+    <result column="war_ispay" property="warIspay" jdbcType="INTEGER" />
+    <result column="war_paydate" property="warPaydate" jdbcType="TIMESTAMP" />
+    <result column="war_img" property="warImg" jdbcType="VARCHAR" />
+    <association property="wartype" column="wartype_id" 
+     select="com.sve.staff.dao.WartypeMapper.selectByPrimaryKey"></association>
+     <association property="owners" column="cmp_owners_oid"
+    select="com.sve.datacenter.dao.OwnersMapper.selectByPrimaryKey"></association>
+    <association property="emp" column="warservice_id" 
+    select="com.sve.staff.dao.EmployeeMapper.selectByPrimaryKey"></association>
+  </resultMap>
+  <resultMap type="com.sve.datacenter.model.HouseFan" id="getHnum">
+  	<id column="fanid" property="fanid" jdbcType="INTEGER" />
+  	<result column="hnum" property="hnum" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    war_id, cmp_owners_oid,war_house_id, wartype_id, warservice_id, war_content, war_date, war_status, 
+    war_chulidate, war_material, war_upkeep, war_ispay, war_paydate,war_img
+  </sql>
+  <!-- 根据业主id查询所有房间 -->
+  <select id="selectHNum" parameterType="java.lang.Integer" resultMap="getHnum">
+  SELECT hf.fanid,hf.hnum FROM ban_owner bo INNER JOIN housefan hf ON hf.fanid=bo.house_id WHERE bo.owner_id=#{ownerid} 
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" resultType="com.sve.staff.model.Warranty">
+  	select <include refid="Base_Column_List"/> from  warranty
+  		<trim prefix="WHERE" prefixOverrides="AND|OR" >
+  			<if test="warStatus!=null and warStatus!='' "  >
+  				and  (war_status LIKE CONCAT(CONCAT('%',#{warStatus}),'%') ) 	 	
+  			</if>
+  			<if test=" warContent!=null and warContent!='' "  >
+  				and  (war_content LIKE CONCAT(CONCAT('%',#{warContent}),'%') ) 	 	
+  			</if>
+  			<if test="wartypeId!=null and wartypeId!='' "  >
+  				and  (wartype_id LIKE CONCAT(CONCAT('%',#{wartypeId}),'%') ) 	 	
+  			</if>
+  		</trim>
+	 order by war_id desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from warranty
+    where war_id = #{warId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from warranty
+    where war_id = #{warId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.staff.model.Warranty" >
+    insert into warranty
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="warId != null" >
+        war_id,
+      </if>
+      <if test="warHouseId != null">
+       war_house_id,
+      </if>
+      <if test="cmpOwnersOid != null" >
+        cmp_owners_oid,
+      </if>
+      <if test="wartypeId != null" >
+        wartype_id,
+      </if>
+      <if test="warserviceId != null" >
+        warservice_id,
+      </if>
+      <if test="warContent != null" >
+        war_content,
+      </if>
+      <if test="warDate != null" >
+        war_date,
+      </if>
+      <if test="warStatus != null" >
+        war_status,
+      </if>
+      <if test="warChulidate != null" >
+        war_chulidate,
+      </if>
+      <if test="warMaterial != null" >
+        war_material,
+      </if>
+      <if test="warUpkeep != null" >
+        war_upkeep,
+      </if>
+      <if test="warIspay != null" >
+        war_ispay,
+      </if>
+      <if test="warPaydate != null" >
+        war_paydate,
+      </if>
+       <if test="warImg != null" >
+        war_img,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="warId != null" >
+        #{warId,jdbcType=INTEGER},
+      </if>
+      <if test="warHouseId != null">
+       #{warHouseId,jdbcType=INTEGER},
+      </if>
+      <if test="cmpOwnersOid != null" >
+        #{cmpOwnersOid,jdbcType=INTEGER},
+      </if>
+      <if test="wartypeId != null" >
+        #{wartypeId,jdbcType=INTEGER},
+      </if>
+      <if test="warserviceId != null" >
+        #{warserviceId,jdbcType=INTEGER},
+      </if>
+      <if test="warContent != null" >
+        #{warContent,jdbcType=VARCHAR},
+      </if>
+      <if test="warDate != null" >
+        #{warDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="warStatus != null" >
+        #{warStatus,jdbcType=INTEGER},
+      </if>
+      <if test="warChulidate != null" >
+        #{warChulidate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="warMaterial != null" >
+        #{warMaterial,jdbcType=DOUBLE},
+      </if>
+      <if test="warUpkeep != null" >
+        #{warUpkeep,jdbcType=DOUBLE},
+      </if>
+      <if test="warIspay != null" >
+        #{warIspay,jdbcType=INTEGER},
+      </if>
+      <if test="warPaydate != null" >
+        #{warPaydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="warImg != null" >
+        #{warImg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.staff.model.Warranty" >
+    update warranty
+    <set >
+      <if test="cmpOwnersOid != null" >
+        cmp_owners_oid = #{cmpOwnersOid,jdbcType=INTEGER},
+      </if>
+      <if test="warHouseId != null">
+       war_house_id = #{warHouseId,jdbcType=INTEGER},
+      </if>
+      <if test="wartypeId != null" >
+        wartype_id = #{wartypeId,jdbcType=INTEGER},
+      </if>
+      <if test="warserviceId != null" >
+        warservice_id = #{warserviceId,jdbcType=INTEGER},
+      </if>
+      <if test="warContent != null" >
+        war_content = #{warContent,jdbcType=VARCHAR},
+      </if>
+      <if test="warDate != null" >
+        war_date = #{warDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="warStatus != null" >
+        war_status = #{warStatus,jdbcType=INTEGER},
+      </if>
+      <if test="warChulidate != null" >
+        war_chulidate = #{warChulidate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="warMaterial != null" >
+        war_material = #{warMaterial,jdbcType=DOUBLE},
+      </if>
+      <if test="warUpkeep != null" >
+        war_upkeep = #{warUpkeep,jdbcType=DOUBLE},
+      </if>
+      <if test="warIspay != null" >
+        war_ispay = #{warIspay,jdbcType=INTEGER},
+      </if>
+      <if test="warPaydate != null" >
+        war_paydate = #{warPaydate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where war_id = #{warId,jdbcType=INTEGER}
+  </update>
+</mapper>

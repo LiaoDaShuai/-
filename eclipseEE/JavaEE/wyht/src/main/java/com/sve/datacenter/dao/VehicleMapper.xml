@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.datacenter.dao.VehicleMapper" >
+  <resultMap id="BaseResultMap" type="com.sve.datacenter.model.Vehicle" >
+    <id column="vehicid" property="vehicid" jdbcType="INTEGER" />
+    <result column="disid" property="disid" jdbcType="INTEGER" />
+    <result column="parkid" property="parkid" jdbcType="INTEGER" />
+    <result column="kanum" property="kanum" jdbcType="VARCHAR" />
+    <result column="cname" property="cname" jdbcType="VARCHAR" />
+    <result column="cphone" property="cphone" jdbcType="VARCHAR" />
+    <result column="carnum" property="carnum" jdbcType="VARCHAR" />
+    <result column="carpai" property="carpai" jdbcType="DECIMAL" />
+    <result column="tollcount" property="tollcount" jdbcType="INTEGER" />
+    <result column="carxing" property="carxing" jdbcType="VARCHAR" />
+    <result column="carcolor" property="carcolor" jdbcType="VARCHAR" />
+    <result column="carqq" property="carqq" jdbcType="VARCHAR" />
+    <result column="carweixin" property="carweixin" jdbcType="VARCHAR" />
+    <result column="caremail" property="caremail" jdbcType="VARCHAR" />
+    <result column="homephone" property="homephone" jdbcType="VARCHAR" />
+    <result column="carphoto" property="carphoto" jdbcType="VARCHAR" />
+    <result column="jiazhao" property="jiazhao" jdbcType="VARCHAR" />
+    <result column="drivingphoto" property="drivingphoto" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <association property="dis" column="disid" select="com.sve.datacenter.dao.HouseLouMapper.getDis">
+		<id column="disid" property="disid" jdbcType="INTEGER"/>
+		<result column="dname" property="dname" jdbcType="VARCHAR"/>
+		<result column="prov" property="prov" jdbcType="VARCHAR"/>
+		<result column="city" property="city" jdbcType="VARCHAR"/>
+		<result column="dist" property="dist" jdbcType="VARCHAR"/>
+		<result column="address" property="address" jdbcType="VARCHAR"/>
+		<result column="customerp" property="customerp" jdbcType="VARCHAR"/>
+		<result column="fperson" property="fperson" jdbcType="VARCHAR"/>
+		<result column="fphone" property="fphone" jdbcType="VARCHAR"/>
+		<result column="logo" property="logo" jdbcType="VARCHAR"/>
+		<result column="description" property="description" jdbcType="VARCHAR"/>
+		<result column="zarea" property="zarea" jdbcType="DECIMAL"/>
+		<result column="jarea" property="jarea" jdbcType="DECIMAL"/>
+		<result column="garea" property="garea" jdbcType="DECIMAL"/>
+		<result column="larea" property="larea" jdbcType="DECIMAL"/>
+		<result column="carea" property="carea" jdbcType="DECIMAL"/>
+		<result column="housecount" property="housecount" jdbcType="INTEGER"/>
+		<result column="carcount" property="carcount" jdbcType="INTEGER"/>
+		<result column="status" property="status" jdbcType="INTEGER"/>
+		<result column="remark" property="remark" jdbcType="VARCHAR"/>
+	</association>
+	<association property="park" column="parkid" select="getPks">
+		<id column="parkid" jdbcType="INTEGER" property="parkid" />
+    	<result column="pnum" jdbcType="VARCHAR" property="pnum" />
+	</association>
+  </resultMap>
+  <resultMap id="BaseVehicParkMap" extends="BaseResultMap" type="com.sve.datacenter.model.Vehicle">
+    <association property="park" javaType="com.sve.datacenter.model.ParkingSpace">
+    	<id column="parkid" jdbcType="INTEGER" property="parkid" />
+    	<result column="pnum" jdbcType="VARCHAR" property="pnum" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    vehicid, disid, parkid, kanum, cname, cphone, carnum, carpai, tollcount, carxing, carcolor, 
+    carqq, carweixin, caremail, homephone, carphoto, jiazhao, drivingphoto, remark
+  </sql>
+  <select id="selectVehicle" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+      select <include refid="Base_Column_List" /> from vehicle where parkid=#{parkid}
+  </select>
+  <select id="selectcnum" resultMap="BaseResultMap" parameterType="java.lang.String">
+      select <include refid="Base_Column_List"/> from vehicle where carnum=#{carnum}
+  </select>
+  <update id="updateVehicChargnum" parameterType="java.lang.Integer" >
+      update vehicle set tollcount=tollcount+1 where vehicid=#{vehicid}
+  </update>
+  <update id="updateVehicChargJnum" parameterType="java.lang.Integer" >
+      update vehicle set tollcount=tollcount-1 where vehicid=#{vehicid}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseVehicParkMap" parameterType="java.lang.Integer" >
+    select v.*,p.parkid,p.pnum
+    from vehicle v inner join parkingspace p on v.parkid=p.parkid
+    where v.vehicid = #{vehicid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from vehicle
+    where vehicid = #{vehicid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.sve.datacenter.model.Vehicle" >
+    insert into vehicle
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="vehicid != null" >
+        vehicid,
+      </if>
+      <if test="disid != null" >
+        disid,
+      </if>
+     <if test="parkid != null">
+      	parkid,
+      </if>
+      <if test="kanum != null" >
+        kanum,
+      </if>
+      <if test="cname != null" >
+        cname,
+      </if>
+      <if test="cphone != null" >
+        cphone,
+      </if>
+      <if test="carnum != null" >
+        carnum,
+      </if>
+      <if test="carpai != null" >
+        carpai,
+      </if>
+      <if test="tollcount != null" >
+        tollcount,
+      </if>
+      <if test="carxing != null" >
+        carxing,
+      </if>
+      <if test="carcolor != null" >
+        carcolor,
+      </if>
+      <if test="carqq != null" >
+        carqq,
+      </if>
+      <if test="carweixin != null" >
+        carweixin,
+      </if>
+      <if test="caremail != null" >
+        caremail,
+      </if>
+      <if test="homephone != null" >
+        homephone,
+      </if>
+      <if test="carphoto != null" >
+        carphoto,
+      </if>
+      <if test="jiazhao != null" >
+        jiazhao,
+      </if>
+      <if test="drivingphoto != null" >
+        drivingphoto,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="vehicid != null" >
+        #{vehicid,jdbcType=INTEGER},
+      </if>
+      <if test="disid != null" >
+        #{disid,jdbcType=INTEGER},
+      </if>
+      <if test="parkid != null">
+      	#{parkid,jdbcType=INTEGER},
+      </if>
+      <if test="kanum != null" >
+        #{kanum,jdbcType=VARCHAR},
+      </if>
+      <if test="cname != null" >
+        #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="cphone != null" >
+        #{cphone,jdbcType=VARCHAR},
+      </if>
+      <if test="carnum != null" >
+        #{carnum,jdbcType=VARCHAR},
+      </if>
+      <if test="carpai != null" >
+        #{carpai,jdbcType=DECIMAL},
+      </if>
+      <if test="tollcount != null" >
+        #{tollcount,jdbcType=INTEGER},
+      </if>
+      <if test="carxing != null" >
+        #{carxing,jdbcType=VARCHAR},
+      </if>
+      <if test="carcolor != null" >
+        #{carcolor,jdbcType=VARCHAR},
+      </if>
+      <if test="carqq != null" >
+        #{carqq,jdbcType=VARCHAR},
+      </if>
+      <if test="carweixin != null" >
+        #{carweixin,jdbcType=VARCHAR},
+      </if>
+      <if test="caremail != null" >
+        #{caremail,jdbcType=VARCHAR},
+      </if>
+      <if test="homephone != null" >
+        #{homephone,jdbcType=VARCHAR},
+      </if>
+      <if test="carphoto != null" >
+        #{carphoto,jdbcType=VARCHAR},
+      </if>
+      <if test="jiazhao != null" >
+        #{jiazhao,jdbcType=VARCHAR},
+      </if>
+      <if test="drivingphoto != null" >
+        #{drivingphoto,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.datacenter.model.Vehicle" >
+    update vehicle
+    <set >
+      <if test="disid != null" >
+        disid = #{disid,jdbcType=INTEGER},
+      </if>
+      <if test="parkid != null">
+      	parkid = #{parkid,jdbcType=INTEGER},
+      </if>
+      <if test="kanum != null" >
+        kanum = #{kanum,jdbcType=VARCHAR},
+      </if>
+      <if test="cname != null" >
+        cname = #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="cphone != null" >
+        cphone = #{cphone,jdbcType=VARCHAR},
+      </if>
+      <if test="carnum != null" >
+        carnum = #{carnum,jdbcType=VARCHAR},
+      </if>
+      <if test="carpai != null" >
+        carpai = #{carpai,jdbcType=DECIMAL},
+      </if>
+      <if test="tollcount != null" >
+        tollcount = #{tollcount,jdbcType=INTEGER},
+      </if>
+      <if test="carxing != null" >
+        carxing = #{carxing,jdbcType=VARCHAR},
+      </if>
+      <if test="carcolor != null" >
+        carcolor = #{carcolor,jdbcType=VARCHAR},
+      </if>
+      <if test="carqq != null" >
+        carqq = #{carqq,jdbcType=VARCHAR},
+      </if>
+      <if test="carweixin != null" >
+        carweixin = #{carweixin,jdbcType=VARCHAR},
+      </if>
+      <if test="caremail != null" >
+        caremail = #{caremail,jdbcType=VARCHAR},
+      </if>
+      <if test="homephone != null" >
+        homephone = #{homephone,jdbcType=VARCHAR},
+      </if>
+      <if test="carphoto != null" >
+        carphoto = #{carphoto,jdbcType=VARCHAR},
+      </if>
+      <if test="jiazhao != null" >
+        jiazhao = #{jiazhao,jdbcType=VARCHAR},
+      </if>
+      <if test="drivingphoto != null" >
+        drivingphoto = #{drivingphoto,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where vehicid = #{vehicid,jdbcType=INTEGER}
+  </update>
+  <!-- 根据pnum查询车位表 -->
+  <select id="getPks" parameterType="com.sve.datacenter.model.ParkingSpace" resultType="com.sve.datacenter.model.ParkingSpace">
+	select * from parkingspace where parkid=#{parkid}
+  </select>
+  <!-- 查询全部 -->
+  <select id="selectA" resultMap="BaseResultMap">
+  	select * from vehicle order by vehicid desc
+  </select>
+  <!-- 模糊查询 -->
+  <select id="selectAll" parameterType="com.sve.datacenter.model.Vehicle" resultMap="BaseResultMap">
+  	select * from vehicle
+  	<trim prefix="WHERE" prefixOverrides="AND|OR ">
+  		<if test="disid != null and disid!=0">
+  		and disid=#{disid}
+  		</if>
+  		<if test="parkid != null and parkid!=0">
+  			and parkid=#{parkid}
+  		</if>
+  		<if test="vehicid != null and vehicid!=''">
+  		and vehicid=#{vehicid}
+  		</if>
+  		<if test="keywords != null and keywords != ''">
+  		and (kanum like concat('%',#{keywords},'%') or
+  			cname like concat('%',#{keywords},'%') or
+  			cphone like concat('%',#{keywords},'%') or
+  			carnum like concat('%',#{keywords},'%'))
+  		</if>
+  	</trim> 
+  	order by vehicid desc
+  </select>
+  <!-- 批量删除 -->
+  <delete id="batch_deletion" parameterType="int">
+  	delete from vehicle where vehicid in
+  	<foreach collection="array" open="(" separator="," close=")" item="caritem">
+  	#{vehicid}
+  	</foreach>
+  </delete>
+  <!-- 批量导入车辆 -->
+  <insert id="insertBatch" parameterType="java.util.List">
+	insert into vehicle(disid, parkid, kanum, cname, cphone, carnum, carpai, carxing, carcolor, carqq, carweixin, caremail, homephone, remark) values
+	<foreach collection="list" item="item" index="index" separator=",">
+	(#{item.disid}, #{item.parkid}, #{item.kanum}, #{item.cname}, #{item.cphone}, #{item.carnum}, #{item.carpai}, #{item.carxing}, #{item.carcolor}, #{item.carqq}, #{item.carweixin}, #{item.caremail}, #{item.homephone}, #{item.remark})
+    </foreach>
+  </insert>
+  <!-- 快速搜索 -->
+  <select id="quickFind" parameterType="java.lang.String" resultMap="BaseResultMap">
+  SELECT <include refid="Base_Column_List" /> FROM vehicle WHERE carnum like '%'#{_parameter}'%'
+  </select>
+  <!-- 查询总车辆 -->
+  <select id="carCount" resultType="java.lang.Integer">
+  SELECT COUNT(*) FROM vehicle
+  </select>
+</mapper>

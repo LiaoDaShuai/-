@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sve.datacenter.dao.OwnersMapper">
+	<resultMap id="BaseResultMap" type="com.sve.datacenter.model.Owners">
+		<id column="oid" property="oid" jdbcType="INTEGER" />
+		<result column="disid" property="disid" jdbcType="INTEGER" />
+		<result column="hlid" property="hlid" jdbcType="INTEGER" />
+		<result column="unitid" property="unitid" jdbcType="INTEGER" />
+		<result column="fanid" property="fanid" jdbcType="INTEGER" />
+		<result column="cardid" property="cardid" jdbcType="INTEGER" />
+		<result column="ownerphone" property="ownerphone" jdbcType="VARCHAR" />
+		<result column="owername" property="owername" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="INTEGER" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="homephone" property="homephone" jdbcType="VARCHAR" />
+		<result column="onum" property="onum" jdbcType="VARCHAR" />
+		<result column="mdate" property="mdate" jdbcType="DATE" />
+		<result column="ophoto" property="ophoto" jdbcType="VARCHAR" />
+		<result column="qqnum" property="qqnum" jdbcType="VARCHAR" />
+		<result column="weixin" property="weixin" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="emergency" property="emergency" jdbcType="VARCHAR" />
+		<result column="emergphone" property="emergphone" jdbcType="VARCHAR" />
+		<result column="nation" property="nation" jdbcType="VARCHAR" />
+		<result column="political" property="political" jdbcType="VARCHAR" />
+		<result column="ishunyin" property="ishunyin" jdbcType="VARCHAR" />
+		<result column="idcard" property="idcard" jdbcType="VARCHAR" />
+		<result column="cardphoto" property="cardphoto" jdbcType="VARCHAR" />
+		<result column="hujiaddress" property="hujiaddress" jdbcType="VARCHAR" />
+		<result column="temporarynum" property="temporarynum" jdbcType="VARCHAR" />
+		<result column="livetype" property="livetype" jdbcType="VARCHAR" />
+		<result column="petxinxi" property="petxinxi" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="logincount" property="logincount" jdbcType="INTEGER" />
+		<result column="opass" property="opass" jdbcType="VARCHAR" />
+		<association property="dis" column="disid"
+			select="com.sve.datacenter.dao.HouseLouMapper.getDis">
+			<id column="disid" property="disid" jdbcType="INTEGER" />
+			<result column="dname" property="dname" jdbcType="VARCHAR" />
+			<result column="prov" property="prov" jdbcType="VARCHAR" />
+			<result column="city" property="city" jdbcType="VARCHAR" />
+			<result column="dist" property="dist" jdbcType="VARCHAR" />
+			<result column="address" property="address" jdbcType="VARCHAR" />
+			<result column="customerp" property="customerp" jdbcType="VARCHAR" />
+			<result column="fperson" property="fperson" jdbcType="VARCHAR" />
+			<result column="fphone" property="fphone" jdbcType="VARCHAR" />
+			<result column="logo" property="logo" jdbcType="VARCHAR" />
+			<result column="description" property="description" jdbcType="VARCHAR" />
+			<result column="zarea" property="zarea" jdbcType="DECIMAL" />
+			<result column="jarea" property="jarea" jdbcType="DECIMAL" />
+			<result column="garea" property="garea" jdbcType="DECIMAL" />
+			<result column="larea" property="larea" jdbcType="DECIMAL" />
+			<result column="carea" property="carea" jdbcType="DECIMAL" />
+			<result column="housecount" property="housecount" jdbcType="INTEGER" />
+			<result column="carcount" property="carcount" jdbcType="INTEGER" />
+			<result column="status" property="status" jdbcType="INTEGER" />
+			<result column="remark" property="remark" jdbcType="VARCHAR" />
+		</association>
+		<association property="hl" column="hlid"
+			select="com.sve.datacenter.dao.UnitMapper.getHl">
+			<id column="hlid" property="hlid" jdbcType="INTEGER" />
+			<result column="disid" property="disid" jdbcType="INTEGER" />
+			<result column="floorname" property="floorname" jdbcType="VARCHAR" />
+			<result column="units" property="units" jdbcType="INTEGER" />
+			<result column="cengcount" property="cengcount" jdbcType="INTEGER" />
+			<result column="floortype" property="floortype" jdbcType="VARCHAR" />
+			<result column="structure" property="structure" jdbcType="VARCHAR" />
+			<result column="orientation" property="orientation" jdbcType="VARCHAR" />
+			<result column="remark" property="remark" jdbcType="VARCHAR" />
+			<result column="status" property="status" jdbcType="INTEGER" />
+		</association>
+		<association property="ut" column="unitid"
+			select="com.sve.datacenter.dao.HouseFanMapper.getUt">
+			<id column="unitid" property="unitid" jdbcType="INTEGER" />
+			<result column="unitname" property="unitname" jdbcType="VARCHAR" />
+			<result column="floorcount" property="floorcount" jdbcType="INTEGER" />
+			<result column="disid" property="disid" jdbcType="INTEGER" />
+			<result column="hlid" property="hlid" jdbcType="INTEGER" />
+		</association>
+	</resultMap>
+	<resultMap type="com.sve.datacenter.model.Owners" id="BaseFanid">
+		<id column="oid" property="oid" jdbcType="INTEGER" />
+		<result column="disid" property="disid" jdbcType="INTEGER" />
+		<result column="hlid" property="hlid" jdbcType="INTEGER" />
+		<result column="unitid" property="unitid" jdbcType="INTEGER" />
+		<result column="fanid" property="fanid" jdbcType="INTEGER" />
+		<result column="owername" property="owername" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="ownerphone" property="ownerphone" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap type="com.sve.datacenter.model.Owners" id="BaseReport">
+		<id column="oid" property="oid" jdbcType="INTEGER" />
+		<result column="STATUS" property="status" jdbcType="INTEGER" />
+		<result column="cardid" property="cardid" jdbcType="INTEGER" />
+		<!-- 用于报表，暂时把hlid用作count -->
+		<result column="hlid" property="hlid" jdbcType="INTEGER" />
+		<association property="dis" javaType="com.sve.datacenter.model.District">
+			<id column="disid" property="disid" jdbcType="INTEGER" />
+			<result column="dname" property="dname" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<sql id="Base_Column_List">
+		oid, disid, hlid, unitid, fanid, cardid, ownerphone,
+		owername, STATUS,sex, homephone,
+		onum, mdate, ophoto, qqnum, weixin,
+		email, emergency, emergphone, nation,political,
+		ishunyin, idcard,
+		cardphoto, hujiaddress, temporarynum, livetype, petxinxi,
+		remark,logincount, opass
+	</sql>
+	<!-- 用于登陆 -->
+	<select id="selectPasslogin" resultMap="BaseFanid" parameterType="com.sve.datacenter.model.Owners">
+	    SELECT * FROM OWNERS WHERE ownerphone=#{ownerphone} and opass=#{opass} and status=2
+	</select>
+	<!-- 修改密码 -->
+	<update id="updateowpass" parameterType="com.sve.datacenter.model.Owners">
+	    update owners set opass=#{opass} where oid=#{oid}
+	</update>
+	<select id="selectOwnerDisReport" resultMap="BaseReport">
+	    SELECT o.oid,COUNT(*) AS hlid,d.disid,d.dname FROM owners o LEFT JOIN district d
+	     ON o.disid=d.disid GROUP BY o.disid
+	</select>
+	<select id="selectPhone" resultMap="BaseFanid" parameterType="java.lang.String">
+	    SELECT * FROM OWNERS WHERE ownerphone=#{ownerphone}
+	</select>
+	<select id="selectOwnerDisidReport" parameterType="java.lang.Integer" resultMap="BaseReport">
+		SELECT o.oid,(SELECT
+		COUNT(*) FROM owners o2 WHERE o2.disid=#{disid} AND o2.status=o.status AND
+		o2.cardid=o.cardid) hlid,o.cardid,o.status,d.disid,d.dname FROM
+		owners o INNER JOIN district d ON d.disid=o.disid WHERE o.disid=#{disid} AND
+		(o.status=0 OR o.status=2) GROUP BY o.STATUS,o.cardid
+	</select>
+	<select id="selectDisid" resultMap="BaseFanid" parameterType="java.lang.Integer">
+		select o.oid,o.disid,o.hlid,o.unitid,o.fanid,
+		o.owername,o.sex,o.ownerphone from owners o where o.disid=#{disid}
+	</select>
+	<select id="selectOwerid" resultMap="BaseFanid" parameterType="java.lang.Integer">
+		select o.oid,o.disid,o.hlid,o.unitid,o.fanid,
+		o.owername,o.sex,o.ownerphone from owners o where oid=#{oid}
+	</select>
+	<select id="selectFanid" resultMap="BaseFanid" parameterType="java.lang.Integer">
+		select o.oid,o.disid,o.hlid,o.unitid,o.fanid,
+		o.owername,o.sex,o.ownerphone from owners o where fanid=#{fanid}
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from owners
+		where oid = #{oid,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from owners
+		where oid = #{oid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective" parameterType="com.sve.datacenter.model.Owners" useGeneratedKeys="true" keyProperty="oid">
+		insert into owners
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="oid != null">
+				oid,
+			</if>
+			<if test="disid != null">
+				disid,
+			</if>
+			<if test="hlid != null">
+				hlid,
+			</if>
+			<if test="unitid != null">
+				unitid,
+			</if>
+			<if test="fanid != null">
+				fanid,
+			</if>
+			<if test="cardid != null">
+				cardid,
+			</if>
+			<if test="ownerphone != null">
+				ownerphone,
+			</if>
+			<if test="owername != null">
+				owername,
+			</if>
+			<if test="status != null">
+				STATUS,
+			</if>
+			<if test="sex != null">
+				sex,
+			</if>
+			<if test="homephone != null">
+				homephone,
+			</if>
+			<if test="onum != null">
+				onum,
+			</if>
+			<if test="mdate != null">
+				mdate,
+			</if>
+			<if test="ophoto != null">
+				ophoto,
+			</if>
+			<if test="qqnum != null">
+				qqnum,
+			</if>
+			<if test="weixin != null">
+				weixin,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="emergency != null">
+				emergency,
+			</if>
+			<if test="emergphone != null">
+				emergphone,
+			</if>
+			<if test="nation != null">
+				nation,
+			</if>
+			<if test="political != null">
+				political,
+			</if>
+			<if test="ishunyin != null">
+				ishunyin,
+			</if>
+			<if test="idcard != null">
+				idcard,
+			</if>
+			<if test="cardphoto != null">
+				cardphoto,
+			</if>
+			<if test="hujiaddress != null">
+				hujiaddress,
+			</if>
+			<if test="temporarynum != null">
+				temporarynum,
+			</if>
+			<if test="livetype != null">
+				livetype,
+			</if>
+			<if test="petxinxi != null">
+				petxinxi,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="logincount != null">
+				logincount,
+			</if>
+			<if test="opass != null">
+				opass,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="oid != null">
+				#{oid,jdbcType=INTEGER},
+			</if>
+			<if test="disid != null">
+				#{disid,jdbcType=INTEGER},
+			</if>
+			<if test="hlid != null">
+				#{hlid,jdbcType=INTEGER},
+			</if>
+			<if test="unitid != null">
+				#{unitid,jdbcType=INTEGER},
+			</if>
+			<if test="fanid != null">
+				#{fanid,jdbcType=INTEGER},
+			</if>
+			<if test="cardid != null">
+				#{cardid,jdbcType=INTEGER},
+			</if>
+			<if test="ownerphone != null">
+				#{ownerphone,jdbcType=VARCHAR},
+			</if>
+			<if test="owername != null">
+				#{owername,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="sex != null">
+				#{sex,jdbcType=VARCHAR},
+			</if>
+			<if test="homephone != null">
+				#{homephone,jdbcType=VARCHAR},
+			</if>
+			<if test="onum != null">
+				#{onum,jdbcType=VARCHAR},
+			</if>
+			<if test="mdate != null">
+				#{mdate,jdbcType=DATE},
+			</if>
+			<if test="ophoto != null">
+				#{ophoto,jdbcType=VARCHAR},
+			</if>
+			<if test="qqnum != null">
+				#{qqnum,jdbcType=VARCHAR},
+			</if>
+			<if test="weixin != null">
+				#{weixin,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="emergency != null">
+				#{emergency,jdbcType=VARCHAR},
+			</if>
+			<if test="emergphone != null">
+				#{emergphone,jdbcType=VARCHAR},
+			</if>
+			<if test="nation != null">
+				#{nation,jdbcType=VARCHAR},
+			</if>
+			<if test="political != null">
+				#{political,jdbcType=VARCHAR},
+			</if>
+			<if test="ishunyin != null">
+				#{ishunyin,jdbcType=VARCHAR},
+			</if>
+			<if test="idcard != null">
+				#{idcard,jdbcType=VARCHAR},
+			</if>
+			<if test="cardphoto != null">
+				#{cardphoto,jdbcType=VARCHAR},
+			</if>
+			<if test="hujiaddress != null">
+				#{hujiaddress,jdbcType=VARCHAR},
+			</if>
+			<if test="temporarynum != null">
+				#{temporarynum,jdbcType=VARCHAR},
+			</if>
+			<if test="livetype != null">
+				#{livetype,jdbcType=VARCHAR},
+			</if>
+			<if test="petxinxi != null">
+				#{petxinxi,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="logincount != null">
+				#{logincount,jdbcType=INTEGER},
+			</if>
+			<if test="opass != null">
+				#{opass,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.sve.datacenter.model.Owners">
+		update owners
+		<set>
+			<if test="disid != null">
+				disid = #{disid,jdbcType=INTEGER},
+			</if>
+			<if test="hlid != null">
+				hlid = #{hlid,jdbcType=INTEGER},
+			</if>
+			<if test="unitid != null">
+				unitid = #{unitid,jdbcType=INTEGER},
+			</if>
+			<if test="fanid != null">
+				fanid = #{fanid,jdbcType=INTEGER},
+			</if>
+			<if test="cardid != null">
+				cardid = #{cardid,jdbcType=INTEGER},
+			</if>
+			<if test="ownerphone != null">
+				ownerphone = #{ownerphone,jdbcType=VARCHAR},
+			</if>
+			<if test="owername != null">
+				owername = #{owername,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="sex != null">
+				sex = #{sex,jdbcType=VARCHAR},
+			</if>
+			<if test="homephone != null">
+				homephone = #{homephone,jdbcType=VARCHAR},
+			</if>
+			<if test="onum != null">
+				onum = #{onum,jdbcType=VARCHAR},
+			</if>
+			<if test="mdate != null">
+				mdate = #{mdate,jdbcType=DATE},
+			</if>
+			<if test="ophoto != null">
+				ophoto = #{ophoto,jdbcType=VARCHAR},
+			</if>
+			<if test="qqnum != null">
+				qqnum = #{qqnum,jdbcType=VARCHAR},
+			</if>
+			<if test="weixin != null">
+				weixin = #{weixin,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="emergency != null">
+				emergency = #{emergency,jdbcType=VARCHAR},
+			</if>
+			<if test="emergphone != null">
+				emergphone = #{emergphone,jdbcType=VARCHAR},
+			</if>
+			<if test="nation != null">
+				nation = #{nation,jdbcType=VARCHAR},
+			</if>
+			<if test="political != null">
+				political = #{political,jdbcType=VARCHAR},
+			</if>
+			<if test="ishunyin != null">
+				ishunyin = #{ishunyin,jdbcType=VARCHAR},
+			</if>
+			<if test="idcard != null">
+				idcard = #{idcard,jdbcType=VARCHAR},
+			</if>
+			<if test="cardphoto != null">
+				cardphoto = #{cardphoto,jdbcType=VARCHAR},
+			</if>
+			<if test="hujiaddress != null">
+				hujiaddress = #{hujiaddress,jdbcType=VARCHAR},
+			</if>
+			<if test="temporarynum != null">
+				temporarynum = #{temporarynum,jdbcType=VARCHAR},
+			</if>
+			<if test="livetype != null">
+				livetype = #{livetype,jdbcType=VARCHAR},
+			</if>
+			<if test="petxinxi != null">
+				petxinxi = #{petxinxi,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="logincount != null">
+				logincount = #{logincount,jdbcType=INTEGER},
+			</if>
+			<if test="opass != null">
+				opass = #{opass,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where oid = #{oid,jdbcType=INTEGER}
+	</update>
+	<!-- 根据小区id查询业主信息 -->
+	<select id="selectAllOwners" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select oid,cardid,ownerphone,owername from owners where
+		disid=#{disid} and
+		status=2
+	</select>
+	<!-- 根据状态查询全部 -->
+	<select id="selectA" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select * from owners where status=#{status} order by oid desc
+	</select>
+	<!-- 模糊查询 -->
+	<select id="selectAll" parameterType="com.sve.datacenter.model.Owners" resultMap="BaseResultMap">
+		select * from owners where status=#{status}
+  		<if test="disid != 0 and disid != null">
+  			and disid=#{disid}
+  		</if>
+  		<if test="hlid != 0 and hlid != null">
+  			and hlid=#{hlid}
+  		</if>
+  		<if test="unitid != 0 and unitid != null">
+  			and unitid=#{unitid}
+  		</if>
+  		<if test="cardid != 0 and cardid != null">
+  			and cardid=#{cardid}
+  		</if>
+  		<if test="ownerphone != '' and ownerphone != null">
+  			and ownerphone like '%${ownerphone}%'
+  		</if>
+  		<if test="keywords != '' and keywords != null">
+  			and (owername like concat('%',#{keywords},'%') or
+  				fanid like concat('%',#{keywords},'%') or
+  				ownerphone like concat('%',#{keywords},'%') or
+  				onum like concat('%',#{keywords},'%'))
+  		</if>
+  		<if test="loginver == 1">
+  			and logincount=0
+  		</if>
+  		<if test="loginver == 2">
+  			and logincount>0
+  		</if>
+		order by oid desc
+	</select>
+	<!-- 查询全部小区 -->
+	<select id="selectdisall" resultMap="com.sve.datacenter.dao.DistrictMapper.BaseResultMap">
+		select * from district
+	</select>
+	<!-- 修改业主状态 -->
+	<update id="update_yzstatus" parameterType="com.sve.datacenter.model.Owners">
+		update owners set
+		STATUS=#{status} where oid=#{oid}
+	</update>
+	<!-- 查询手机号码是否已存在 -->
+	<select id="selectophone" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(*) from owners where ownerphone=#{ownerphone}
+	</select>
+
+	<!-- 批量添加业主 -->
+	<insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true"
+    keyProperty="oid">
+		insert into owners(disid, hlid, unitid, cardid, ownerphone, owername,
+		sex, homephone, onum, mdate, qqnum, weixin, email, emergency,
+		emergphone, nation, political,ishunyin, idcard, hujiaddress,
+		temporarynum, livetype, petxinxi, remark) values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.disid},#{item.hlid},#{item.unitid},#{item.cardid},#{item.ownerphone},#{item.owername},#{item.sex},#{item.homephone},#{item.onum},#{item.mdate},#{item.qqnum},#{item.weixin},#{item.email},#{item.emergency},#{item.emergphone},#{item.nation},#{item.political},#{item.ishunyin},#{item.idcard},#{item.hujiaddress},#{item.temporarynum},#{item.livetype},#{item.petxinxi},#{item.remark})
+		</foreach>
+	</insert>
+	<select id="selectAllName" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> from owners where status=2 and fanid>0
+	</select>
+	<!-- 快速搜索 -->
+	<select id="quickFind" parameterType="java.lang.String" resultMap="BaseResultMap">
+	SELECT oid,owername,ownerphone FROM owners WHERE STATUS=2 AND 
+	(owername like concat('%',#{keywords},'%') or ownerphone like concat('%',#{keywords},'%'))
+	</select>
+	<!-- 已迁入的业主总数 -->
+	<select id="yezhuCount" resultType="java.lang.Integer">
+	SELECT COUNT(*) FROM owners WHERE STATUS=2
+	</select>
+</mapper>

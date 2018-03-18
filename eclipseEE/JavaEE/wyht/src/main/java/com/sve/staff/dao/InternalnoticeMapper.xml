@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sve.staff.dao.InternalnoticeMapper">
+  <resultMap id="BaseResultMap" type="com.sve.staff.model.Internalnotice">
+    <id column="intnot_id" jdbcType="INTEGER" property="intnotId" />
+    <result column="intnot_emp_id" jdbcType="INTEGER" property="intnotEmpId" />
+    <result column="intnot_name" jdbcType="VARCHAR" property="intnotName" />
+    <result column="intnot_context" jdbcType="VARCHAR" property="intnotContext" />
+    <result column="intnot_date" jdbcType="TIMESTAMP" property="intnotDate" />
+     <association property="employee" column="intnot_emp_id" 
+    select="com.sve.staff.dao.EmployeeMapper.selectByPrimaryKey"></association>
+    <association property="department" column="intnot_emp_id"
+  	 select="com.sve.staff.dao.DepartmentMapper.selectByPrimaryKey"></association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    intnot_id, intnot_emp_id, intnot_name, intnot_context, intnot_date
+  </sql>
+   <select id="selectAll" resultMap="BaseResultMap" parameterType="string">
+  		select * from internalnotice 
+  		<trim prefix="where" prefixOverrides="or|and">
+  		    <if test="mohu!=null and mohu!=''">
+  			 intnot_name LIKE CONCAT(CONCAT('%',#{mohu}),'%')
+  			</if> 
+  		</trim>
+  		order by intnot_id desc
+   </select>
+   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" /> 	 
+    from internalnotice
+    where intnot_id = #{intnotId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+	    delete from internalnotice
+	    where intnot_id = #{intnotId,jdbcType=INTEGER}
+  	</delete>
+   <insert id="insert" parameterType="com.sve.staff.model.Internalnotice" >
+    insert into internalnotice (intnot_id, intnot_emp_id, intnot_name, 
+      intnot_context, intnot_date)
+    values (#{intnotId,jdbcType=INTEGER}, #{intnotEmpId,jdbcType=INTEGER}, #{intnotName,jdbcType=VARCHAR}, 
+      #{intnotContext,jdbcType=VARCHAR}, #{intnotDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sve.staff.model.Internalnotice" >
+    insert into internalnotice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="intnotId != null" >
+        intnot_id,
+      </if>
+      <if test="intnotEmpId != null" >
+        intnot_emp_id,
+      </if>
+      <if test="intnotName != null" >
+        intnot_name,
+      </if>
+      <if test="intnotContext != null" >
+        intnot_context,
+      </if>
+      <if test="intnotDate != null" >
+        intnot_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="intnotId != null" >
+        #{intnotId,jdbcType=INTEGER},
+      </if>
+      <if test="intnotEmpId != null" >
+        #{intnotEmpId,jdbcType=INTEGER},
+      </if>
+      <if test="intnotName != null" >
+        #{intnotName,jdbcType=VARCHAR},
+      </if>
+      <if test="intnotContext != null" >
+        #{intnotContext,jdbcType=VARCHAR},
+      </if>
+      <if test="intnotDate != null" >
+        #{intnotDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sve.staff.model.Internalnotice" >
+    update internalnotice
+    <set >
+      <if test="intnotEmpId != null" >
+        intnot_emp_id = #{intnotEmpId,jdbcType=INTEGER},
+      </if>
+      <if test="intnotName != null" >
+        intnot_name = #{intnotName,jdbcType=VARCHAR},
+      </if>
+      <if test="intnotContext != null" >
+        intnot_context = #{intnotContext,jdbcType=VARCHAR},
+      </if>
+      <if test="intnotDate != null" >
+        intnot_date = #{intnotDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where intnot_id = #{intnotId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sve.staff.model.Internalnotice" >
+    update internalnotice
+    set intnot_emp_id = #{intnotEmpId,jdbcType=INTEGER},
+      intnot_name = #{intnotName,jdbcType=VARCHAR},
+      intnot_context = #{intnotContext,jdbcType=VARCHAR},
+      intnot_date = #{intnotDate,jdbcType=TIMESTAMP}
+    where intnot_id = #{intnotId,jdbcType=INTEGER}
+  </update>
+</mapper>

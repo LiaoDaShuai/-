@@ -1,0 +1,911 @@
+*::selection {
+	color: #fff;
+	background: #0fb478;
+} /*更改选中文字时的颜色*/
+*::-moz-selection {
+	color: #fff;
+	background: #0fb478;
+}
+
+*::-webkit-selection {
+	color: #fff;
+	background: #0fb478;
+}
+
+.header {
+	font-weight: 400;
+	font-size: 17px;
+	color: #000;
+	box-sizing: border-box;
+	margin: 8px 5px 0 0;
+	padding: 5px 0 5px 0;
+}
+
+.small {
+	margin: 5px 0 0 0;
+	color: #aeaeae;
+	font-size: 13px;
+}
+
+.card .header .o-hidden {
+	font-size: 17px;
+	font-weight: 400;
+	height: 44px;
+}
+
+.hr-solid {
+	width: 100%;
+	height: 1px;
+	border-bottom: 1px solid #E0E0E0;
+	margin: 10px 0;
+	clear: both;
+}
+
+.list-action-grid {
+	margin: 0px 5px;
+}
+
+.gaoji {
+	margin: 10px 10px 0 0;
+}
+
+.suotext {
+	height: 32px;
+	position: relative;
+	z-index: 3;
+	float: left;
+}
+
+.wentext {
+	width: 200px;
+	height: 30px;
+	border: 1px solid #d1d2d3;
+	float: left;
+	font-size: 12px;
+	line-height: 25px;
+	padding: 0 10px;
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+
+.btn-list {
+	display: block;
+	float: left;
+	min-width: 40px;
+	height: 30px;
+	text-align: center;
+	background: #fcfcfc;
+	color: #2277da;
+	border: 1px solid #d1d2d3;
+	border-radius: 3px;
+	font-size: 16px;
+	margin-left: 20px;
+	box-sizing: border-box;
+	padding-top: 3px;
+}
+
+.list-setting {
+	margin-left: -1px;
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+
+.container-bianju {
+	margin: 80px 0 0 90px;
+	background: #fff;
+}
+
+input:active, input:focus {
+	outline: 0;
+	box-shadow: none !important;
+}
+
+.table>thead>tr>th {
+	background-color: #F5F6FA;
+	color: #333;
+	font-size: 17px;
+	font-weight: 500;
+	border-top: 1px solid #e1e6eb;
+	border-bottom: 1px solid #e1e6eb;
+	vertical-align: middle;
+	border-width: 1px;
+	text-transform: uppercase;
+}
+
+.table>tbody tr td {
+	padding: 15px 15px;
+	font-size: 14px;
+	color: #5e5e5e;
+}
+
+.biao-er-wai {
+	color: #5e5e5e;
+	font-size: 13px;
+	/*  margin:6px 0 0 15px; */
+	padding-bottom: 50px;
+}
+
+.p-10 {
+	margin: 16px 16px;
+}
+
+.p-t-10 {
+	color: #5e5e5e;
+	margin: 5px 5px;
+}
+
+.p-11 {
+	margin: 20px 180px;
+}
+
+.form-control-k[readonly], .form-control-k[disabled] {
+	background-color: #eee;
+	opacity: 1;
+	cursor: pointer;
+}
+
+.btn-ssm {
+	padding: 8px 15px;
+}
+
+.toggaoji {
+	border-top: 0;
+	margin: 0px 0 18px 0;
+	/*  border-top:1px solid #e0e0e0; */
+	overflow: hidden;
+	height: 0;
+	opacity: 0;
+	border-bottom: 1px solid #E0E0E0;
+}
+
+.chenkai {
+	width: 750px;
+	margin: 0 auto;
+	padding: 100px 0;
+}
+
+.sousuokuan {
+	width: 500px;
+	min-height:55px;
+	padding: 6px 0 6px 0;
+	border: 1px solid #e0e0e0;
+}
+
+.wuye-input-sm[readonly] {
+	border: 0;
+	width: 30px;
+	background: transparent;
+}
+
+.navkuai {
+	padding: 10px 45px;
+	display: inline-block;
+	line-height: 40px;
+	cursor: pointer;
+	color: #5e5e5e;
+}
+
+.a-opts {
+	margin: 2px;
+	font-weight: 500;
+}
+
+.modal-footer {
+	background: rgba(0, 0, 0, 0.1);
+}
+
+.actions {
+	list-style: none;
+	padding: 0;
+	z-index: 2;
+	margin: 0;
+}
+
+.actions>li {
+	display: inline-block;
+	vertical-align: baseline;
+}
+
+.actions>li>a {
+	width: 40px;
+	height: 40px;
+	line-height: 30px;
+	display: inline-block;
+	text-align: center;
+	padding: 5px 0 0 0;
+	position: relative;
+	box-sizing: border-box;
+}
+
+.actions>li>a>i {
+	color: #adadad;
+	font-size: 20px;
+}
+
+.a-form-hd {
+	line-height: 38px;
+	height: 38px;
+	padding: 0 14px;
+	border-bottom: 1px solid #e7e7eb;
+	margin: 0 -15px 0 -15px;
+}
+
+.a-form-hd span {
+	padding: 15px 20px;
+	font-size: 16px;
+	color: #000;
+}
+
+.pad-form-div {
+	margin: 10px 0;
+	border: 1px solid #e7e7eb;
+	float: left;
+}
+
+.block-h4 {
+	border-left: 6px solid #4cae4c;
+	font-weight: 600;
+	font-size: 16px;
+	margin: 5px 0 10px 0;
+}
+
+.sousuoj {
+	margin: 20px 0 20px 0;
+}
+
+.sousuoj input {
+	padding-left: 35px;
+}
+
+*, :active, :hover {
+	outline: 0 !important;
+	-webkit-tap-highlight-color: transparent !important;
+}
+
+.sousuoj .fa {
+	font-size: 20px;
+	position: absolute;
+	top: 8px;
+	left: 25px;
+	color: #b1b1b1;
+}
+
+.list-show a {
+	display: block;
+	padding: 10px;
+	color: #666;
+	font-size: 14px;
+}
+
+.list-show a:active, .list-show a:hover {
+	background: #f8f8f8;
+}
+
+.fenyes {
+	color: #666;
+	padding: 20px !important;
+}
+
+.formula-content {
+	color: #666;
+}
+
+.formula-content h4 {
+	font-size: 15px;
+	color: #333;
+	margin: 14px 0 5px 0;
+}
+
+.gongshi {
+	padding: 10px;
+	font-size: 14px;
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	background: #fafafa;
+}
+
+.div-scroll {
+	height: 500px;
+	overflow: hidden;
+}
+
+.formula_bottom {
+	position: absolute;
+	padding: 0 0 10px 120px;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	width: 100%;
+	background: #fff;
+}
+
+.noheight {
+	height: 0;
+	opacity: 0;
+}
+
+i {
+	font-size: 14px;
+	-webkit-font-smoothing: antialiased;
+}
+
+.x1 {
+	margin: 100px;
+	padding-top: 13px;
+	padding-left: 1px;
+	position: absolute;
+	background-color: #fff;
+}
+
+.div4 {
+	font-size: 14px;
+	color: gray;
+	margin-left: 35px;
+	margin-top: 100px;
+	margin-bottom: 20px;
+}
+
+.div4 {
+	margin-left: 40px;
+	margin-bottom: 25px;
+	font-size: 14px;
+	color: gray;
+	float: left;
+}
+
+.tiaoshu {
+	float: right;
+	margin-top: 100px;
+	margin-bottom: 20px;
+}
+
+.tiaoshu select {
+	width: 65px;
+	color: gray;
+}
+
+.upload-area {
+	padding: 12px;
+	background: #fff;
+	border-radius: 1px;
+	border: 1px solid #e5e6e7;
+}
+
+.upload-picture-list {
+	display: inline;
+	margin: 0;
+	padding: 0;
+	vertical-align: top;
+	list-style: none;
+}
+
+.upload-picture-btn {
+	display: inline-block;
+	width: 148px;
+	height: 148px;
+	line-height: 135px;
+	background-color: #fbfdff;
+	border: 1px dashed #c0ccda;
+	border-radius: 6px;
+	box-sizing: border-box;
+	cursor: pointer;
+	text-align: center;
+	vertical-align: top;
+	font-size: 60px;
+	color: #8c939d;
+	position: relative;
+}
+
+.upload-tips {
+	margin-top: 12px;
+	color: #8391a5;
+}
+
+.row-lable {
+	text-align: center;
+	margin-top: 10px;
+}
+
+.table-responsive table tbody tr td .btn:not (.btn-xs ) {
+	border: 0;
+	box-shadow: none;
+	background: none !important;
+	color: #2277da !important;
+	padding: 0;
+}
+
+.pianyil {
+	margin: 0 8px 0 8px;
+}
+
+.user_info .close_side {
+	position: absolute;
+	right: 10px;
+	top: 20px;
+	padding: 10px;
+	font-size: 30px;
+	color: #333;
+	transition: all 0.65s;
+}
+
+.user_info .chat-search {
+	padding: 10px 5px;
+	background-image: url("../img/search-2.png");
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	padding-left: 40px;
+	/*  transition: all;
+    transition-duration: 300ms; */
+	border: 1px solid #e0e0e0;
+	width: 380px;
+}
+
+.user_info label {
+	display: block;
+	margin: 5px 0;
+	padding: 10px;
+	font-weight: 400;
+	border: 1px solid #e0e0e0;
+	transition: all 0.5s;
+	cursor: pointer;
+}
+
+.user_info label span {
+	margin: 0 10px 0 0;
+}
+
+.user_info .r-content {
+	height: calc(100% - 115px);
+	padding: 0 20px 90px 20px;
+	overflow: hidden;
+	outline: none;
+}
+
+.tree-list {
+	margin: 0;
+	padding: 0;
+}
+
+.tree-list li label {
+	display: block;
+	margin: 5px 0;
+	padding: 10px;
+	font-weight: 400;
+	border: 1px solid #e0e0e0;
+	transition: all 0.5s;
+	cursor: pointer;
+}
+
+.get_a, .get_b {
+	color: #2b542c;
+	text-decoration: none;
+	background-color: transparent;
+}
+
+.tree-list .tree-child {
+	margin-left: 20px;
+}
+
+.tree-list ul {
+	padding: 0;
+}
+
+.fake-box {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 420px;
+	padding: 10px 140px;
+	background: #fafafa;
+	box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+.m-l-10 {
+	margin-left: 10px !important;
+}
+
+.btn-w-m {
+	min-width: 63px;
+	margin-top: 20px;
+	margin-bottom: 60px;
+}
+
+.input-group .input-group-addon {
+	padding: 0 10px;
+	border: 1px solid #e1e1e1;
+}
+
+.radio-inline {
+	vertical-align: top;
+	margin-top: 5px;
+	padding-left: 25px;
+}
+
+.shoufeiweek {
+	padding-right: 15px !important;
+	padding-left: 15px !important;
+}
+
+#select_zhuhu {
+	cursor: pointer;
+}
+
+.data-list {
+	padding: 20px 20px;
+}
+
+.i-table {
+	background-color: #fff;
+}
+
+.i-table .highlight {
+	background-color: #eee;
+	border-bottom: 1px solid #e6e6e6;
+}
+
+.highlight p {
+	margin-bottom: 20px;
+}
+
+.c-red {
+	color: #f44336 !important;
+}
+
+.c-green {
+	color: #4caf50 !important;
+}
+
+.p-t-5 {
+	margin: 5px 10px;
+}
+
+.p-t-5 h4 {
+	margin-top: 4px;
+	font-size: 17px;
+}
+
+.zhuhuInfo td .rowspan {
+	padding: 10px;
+	border-top: 1px solid #f0f0f0;
+	min-height: 41px;
+	white-space: nowrap;
+}
+
+.noborder {
+	width: 50px;
+	border: 0;
+}
+
+.none {
+	display: none;
+}
+/*分頁條*/
+.pagination>li>a>i {
+	margin: 8px 0 0 -1px;
+	font-size: 22px;
+}
+
+.text-right-radius {
+	border-radius: 4px 0 0 4px;
+}
+
+.text-left-radius {
+	border-radius: 0 4px 4px 0;
+}
+
+.all-jifen {
+	border: 1px solid #ddd;
+	padding: 30px;
+	color: #666;
+	font: 400 16px/28px "microsoft yahei", Arial;
+}
+
+.all-jifen span {
+	font-family: "microsoft yahei", Arial;
+	font-size: 30px;
+	margin-left: 10px;
+	color: red;
+}
+
+.tuikcss {
+	margin: 15px 0 15px 0;
+}
+
+.onClickhand {
+	cursor: pointer;
+}
+/*查看收费详情*/
+.infor-head {
+	padding: 15px;
+	font-weight: bold;
+	background: rgba(175, 255, 181, 0.37);
+	position: relative;
+	overflow: hidden;
+}
+
+.infor-head h3 {
+	float: left;
+	border-left: 4px solid #2ecc71;
+	margin: 0;
+	padding-left: 10px;
+	font-size: 16px;
+}
+
+.infor-head a {
+	font-weight: 400;
+	margin-left: 20px;
+}
+
+.top-infor>div, .zhuhu-infor .row>div {
+	margin-top: 20px;
+}
+
+.xiangqing.card .card-header.ch-alt {
+	background: #f7f7f7;
+}
+
+.card .card-header h2 {
+	margin: 0;
+	line-height: 100%;
+	font-size: 17px;
+	font-weight: 400;
+}
+
+.p-30 {
+	padding: 30px !important;
+}
+/**资金明细**/
+.all-jifen {
+	border: 1px solid #ddd;
+	margin: 15px;
+	padding: 30px;
+	color: #666;
+	font: 400 16px/28px "microsoft yahei", Arial;
+}
+
+.all-jifen span {
+	font-family: "microsoft yahei", Arial;
+	font-size: 30px;
+	margin-left: 10px;
+	color: red;
+}
+
+.modal-dialog {
+	margin-top: 5%;
+}
+/**end**/
+/**快递取件**/
+.wxq-sug {
+	width: 100%;
+	height: auto;
+	background: #fff;
+	border: 1px solid #E1E1E1;
+	border-top: 0;
+	display: none;
+}
+
+.addbg.item {
+	background: #F8F8f8;
+}
+
+.wxq-sug .item {
+	width: 100%;
+	line-height: 25px;
+	padding: 2px 8px;
+	cursor: pointer;
+}
+/**end**/
+/**显示图片**/
+.hide {
+	display: none !important;
+}
+
+.upload-picture-btn {
+	width: 200px;
+	height: 180px;
+	line-height: 175px;
+	background-color: #fbfdff;
+	border: 1px dashed #c0ccda;
+	border-radius: 6px;
+	text-align: center;
+	/**font-size: 60px;
+	color: #8c939d;**/
+}
+
+.upload-picture-btn span{
+	font-size: 60px;
+	color: #8c939d;
+}
+
+.upload-picture-btn img {
+	/**width: 200px;**/
+	height: 180px;
+	/**margin-top: -176px;**/
+	margin-top:-1px;
+	margin-left: -1px;
+	border-radius: 3%;
+}
+
+.operation {
+	background: #F8F8F8;
+	box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.actionBar {
+	min-height: 80px;
+	padding: 40px;
+}
+/*模态框*/
+.md-perspective, .md-perspective body {
+	height: 100%;
+	overflow: hidden;
+}
+
+.md-perspective body {
+	-webkit-perspective: 600px;
+	-moz-perspective: 600px;
+	perspective: 600px;
+}
+
+.md-modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: 50%;
+	max-width: 630px;
+	min-width: 320px;
+	height: auto;
+	z-index: 1060;
+	visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-ms-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
+}
+
+.md-show {
+	visibility: visible;
+}
+
+.md-overlay {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	visibility: hidden;
+	top: 0;
+	left: 0;
+	z-index: 1050;
+	opacity: 0;
+	background: rgba(0, 0, 0, 0.6);
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+.md-show ~ .md-overlay {
+	opacity: 1;
+	visibility: visible;
+}
+/* Content styles */
+.md-content {
+	color: #000;
+	background: #fff;
+	position: relative;
+	border-radius: 3px;
+	margin: 0 auto;
+}
+/* Effect 17:  Slide in from bottom with perspective on container */
+.md-show.md-effect-17 ~ .container {
+	height: 100%;
+	overflow: hidden;
+	-webkit-transition: -webkit-transform 0.3s;
+	-moz-transition: -moz-transform 0.3s;
+	transition: transform 0.3s;
+}
+
+.md-show.md-effect-17 ~ .container, .md-show.md-effect-17 ~ .md-overlay
+	{
+	-webkit-transform: rotateX(-2deg);
+	-moz-transform: rotateX(-2deg);
+	-ms-transform: rotateX(-2deg);
+	transform: rotateX(-2deg);
+	-webkit-transform-origin: 50% 0%;
+	-moz-transform-origin: 50% 0%;
+	transform-origin: 50% 0%;
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+
+.md-effect-17 .md-content {
+	opacity: 0;
+	-webkit-transform: translateY(200%);
+	-moz-transform: translateY(200%);
+	-ms-transform: translateY(200%);
+	transform: translateY(200%);
+}
+
+.md-show.md-effect-17 .md-content {
+	-webkit-transform: translateY(0);
+	-moz-transform: translateY(0);
+	-ms-transform: translateY(0);
+	transform: translateY(0);
+	opacity: 1;
+	-webkit-transition: all 0.3s 0.2s;
+	-moz-transition: all 0.3s 0.2s;
+	transition: all 0.3s 0.2s;
+}
+
+.search-area {
+	display: none;
+	width: 66.7%;
+	z-index: 999;
+	background: #f6f6f6;
+	border: 1px solid #ddd;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px
+		rgba(0, 0, 0, 0.12);
+}
+
+.souyin {
+	width: 500px;
+	height: 50px;
+}
+
+.search-title {
+    background: transparent;
+    padding: 10px 15px;
+}
+.search-row.addbg a {
+    text-decoration: underline;
+}
+.search-row a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: #74777c;
+}
+.search-row {
+    background: #fff;
+    padding: 10px 15px;
+    transition: all 0.5s;
+}
+.search-row:hover{
+    background: #d6e9f8;
+}
+.printdy{
+	padding: 5px; text-align: left; 
+	border-right: 1px solid rgb(204, 204, 204); 
+	border-bottom: 1px solid rgb(204, 204, 204); 
+	font-weight: 400;
+}
+/*暂时未开发*/
+.brewing {
+    margin: 180px auto;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url(/wyht/img/brewing.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+    position: relative;
+    text-align: center;
+}
+.brewing div {
+    position: absolute;
+    top: 42px;
+    right: calc(50% - 204px);
+    text-align: left;
+}
+.brewing div p {
+    font-size: 16px;
+    margin-bottom: 0;
+}
+.brewing div h2 {
+    color: #2ecc71;
+    letter-spacing: 5px;
+}

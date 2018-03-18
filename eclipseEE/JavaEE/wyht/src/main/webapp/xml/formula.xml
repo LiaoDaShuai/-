@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<formulas>
+    <formula id="1">
+        <formulaname>按抄表用量二级阶梯计费</formulaname>
+        <formulacontent>
+            <![CDATA[
+            按抄表用量二级阶梯计费<br/><br/>
+如：阶梯水费<br/>
+3（含3）吨以下，按3吨计算；<br/>
+3吨以上，按实际用量计算。
+            <br/>]]>
+        </formulacontent>
+        <formulagongshi>
+            <![CDATA[
+            如果(《抄表用量》小于等于 <span class='shu1'>【数值1】</span>)<br/>
+{<br/>
+金额 等于 <span class='shu1'>【数值1】</span>*<span class='shu2'>【数值2】</span>;<br/>
+}<br/>
+否则 {<br/>
+金额 等于 《抄表用量》*<span class='shu3'>【数值3】</span>;<br/>
+}<br/>
+]]>
+        </formulagongshi>
+        <formulacount>3</formulacount>
+    </formula>
+    <formula id="2">
+        <formulaname>按抄表用量三级阶梯计费</formulaname>
+        <formulacontent>
+            <![CDATA[
+            按抄表用量三级阶梯计费
+            <br/>
+            <br/>
+如：阶梯水费<br/>
+3(含3）吨以下，单价为：2元/吨；<br/>
+3-10吨，单价为：3元/吨；<br/>
+10吨以上，单价为：4元/吨。<br/>
+            ]]>
+        </formulacontent>
+        <formulagongshi>
+            <![CDATA[
+            如果 (《抄表用量》小于等于 <span class='shu1'>【数值1】</span>){<br/>
+金额 等于 《抄表用量》* <span class='shu2'>【数值2】</span>;<br/>
+}<br/>
+否则 如果 (《抄表用量》大于 <span class='shu1'>【数值1】</span> 且《抄表用量》小于等于 <span class='shu3'>【数值3】</span>)<br/>
+{<br/>
+金额 等于 <span class='shu1'>【数值1】</span> * <span class='shu2'>【数值2】</span> + (《抄表用量》-<span class='shu1'>【数值1】</span>) * <span class='shu4'>【数值4】</span>;<br/>
+}<br/>
+否则<br/>
+{<br/>
+金额 等于 <span class='shu1'>【数值1】</span> * <span class='shu2'>【数值2】</span> + (<span class='shu3'>【数值3】</span>-<span class='shu1'>【数值1】</span>) * <span class='shu4'>【数值4】</span>+（《抄表用量》-<span class='shu3'>【数值3】</span>）* <span class='shu5'>【数值5】</span>;<br/>
+}
+            <br/>
+            }]]>
+        </formulagongshi>
+        <formulacount>5</formulacount>
+    </formula>
+    <formula id="3">
+        <formulaname>按车辆排量三级阶梯计费</formulaname>
+        <formulacontent>
+            <![CDATA[
+            按车辆排量三级阶梯计费
+            <br/>
+            <br/>
+
+如阶梯停车费：	<br/>
+1.8(含1.8)升以下,金额为260元/辆·月；<br/>
+1.8升至2.5(含2.5)升，金额为360元/辆·月；<br/>
+2.5升以上，金额为500元/辆·月。
+            <br/>]]>
+        </formulacontent>
+        <formulagongshi>
+            <![CDATA[
+            如果 (《车辆排量》小于等于 <span class='shu1'>【数值1】){<br/>
+金额 等于 <span class='shu2'>【数值2】</span>;<br/>
+}<br/>
+否则 如果(《车辆排量》大于 <span class='shu1'>【数值1】</span> 且《车辆排量》小于等于 <span class='shu3'>【数值3】</span>)<br/>
+{<br/>
+金额 等于 <span class='shu4'>【数值4】</span>;<br/>
+}<br/>
+否则<br/>
+{<br/>
+金额 等于 <span class='shu5'>【数值5】</span>;<br/>
+}<br/>
+            ]]>
+        </formulagongshi>
+        <formulacount>5</formulacount>
+    </formula>
+    <formula id="4">
+        <formulaname>按楼宇层数二级阶梯收费</formulaname>
+        <formulacontent>
+            <![CDATA[
+            按楼宇层数二级阶梯收费（不封顶）<br/><br/>
+
+如阶梯电梯费：<br/>
+5（不含5）楼以下不收费，<br/>
+5楼为每户10元，增加一层楼增加2元。
+            <br/>]]>
+        </formulacontent>
+        <formulagongshi>
+            <![CDATA[
+            如果 (《楼宇层数》小于 <span class='shu1'>【数值1】></span>){<br/>
+金额 等于 <span class='shu2'>【数值2】</span>;<br/>
+}<br/>
+否则<br/>
+{<br/>
+金额 等于 <span class='shu3'>【数值3】</span>+（《楼宇层数》-<span class='shu1'>【数值1】</span>）*<span class='shu4'>【数值4】</span>;<br/>
+}<br/>
+            }]]>
+        </formulagongshi>
+        <formulacount>4</formulacount>
+    </formula>
+    <formula id="5">
+        <formulaname>按楼宇层数二级阶梯计费</formulaname>
+        <formulacontent>
+            <![CDATA[
+            按楼宇层数二级阶梯计费（封顶）<br/><br/>
+
+如阶梯电梯费：<br/>
+5（不含5）楼以下不收费，<br/>
+5楼为每户10元，增加一层楼增加2元，40元封顶<br/>
+]]>
+        </formulacontent>
+        <formulagongshi>
+            <![CDATA[
+            如果 (《楼宇层数》小于 <span class='shu1'>【数值1】</span>){<br/>
+金额 等于 <span class='shu2'>【数值2】</span>;<br/>
+}<br/>
+否则 {<br/>
+金额 等于 <span class='shu2'>【数值2】</span>+(《楼宇层数》-<span class='shu1'>【数值1】</span>)*<span class='shu3'>【数值3】</span>;<br/>
+}<br/>
+如果(金额 大于<span class='shu4'>【数值4】</span>){<br/>
+金额 等于 <span class='shu5'>【数值5】</span>;<br/>
+}<br/>
+            ]]>
+        </formulagongshi>
+        <formulacount>5</formulacount>
+    </formula>
+    <formula id="6">
+        <formulaname>按楼宇层数建筑面积四级阶梯计费</formulaname>
+        <formulacontent>
+            <![CDATA[
+            按楼宇层数建筑面积四级阶梯计费<br/><br/>
+
+如：<br/>
+2（含2）层以下，(0*房屋建筑面积)元/月<br/>
+2（不含2）-12（含12）-层， (0.32*房屋建筑面积)元/月<br/>
+12（不含12）-23（含23）层，(0.4*房屋建筑面积)元/月<br/>
+24(含24)层以上(0.48*房屋建筑面积)元/月
+            <br/>
+]]>
+        </formulacontent>
+        <formulagongshi>
+            <![CDATA[
+            如果(《楼宇层数》大于等于0 且 《楼宇层数》小于等于<span class='shu1'>【数值1】</span>){<br/>
+金额 等于 <span class='shu2'>【数值2】</span>* 《房屋建筑面积》;<br/>
+} 否则 如果 (《楼宇层数》大于【数值1】</span> 且 《楼宇层数》小于等于<span class='shu3'>【数值3】</span>) {<br/>
+金额 等于 <span class='shu4'>【数值4】</span>* 《房屋建筑面积》;<br/>
+} 否则 如果(《楼宇层数》大于【数值3】</span> 且 《楼宇层数》 小于等于 <span class='shu5'>【数值5】</span>){<br/>
+金额 等于 <span class='shu6'>【数值6】* 《房屋建筑面积》;<br/>
+} 否则 {<br/>
+金额 等于 <span class='shu7'>【数值7】</span>* 《房屋建筑面积》;<br/>
+}<br/>
+            ]]>
+        </formulagongshi>
+        <formulacount>7</formulacount>
+    </formula>
+    <formula id="7">
+        <formulaname>按楼宇层数建筑面积五级阶梯计费</formulaname>
+        <formulacontent>
+            <![CDATA[
+      按楼宇层数抄表用量五级阶梯计费<br/><br/>
+
+如：<br/>
+1层，(2.3*抄表用量)元；<br/>
+1（不含1）-5（含5）层， (2.4*抄表用量)元；<br/>
+5（不含5）-15（含15）层，(2.5*抄表用量)元；<br/>
+15(不含15)-25（含25）层，(2.55*抄表用量)元；<br/>
+25（不含25）层以上，(2.6*抄表用量)元。<br/>
+10(含10)层以上(0.22*房屋建筑面积)元/月<br/>
+}
+        ]]>
+        </formulacontent>
+        <formulagongshi>
+            <![CDATA[
+           如果(《楼宇层数》 小于等于 <span class='shu1'>【数值1】</span>){<br/>
+金额 等于 <span class='shu2'>【数值2】</span>*《抄表用量》;<br/>
+}<br/>
+如果(《楼宇层数》 大于 <span class='shu1'>【数值1】 且 《楼宇层数》 小于等于 <span class='shu3'>【数值3】</span>){<br/>
+金额 等于 <span class='shu4'>【数值4】</span>*《抄表用量》;<br/>
+}<br/>
+如果(《楼宇层数》 大于 <span class='shu3'>【数值3】 且 《楼宇层数》 小于等于 <span class='shu5'>【数值5】</span>){<br/>
+金额 等于 <span class='shu6'>【数值6】</span>*《抄表用量》;<br/>
+}<br/>
+如果(《楼宇层数》 大于 <span class='shu5'>【数值5】 且 《楼宇层数》 小于等于 <span class='shu7'>【数值7】</span>){<br/>
+金额 等于 <span class='shu8'>【数值8】</span>*《抄表用量》;<br/>
+}<br/>
+如果(《楼宇层数》 大于 <span class='shu7'>【数值7】){<br/>
+金额 等于 <span class='shu9'>【数值9】</span>*《抄表用量》;<br/>
+]]><br/>
+        </formulagongshi>
+        <formulacount>9</formulacount>
+    </formula>
+    <formula id="8">
+        <formulaname>按楼宇层数建筑面积五级阶梯计费</formulaname>
+        <formulacontent>
+            <![CDATA[
+        按楼宇层数建筑面积五级阶梯计费
+            <br/>
+            <br/>
+            如：
+            <br/>
+            2（含2）层以下，(0*房屋建筑面积)元/月
+            <br/>
+            2（不含2）-3（含3）层， (0.13*房屋建筑面积)元/月
+            <br/>
+            3（不含3）-6（含6）层，(0.16*房屋建筑面积)元/月
+            <br/>
+            6（不含3）-9（含9）层，(0.19*房屋建筑面积)元/月
+            <br/>
+            10(含10)层以上(0.22*房屋建筑面积)元/月
+            <br/>]]>
+        </formulacontent>
+        <formulagongshi>
+            <![CDATA[
+            如果(《楼宇层数》大于等于0 且 《楼宇层数》小于等于 <span class='shu1'>【数值1】</span>){
+            <br/>
+            金额 等于 <span class='shu2'>【数值2】</span>* 《房屋建筑面积》;
+            <br/>
+            } 否则 如果 (《楼宇层数》大于 <span class='shu1'>【数值1】</span> 且 《楼宇层数》小于等于 <span class='shu3'>【数值3】</span>) {
+            <br/>
+            金额 等于  <span class='shu9'>【数值4】</span>* 《房屋建筑面积》;
+            <br/>
+            } 否则 如果(《楼宇层数》大于  <span class='shu9'><span class='shu3'>【数值3】</span> 且 《楼宇层数》 小于等于  <span class='shu5'>【数值5】</span>){
+            <br/>
+            金额 等于  <span class='shu6'>【数值6】</span>* 《房屋建筑面积》;
+            <br/>
+            } 否则 如果(《楼宇层数》大于 <span class='shu5'>【数值5】</span> 且 《楼宇层数》 小于等于  <span class='shu7'>【数值7】</span>){
+            <br/>
+            金额 等于  <span class='shu8'>【数值8】</span>* 《房屋建筑面积》;
+            <br/>
+            }
+            <br/>
+            否则 {
+            <br/>
+            金额 等于  <span class='shu9'>【数值9】</span>* 《房屋建筑面积》;
+            <br/>
+            }]]>
+        </formulagongshi>
+        <formulacount>9</formulacount>
+    </formula>
+
+</formulas>
